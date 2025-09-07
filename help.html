@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en-KE">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Help Center - Swift Loan</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#225AAC',
+                        'primary-dark': '#1a4a8a',
+                        'primary-light': '#e8f1ff'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.3s ease-out'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        slideIn: {
+                            '0%': { opacity: '0', transform: 'translateX(20px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .swift-primary { color: #225AAC; }
+        .swift-primary-bg { background-color: #225AAC; }
+        .swift-primary-hover:hover { background-color: #1a4a8a; }
+        .swift-primary-light { background-color: #e8f1ff; }
+        
+        .transition-swift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .help-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(34, 90, 172, 0.08);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .help-card:hover {
+            box-shadow: 0 8px 25px rgba(34, 90, 172, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1.5rem 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #1f2937;
+            transition: color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: #225AAC;
+        }
+
+        .faq-answer {
+            margin-top: 1rem;
+            color: #6b7280;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .faq-answer.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .chevron {
+            transition: transform 0.3s ease;
+        }
+
+        .chevron.rotate {
+            transform: rotate(180deg);
+        }
+
+        .contact-method {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-method:hover {
+            background: #e8f1ff;
+            border-color: #225AAC;
+        }
+
+        .search-box {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #225AAC;
+            box-shadow: 0 0 0 3px rgba(34, 90, 172, 0.1);
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb a {
+            color: #225AAC;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            opacity: 0.8;
+        }
+
+        .help-section {
+            margin-bottom: 3rem;
+        }
+
+        .step-number {
+            width: 2rem;
+            height: 2rem;
+            background: #225AAC;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .process-step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .highlight-box {
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .warning-box {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .success-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+<!-- Brevo Conversations {literal} -->
+<script>
+    (function(d, w, c) {
+        w.BrevoConversationsID = '67cfe70069e9058aa30db4b2';
+        w[c] = w[c] || function() {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        var s = d.createElement('script');
+        s.async = true;
+        s.src = 'https://conversations-widget.brevo.com/brevo-conversations.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'BrevoConversations');
+</script>
+<!-- /Brevo Conversations {/literal} -->
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-white to-blue-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 swift-primary-bg rounded-lg flex items-center justify-center">
+                            <svg class="text-white" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </div>
+                        <span class="ml-3 text-xl font-bold text-gray-900">Swift Loan</span>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="flex items-center space-x-4">
+                    <a href="login.html" class="text-gray-700 hover:text-primary transition-colors duration-200">
+                        Sign In
+                    </a>
+                    <a href="/" class="text-gray-700 hover:text-primary transition-colors duration-200">
+                        Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="/">Home</a>
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9 6l6 6-6 6"/>
+            </svg>
+            <span>Help Center</span>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="text-center mb-12">
+            <div class="w-20 h-20 swift-primary-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="text-white" width="40" height="40" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM12 12.5C15.31 12.5 18 9.81 18 6.5V4.5C18 3.12 16.88 2 15.5 2H8.5C7.12 2 6 3.12 6 4.5V6.5C6 9.81 8.69 12.5 12 12.5ZM12 14.5C8.14 14.5 5 17.64 5 21.5V22H19V21.5C19 17.64 15.86 14.5 12 14.5Z"/>
+                </svg>
+            </div>
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">How can we help you?</h1>
+            <p class="text-xl text-gray-600 mb-8">Find answers to your questions and get the support you need</p>
+            
+            <!-- Search Box -->
+            <div class="max-w-2xl mx-auto">
+                <input 
+                    type="text" 
+                    placeholder="Search for help articles, FAQs, or topics..."
+                    class="search-box"
+                    id="helpSearch"
+                />
+            </div>
+        </div>
+
+        <!-- Quick Help Categories -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <!-- Account Help -->
+            <div class="help-card">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="text-blue-600" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1V3H9V1L3 7V9H21M4 11V19A2 2 0 0 0 6 21H18A2 2 0 0 0 20 19V11H4Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Account & Login</h3>
+                <p class="text-gray-600 mb-4">Help with account creation, login issues, and password reset</p>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li>• Creating a new account</li>
+                    <li>• Forgot password recovery</li>
+                    <li>• Two-factor authentication</li>
+                    <li>• Account verification</li>
+                </ul>
+            </div>
+
+            <!-- Loan Applications -->
+            <div class="help-card">
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="text-green-600" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20C20.55 4 21 4.45 21 5S20.55 6 20 6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4C3.45 6 3 5.55 3 5S3.45 4 4 4H7ZM9 3V4H15V3H9ZM7 6V19H17V6H7Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Loan Applications</h3>
+                <p class="text-gray-600 mb-4">Everything about applying for and managing your loans</p>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li>• Loan application process</li>
+                    <li>• Required documents</li>
+                    <li>• Application status tracking</li>
+                    <li>• Loan terms and conditions</li>
+                </ul>
+            </div>
+
+            <!-- Payments & Billing -->
+            <div class="help-card">
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="text-purple-600" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20 4H4C2.89 4 2.01 4.89 2.01 6L2 18C2 19.11 2.89 20 4 20H20C21.11 20 22 19.11 22 18V6C22 4.89 21.11 4 20 4ZM20 18H4V12H20V18ZM20 8H4V6H20V8Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Payments & Billing</h3>
+                <p class="text-gray-600 mb-4">Payment methods, schedules, and billing information</p>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li>• Payment methods</li>
+                    <li>• Payment schedules</li>
+                    <li>• Late payment policies</li>
+                    <li>• Payment history</li>
+                </ul>
+            </div>
+
+            <!-- Security & Privacy -->
+            <div class="help-card">
+                <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="text-red-600" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18,8H17V6A5,5 0 0,0 12,1A5,5 0 0,0 7,6V8H6A2,2 0 0,0 4,10V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V10A2,2 0 0,0 18,8M12,17A2,2 0 0,1 10,15A2,2 0 0,1 12,13A2,2 0 0,1 14,15A2,2 0 0,1 12,17M15.8,8H8.2V6A3.8,3.8 0 0,1 12,2.2A3.8,3.8 0 0,1 15.8,6V8Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Security & Privacy</h3>
+                <p class="text-gray-600 mb-4">Keeping your account and personal information secure</p>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li>• Account security tips</li>
+                    <li>• Privacy policy</li>
+                    <li>• Data protection</li>
+                    <li>• Report suspicious activity</li>
+                </ul>
+            </div>
+
+            <!-- Technical Support -->
+            <div class="help-card">
+                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="text-yellow-600" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,17A1.5,1.5 0 0,1 10.5,15.5A1.5,1.5 0 0,1 12,14A1.5,1.5 0 0,1 13.5,15.5A1.5,1.5 0 0,1 12,17M14,11H10V7H14V11Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Technical Support</h3>
+                <p class="text-gray-600 mb-4">Website issues, mobile app problems, and technical help</p>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li>• Website troubleshooting</li>
+                    <li>• Browser compatibility</li>
+                    <li>• Mobile app support</li>
+                    <li>• System requirements</li>
+                </ul>
+            </div>
+
+            <!-- Contact Us -->
+            <div class="help-card">
+                <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="text-indigo-600" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20,15.5C18.8,15.5 17.5,15.3 16.4,14.9C16.3,14.9 16.2,14.9 16.1,14.9C15.8,14.9 15.6,15 15.4,15.2L13.2,17.4C10.4,15.9 8,13.6 6.6,10.8L8.8,8.6C9.1,8.3 9.2,7.9 9,7.6C8.7,6.5 8.5,5.2 8.5,4C8.5,3.5 8,3 7.5,3H4C3.5,3 3,3.5 3,4C3,13.4 10.6,21 20,21C20.5,21 21,20.5 21,20V16.5C21,16 20.5,15.5 20,15.5Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Contact Us</h3>
+                <p class="text-gray-600 mb-4">Get in touch with our customer support team</p>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li>• Live chat support</li>
+                    <li>• Email support</li>
+                    <li>• Phone support</li>
+                    <li>• Office locations.chat us like to get locations.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Getting Started Guide -->
+        <div class="help-section">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Getting Started with Swift Loan</h2>
+            <div class="bg-white rounded-lg p-6 shadow-lg">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Create Your Account</h3>
+                        <p class="text-gray-600">Sign up with your email or use Google sign-in for quick registration. Verify your email address to activate your account.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Complete Your Profile</h3>
+                        <p class="text-gray-600">Provide your personal information, employment details, and financial information to help us assess your loan eligibility.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Submit Required Documents</h3>
+                        <p class="text-gray-600">Upload necessary documents such as ID, proof of income, and bank statements for verification.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Apply for Your Loan</h3>
+                        <p class="text-gray-600">Choose your loan amount and terms, then submit your application for review by our team.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Receive Your Funds</h3>
+                        <p class="text-gray-600">Once approved, funds will be disbursed directly to your bank account within 3-15 min.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Frequently Asked Questions -->
+        <div class="help-section">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+            <div class="bg-white rounded-lg shadow-lg">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(1)">
+                        <span>How long does it take to get approved for a loan?</span>
+                        <svg class="chevron" id="chevron-1" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5z"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer" id="answer-1">
+                        <p>Our loan approval process typically takes 3-15 min once all required documents are submitted. For urgent applications, we offer expedited processing within 2-24 hours during business hours.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(2)">
+                        <span>What documents do I need to apply for a loan?</span>
+                        <svg class="chevron" id="chevron-2" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5z"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer" id="answer-2">
+                        <p>You'll need:</p>
+                        <ul class="list-disc ml-6 mt-2">
+                            <li>Valid government-issued ID (National ID or Passport)</li>
+                            <li>Proof of income (salary slips, bank statements)</li>
+                            <li>Employment verification letter</li>
+                            <li>Bank statements for the last 3 months</li>
+                            <li>Proof of residence (utility bill or rental agreement)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(3)">
+                        <span>What are your interest rates and loan terms?</span>
+                        <svg class="chevron" id="chevron-3" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5z"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer" id="answer-3">
+                        <p>Our interest rates start from 12% per annum and vary based on your credit profile and loan amount. Loan terms range from 6 months to 60 months. The exact rate and terms will be provided during the application process based on your eligibility assessment.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(4)">
+                        <span>How can I make loan payments?</span>
+                        <svg class="chevron" id="chevron-4" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5z"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer" id="answer-4">
+                        <p>We offer multiple payment options:</p>
+                        <ul class="list-disc ml-6 mt-2">
+                            <li>Online payments through your account dashboard</li>
+                            <li>Mobile money (M-Pesa, Airtel Money)</li>
+                            <li>Bank transfers</li>
+                            <li>Direct debit from your bank account</li>
+                            <li>Cash payments at partner locations</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(5)">
+                        <span>What happens if I miss a payment?</span>
+                        <svg class="chevron" id="chevron-5" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5z"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer" id="answer-5">
+                        <p>If you miss a payment, we'll contact you within 24 hours to discuss payment options. Late fees may apply after 7 days. We offer flexible payment arrangements for customers experiencing temporary financial difficulties. It's important to contact us as soon as possible if you anticipate payment issues.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 6 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(6)">
+                        <span>Is my personal information secure?</span>
+                        <svg class="chevron" id="chevron-6" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5z"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer" id="answer-6">
+                        <p>Yes, absolutely. We use bank-level 256-bit SSL encryption to protect all data transmissions. Your personal and financial information is stored on secure servers and is never shared with third parties without your explicit consent. We comply with all Kenyan data protection regulations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Methods -->
+        <div class="help-section">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Still Need Help? Contact Us</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Live Chat -->
+                <div class="contact-method">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="text-green-600" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2Z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Live Chat</h3>
+                    <p class="text-sm text-gray-600 mb-4">Chat with our support team in real-time</p>
+                    <p class="text-sm font-medium text-green-600">Available 24/7</p>
+                </div>
+
+                <!-- Email Support -->
+                <div class="contact-method">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="text-blue-600" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.11,4 20,4Z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Email Support</h3>
+                    <p class="text-sm text-gray-600 mb-4">Send us a detailed message</p>
+                    <p class="text-sm font-medium text-blue-600">info@swiftloan.ke</p>
+                </div>
+<!-- Phone Support -->
+<div class="contact-method">
+    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+        <svg class="text-purple-600" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20,15.5C18.8,15.5 17.5,15.3 16.4,14.9C16.3,14.9 16.2,14.9 16.1,14.9C15.8,14.9 15.6,15 15.4,15.2L13.2,17.4C10.4,15.9 8,13.6 6.6,10.8L8.8,8.6C9.1,8.3 9.2,7.9 9,7.6C8.7,6.5 8.5,5.2 8.5,4C8.5,3.5 8,3 7.5,3H4C3.5,3 3,3.5 3,4C3,13.4 10.6,21 20,21C20.5,21 21,20.5 21,20V16.5C21,16 20.5,15.5 20,15.5Z"/>
+        </svg>
+    </div>
+    <h3 class="font-semibold text-gray-900 mb-2">Live Chat Support</h3>
+    <p class="text-sm text-gray-600 mb-4">Chat with us for immediate assistance</p>
+    <p class="text-sm font-medium text-purple-600">Use the chat bubble at the bottom-right corner</p>
+</div>
+
+                <!-- Office Visit -->
+                <div class="contact-method">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <svg class="text-orange-600" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Visit Our Office</h3>
+                    <p class="text-sm text-gray-600 mb-4">Meet us in person</p>
+                    <p class="text-sm font-medium text-orange-600">Nairobi CBD</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Important Information Boxes -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Warning Box -->
+            <div class="warning-box">
+                <div class="flex items-start">
+                    <svg class="text-red-600 mt-1 mr-3 flex-shrink-0" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                    <div>
+                        <h4 class="font-semibold text-red-800 mb-1">Security Alert</h4>
+                        <p class="text-sm text-red-700">Never share your login credentials or personal information via email or phone calls.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Highlight Box -->
+            <div class="highlight-box">
+                <div class="flex items-start">
+                    <svg class="text-yellow-600 mt-1 mr-3 flex-shrink-0" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <div>
+                        <h4 class="font-semibold text-yellow-800 mb-1">Quick Tip</h4>
+                        <p class="text-sm text-yellow-700">Set up automatic payments to never miss a due date and maintain a good credit score.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Box -->
+            <div class="success-box">
+                <div class="flex items-start">
+                    <svg class="text-green-600 mt-1 mr-3 flex-shrink-0" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <div>
+                        <h4 class="font-semibold text-green-800 mb-1">Good News</h4>
+                        <p class="text-sm text-green-700">Most loan applications are processed within 24 hours on business days.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Security Notice -->
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+                    </svg>
+                    Your connection is secure and encrypted
+                </div>
+            </div>
+
+            <!-- Footer Links -->
+            <div class="border-t border-gray-200 pt-6">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <div class="flex flex-wrap justify-center md:justify-start gap-6 text-sm text-gray-600">
+                        <a href="privacy.html" class="hover:text-primary transition-colors">Privacy Policy</a>
+                        <a href="terms.html" class="hover:text-primary transition-colors">Terms of Service</a>
+                        <a href="privacy.html" class="hover:text-primary transition-colors">Cookie Policy</a>
+                        <a href="help.html" class="hover:text-primary transition-colors">Help Center</a>
+                        <a href="support.html" class="hover:text-primary transition-colors">Contact Support</a>
+                    </div>
+                    <div class="text-center md:text-right">
+                        <p class="text-sm text-gray-600">
+                            © 2025 Swift Loan. All rights reserved.
+                        </p>
+                        <p class="text-xs text-gray-500 mt-1">
+                            Licensed financial service provider in Kenya
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Toggle Functionality
+        function toggleFAQ(index) {
+            const answer = document.getElementById(`answer-${index}`);
+            const chevron = document.getElementById(`chevron-${index}`);
+            
+            // Close all other FAQs
+            for (let i = 1; i <= 6; i++) {
+                if (i !== index) {
+                    const otherAnswer = document.getElementById(`answer-${i}`);
+                    const otherChevron = document.getElementById(`chevron-${i}`);
+                    if (otherAnswer && otherChevron) {
+                        otherAnswer.classList.remove('active');
+                        otherChevron.classList.remove('rotate');
+                    }
+                }
+            }
+            
+            // Toggle current FAQ
+            if (answer && chevron) {
+                answer.classList.toggle('active');
+                chevron.classList.toggle('rotate');
+            }
+        }
+
+        // Search Functionality
+        document.getElementById('helpSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            // Simple search highlighting (you can expand this)
+            if (searchTerm.length > 2) {
+                console.log('Searching for:', searchTerm);
+                // Here you would implement actual search functionality
+                // For now, this is just a placeholder
+            }
+        });
+
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all help cards
+        document.querySelectorAll('.help-card, .help-section').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+    </html>

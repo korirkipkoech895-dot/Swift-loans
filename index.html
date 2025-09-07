@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en-KE">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Swift Loan - Apply for emergency loans in Kenya via M-Pesa</title>
+    <meta name="description" content="Emergency instant mobile loans in Kenya. Apply for quick loans from 15,000 to 200,000 KES via M-Pesa. Swift Loan provides fast, secure mobile lending with instant approval.">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Swift Loan - Instant Mobile Loans in Kenya">
+    <meta property="og:description" content="Get instant loans up to 200,000 KES via M-Pesa. Quick approval, no collateral needed. Available 24/7.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://swiftloan.ke">
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "FinancialService",
+        "name": "Swift Loan",
+        "alternateName": "Apply for quick online M-Pesa loans. Instant application for emergency with Swift Loan",
+        "description": "Online lender Swift Loan provides instant mobile loans for everyone. Quick borrow money in Kenya with M-Pesa integration.",
+        "url": "https://swiftloan.i",
+        "WhatsApp": "0778 753 992",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "KE",
+            "addressLocality": "Nairobi"
+        }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [{
+            "@type": "Question",
+            "name": "What is an online loan?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "An online loan is a type of credit that you can apply for and receive over the internet. It offers quick access to funds for short-term financial needs. Our loans range from 15,000 to 200,000 KES."
+            }
+        },{
+            "@type": "Question",
+            "name": "Is Swift Loan app legit?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, the Swift Loan app is legitimate. It's a registered financial service provider in Kenya offering online lending services to eligible borrowers. The company adheres to the regulations set by the financial authorities in Kenya and maintains high standards of transparency and customer service."
+            }
+        },{
+            "@type": "Question",
+            "name": "How does Swift Loan work?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Swift Loan works through an easy-to-use mobile app. The application process begins with downloading the app from your smartphone's app store. You register and fill out a simple form providing your personal details and financial information. Once approved, the loan amount is deposited directly into your M-Pesa account or current bank account."
+            }
+        }]
+    }
+    </script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#225AAC',
+                        'primary-dark': '#1a4a8a',
+                        'primary-light': '#e8f1ff'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons@4.29.0/dist/feather.min.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .swift-primary { color: #225AAC; }
+        .swift-primary-bg { background-color: #225AAC; }
+        .swift-primary-hover:hover { background-color: #1a4a8a; }
+        .swift-primary-light { background-color: #e8f1ff; }
+        
+        .gradient-hero {
+            background: linear-gradient(135deg, #e8f1ff 0%, #ffffff 100%);
+        }
+        
+        .shadow-swift {
+            box-shadow: 0 10px 25px -5px rgba(34, 90, 172, 0.1), 0 10px 10px -5px rgba(34, 90, 172, 0.04);
+        }
+        
+        .transition-swift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Loading overlay styles */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .loading-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            background-color: #225AAC;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(34, 90, 172, 0.3);
+        }
+        
+        /* Loan Calculator Slider Styles */
+        .loan-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            border-radius: 5px;
+            background: #e5e7eb;
+            outline: none;
+            transition: background 0.3s;
+        }
+        
+        .loan-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #225AAC;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(34, 90, 172, 0.3);
+        }
+        
+        .loan-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #225AAC;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(34, 90, 172, 0.3);
+            border: none;
+        }
+
+        /* Calculator Card Styles */
+        .calculator-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(34, 90, 172, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .term-option {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .term-option:hover {
+            border-color: #225AAC;
+            color: #225AAC;
+        }
+
+        .term-option.active {
+            border-color: #225AAC;
+            background-color: rgba(34, 90, 172, 0.1);
+            color: #225AAC;
+        }
+
+        /* Session indicator */
+        .session-indicator {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #666;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* User display */
+        .user-display {
+            font-size: 14px;
+            color: #225AAC;
+            font-weight: 500;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+                line-height: 1.2;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+            
+            .session-indicator {
+                top: 60px;
+                right: 10px;
+                font-size: 11px;
+                padding: 6px 8px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .calculator-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+ <!-- Brevo Conversations {literal} -->
+<script>
+    (function(d, w, c) {
+        w.BrevoConversationsID = '67cfe70069e9058aa30db4b2';
+        w[c] = w[c] || function() {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        var s = d.createElement('script');
+        s.async = true;
+        s.src = 'https://conversations-widget.brevo.com/brevo-conversations.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'BrevoConversations');
+</script>
+<!-- /Brevo Conversations {/literal} -->
+</head>
+<body class="bg-white text-gray-800">
+    <!-- Session Indicator -->
+    <div id="sessionIndicator" class="session-indicator" style="display: none;">
+        <div id="sessionTime"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+     <div id="loadingOverlay" class="loading-overlay">
+    <div class="text-center">
+        <p class="text-xl swift-primary font-semibold">Processing your application Form please wait...</p>
+        
+        <div class="loading-spinner animate-spin my-4 mx-auto">
+            <svg class="text-white" width="30" height="30" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+        </div>
+
+        <p class="text-gray-600">Please wait while we redirect you</p>
+    </div>
+</div>
+ 
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 swift-primary-bg rounded-lg flex items-center justify-center">
+                            <svg class="text-white" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </div>
+                        <span class="ml-3 text-xl font-bold text-gray-900">Swift Loan</span>
+   <!-- 🔔 Notification -->
+<div class="relative ml-3">
+  <!-- Bell Button -->
+  <button onclick="openNotification()" 
+          class="relative p-2 rounded-full hover:bg-gray-100 transition" id="bellButton">
+    <!-- Bell Icon -->
+    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405C18.21 14.79 18 13.918 18 13V9a6 6 0 00-9.33-4.977"/>
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 17h6m-6 0a3 3 0 006 0"/>
+    </svg>
+    <!-- 🔴 Glowing Dot -->
+    <span id="notifDot" class="absolute top-1 right-1 flex h-3 w-3">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
+    </span>
+  </button>
+
+  <!-- 📨 Unread Notification Text -->
+  <span id="notifText" class="ml-1 text-xs text-red-600 font-semibold">1 unread notification</span>
+
+  <!-- ✅ Notification Box (hidden until clicked, centred on mobile) -->
+  <div id="notificationBox" 
+       class="hidden absolute top-full mt-3 w-72 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-600 text-white text-sm rounded-lg shadow-lg p-4 
+              left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0">
+
+    <!-- 🔽 Pointer -->
+    <div class="absolute -top-2 left-1/2 -translate-x-1/2 sm:left-auto sm:right-5 sm:translate-x-0">
+      <div class="w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-orange-500"></div>
+    </div>
+
+    <div class="flex justify-between items-start">
+      <p>
+        ⚡ <span class="font-bold">Special Offer:</span> Borrow up to 
+        <span class="font-bold">200,000 KES</span> with <span class="font-bold">instant approval</span>.  
+        Apply now and receive funds in minutes!
+      </p>
+      <!-- ✖ Close Button -->
+      <button onclick="closeNotification()" class="ml-2 text-white hover:text-gray-200">
+        ✖
+      </button>
+    </div>
+    <a href="eligibility.html" class="block mt-2 underline font-semibold hover:text-yellow-200">Apply Now →</a>
+  </div>
+</div>
+
+<script>
+  function openNotification() {
+    document.getElementById("notificationBox").classList.toggle("hidden");
+    // Hide red dot + unread text when opened
+    document.getElementById("notifDot").style.display = "none";
+    document.getElementById("notifText").style.display = "none";
+  }
+
+  function closeNotification() {
+    document.getElementById("notificationBox").classList.add("hidden");
+  }
+</script>
+</div>
+
+<script>
+  function openNotification() {
+    document.getElementById("notificationBox").classList.toggle("hidden");
+    // Hide red dot + unread text when opened
+    document.getElementById("notifDot").style.display = "none";
+    document.getElementById("notifText").style.display = "none";
+  }
+
+  function closeNotification() {
+    document.getElementById("notificationBox").classList.add("hidden");
+  }
+</script>
+</div>
+
+<script>
+  function openNotification() {
+    document.getElementById("notificationBox").classList.toggle("hidden");
+    // Hide red dot + unread text when opened
+    document.getElementById("notifDot").style.display = "none";
+    document.getElementById("notifText").style.display = "none";
+  }
+
+  function closeNotification() {
+    document.getElementById("notificationBox").classList.add("hidden");
+  }
+</script>
+
+           
+                    </div>
+                </div>
+               
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#calculator" class="text-gray-700 hover:text-primary transition-colors duration-200">Loan Calculator</a>
+                    <a href="#advantages" class="text-gray-700 hover:text-primary transition-colors duration-200">Our advantages</a>
+                    <a href="#steps" class="text-gray-700 hover:text-primary transition-colors duration-200">How to borrow</a>
+                    <a class='text-gray-700 hover:text-primary transition-colors duration-200' href='/about'>About Us</a>
+                    <a class='text-gray-700 hover:text-primary transition-colors duration-200' href='/privacy'>Privacy</a>
+                    <a class='text-gray-700 hover:text-primary transition-colors duration-200' href='/terms'>Terms of Service</a>
+                    <div class="relative group">
+                        <span class="text-gray-700 hover:text-primary cursor-pointer">Swift Loan App</span>
+                        <div class="absolute top-full left-0 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-2">
+                            <a href="#" onclick="downloadApp()" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">For Android</a>
+                            <a href="#" onclick="downloadApp()" class="block px-4 py-2 text-gray-700 hover:bg-gray-50">For iOS</a>
+                        </div>
+                    </div>
+                    <a href="#faq" class="text-gray-700 hover:text-primary transition-colors duration-200">FAQ</a>
+                </nav>
+
+                <!-- Action Buttons -->
+                <div class="hidden md:flex items-center space-x-3">
+                    <span class="text-sm text-gray-600 flex items-center">
+                        <svg class="text-primary mr-1" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        Click the blue Floating bubble to contact our support team.
+                    </span>
+                    <button onclick="showLoadingAndRedirect('eligibility.html')" class="swift-primary-bg hover:swift-primary-hover text-white px-4 py-2 text-sm font-medium rounded-md transition-swift">
+                        Apply Now
+                    </button>
+                    
+                    <!-- User Avatar and Info (when logged in) -->
+                    <div class="user-section flex items-center space-x-3" style="display: none;">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-medium" id="userInitials">U</span>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-medium text-gray-900" id="userEmail">user@example.com</span>
+                                <span class="text-xs text-gray-500" id="sessionTime">Session: 10h 0m</span>
+                            </div>
+                        </div>
+                        <button class="logout-btn border border-red-500 text-red-500 hover:bg-red-500 hover:text-white px-3 py-1 text-sm font-medium rounded-md transition-swift" onclick="performLogout()">
+                            Logout
+                        </button>
+                    </div>
+                    
+                    <!-- Login Button (when not logged in) -->
+                    <button class="login-btn border border-primary text-primary hover:bg-primary hover:bg-opacity-10 px-4 py-2 text-sm font-medium rounded-md transition-swift" onclick="window.location.href='/login.html'">
+                        Log in
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <button class="md:hidden p-2" onclick="toggleMobileMenu()">
+                    <svg class="text-primary" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-black bg-opacity-50 z-50">
+            <div class="bg-white w-70 h-3/4 shadow-xl overflow-y-auto scroll-smooth custom-scrollbar">
+                <div class="p-4 border-b">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 swift-primary-bg rounded-lg flex items-center justify-center">
+                                <svg class="text-white" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                                </svg>
+                            </div>
+                            <span class="ml-2 text-lg font-bold text-gray-900">Swift Loan</span>
+                        </div>
+                        <button onclick="toggleMobileMenu()">
+                            <svg class="text-gray-500" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                   <div class="mt-3 text-sm text-gray-600 flex items-start">
+    <!-- WhatsApp Icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="text-green-500 mr-2 mt-0.5" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M20.52 3.48A11.82 11.82 0 0 0 12 0C5.37 0 .01 5.37.01 12c0 2.11.55 4.16 1.6 5.98L0 24l6.23-1.64a11.94 11.94 0 0 0 5.77 1.46h.01c6.63 0 12-5.37 12-12 0-3.2-1.24-6.21-3.48-8.34zM12 22.01c-1.82 0-3.6-.49-5.14-1.42l-.37-.22-3.7.97.99-3.61-.24-.38A9.96 9.96 0 0 1 2 12c0-5.52 4.48-10 10-10 2.67 0 5.18 1.04 7.07 2.93A9.92 9.92 0 0 1 22 12c0 5.52-4.48 10.01-10 10.01z"/>
+        <path d="M16.54 13.68c-.27-.14-1.59-.78-1.84-.87-.25-.09-.43-.14-.62.14-.18.27-.71.87-.87 1.05-.16.18-.32.2-.59.07-.27-.14-1.13-.42-2.16-1.34-.8-.71-1.34-1.59-1.5-1.86-.16-.27-.02-.42.12-.56.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.62-1.5-.85-2.05-.22-.53-.45-.46-.62-.47h-.53c-.18 0-.48.07-.73.34s-.96.94-.96 2.3 1 .2 1.14.43c.14.23 1.77 3.19 4.29 4.47.6.33 1.07.53 1.43.68.6.25 1.14.21 1.57.13.48-.07 1.59-.65 1.82-1.28.23-.62.23-1.15.16-1.28-.06-.14-.23-.21-.5-.35z"/>
+    </svg>
+
+    <div>
+        <a href="index.html" target="_blank" class="font-semibold text-green-600 hover:underline">
+            Click on the blue icon in the page to contact our support team.
+        </a>
+        <div class="text-xs text-gray-500 mt-1">Mon-Sun: 8am - 6pm</div>
+    </div>
+</div>
+                    <!-- User info in mobile menu -->
+                    <div class="user-section-mobile mt-3 p-3 bg-gray-50 rounded-lg" style="display: none;">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-medium" id="userInitialsMobile">U</span>
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-gray-900" id="userEmailMobile">user@example.com</div>
+                                <div class="text-xs text-gray-500" id="sessionTimeMobile">Session: 10h 0m</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav class="p-4 space-y-4">
+
+  <!-- Home -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-blue-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M3 10L12 3l9 7v11H3V10z"/>
+      <path d="M9 21v-6h6v6"/>
+    </svg>
+    Home
+  </a>
+
+  <!-- Check My Loan Eligibility -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/eligibility" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-green-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M8 12l3 3 5-5"/>
+    </svg>
+    Check My Loan Eligibility
+  </a>
+
+  <!-- About Us -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/about" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-indigo-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M12 10v6M12 7h.01"/>
+    </svg>
+    About Us
+  </a>
+
+  <!-- Terms of Service -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/terms" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-purple-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M6 3h8l4 4v14H6z"/>
+      <path d="M8 11h8M8 15h8"/>
+    </svg>
+    Terms of Service
+  </a>
+
+  <!-- Privacy Policy -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/privacy" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-rose-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M12 3l8 4v6a8 8 0 11-16 0V7l8-4z"/>
+      <path d="M9 13a3 3 0 016 0v2H9v-2z"/>
+    </svg>
+    Privacy Policy
+  </a>
+
+  <!-- Track My Loan Application -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/track.html" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-teal-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M12 7v5l3 3"/>
+    </svg>
+    Track My Loan Application
+  </a>
+
+  <!-- Loan Rules -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/rules" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-amber-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M4 6h16M6 10h12M8 14h8M10 18h4"/>
+    </svg>
+    Loan Rules
+  </a>
+
+  <!-- Support Centre -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/support" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-sky-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M4 5h16v10H8l-4 4V5z"/>
+      <path d="M9 9h6"/>
+    </svg>
+    Support Centre
+  </a>
+
+  <!-- Referrals & Promotions -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="referral.html" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-pink-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <rect x="3" y="10" width="18" height="10" rx="2"/>
+      <path d="M3 10h18M7 10V7a2 2 0 114 0v3M13 10V7a2 2 0 114 0v3"/>
+    </svg>
+    Referrals & Promotions
+  </a>
+
+  <!-- Account Deletion -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/account-deletion.html" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-red-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M4 7h16M9 7V5h6v2M7 7v13h10V7"/>
+      <path d="M10 11v6M14 11v6"/>
+    </svg>
+    Account Deletion
+  </a>
+
+  <!-- Help -->
+  <a class="group flex items-center text-gray-700 hover:text-primary py-2" href="/help" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-cyan-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M9.5 10a2.5 2.5 0 115 0c0 1.5-2.5 1.5-2.5 3"/>
+      <path d="M12 17h.01"/>
+    </svg>
+    Help
+  </a>
+
+  <!-- Swift Loan for Android -->
+  <a href="#" onclick="downloadApp(); toggleMobileMenu();" class="group flex items-center text-gray-700 hover:text-primary py-2 pl-1">
+    <svg class="w-5 h-5 mr-2 text-green-700 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <rect x="7" y="3" width="10" height="18" rx="2"/>
+      <path d="M10 6h4M12 19h.01"/>
+    </svg>
+    Swift Loan for Android
+  </a>
+
+  <!-- Loan Calculator -->
+  <a href="#calculator" class="group flex items-center text-gray-700 hover:text-primary py-2" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-gray-700 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <rect x="4" y="4" width="16" height="16" rx="2"/>
+      <path d="M8 8h8M8 12h2M12 12h2M16 12h0M8 16h0M12 16h0M16 16h0"/>
+    </svg>
+    Loan Calculator
+  </a>
+
+  <!-- Our Advantages -->
+  <a href="#advantages" class="group flex items-center text-gray-700 hover:text-primary py-2" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-yellow-500 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M12 2l2.9 6.1 7.1 1.2-5.5 4.6 1.9 7.1L12 17.3 5.6 21l1.9-7.1L2 9.3l7.1-1.2L12 2z"/>
+    </svg>
+    Our Advantages
+  </a>
+
+  <!-- FAQ -->
+  <a href="#faq" class="group flex items-center text-gray-700 hover:text-primary py-2" onclick="toggleMobileMenu()">
+    <svg class="w-5 h-5 mr-2 text-violet-600 group-hover:text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M4 5h16v10H8l-4 4V5z"/>
+      <path d="M10 8a2.5 2.5 0 115 0c0 1.5-2.5 1.5-2.5 3"/>
+      <path d="M12.5 15h.01"/>
+    </svg>
+    FAQ
+  </a>
+</nav>
+     <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+  <span class="block text-red-600 font-bold text-xl animate-bounce">
+    ↓ Scroll for more ↓
+  </span>
+</div>
+<div class="pt-4 border-t space-y-2">
+  <button onclick="showLoadingAndRedirect('eligibility.html'); toggleMobileMenu();" class="w-full swift-primary-bg hover:swift-primary-hover text-white py-3 font-medium rounded-md transition-swift">
+    Apply Now
+  </button>
+  <button class="login-btn w-full border border-primary text-primary hover:bg-primary hover:bg-opacity-10 py-3 font-medium rounded-md transition-swift" onclick="window.location.href='/login.html'">
+    Log in
+  </button>
+</div>
+                        <button class="logout-btn w-full border border-red-500 text-red-500 hover:bg-red-500 hover:text-white py-3 font-medium rounded-md transition-swift" onclick="performLogout()" style="display: none;">
+                            Logout
+                        </button>
+                         <div class="text-center py-4">
+                          <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                         <span class="block text-red-600 font-bold text-xl animate-bounce">
+                          ↓ Scroll for more ↓
+                          </span>
+                           </div>
+                          </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-100 min-h-screen lg:min-h-[700px]">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0">
+            <div class="absolute top-0 left-0 w-full h-full">
+                <svg class="absolute top-0 left-0 w-full h-full opacity-5" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#225AAC" stroke-width="1"/>
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grid)" />
+                </svg>
+            </div>
+            
+            <!-- Floating Elements -->
+            <div class="absolute top-20 left-10 w-16 h-16 bg-blue-200 rounded-full opacity-20 animate-pulse"></div>
+            <div class="absolute top-40 right-20 w-24 h-24 bg-green-200 rounded-full opacity-20 animate-pulse" style="animation-delay: 0.5s;"></div>
+            <div class="absolute bottom-40 left-20 w-20 h-20 bg-purple-200 rounded-full opacity-20 animate-pulse" style="animation-delay: 1s;"></div>
+            
+            <!-- Large Background Circles -->
+            <div class="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-blue-100 to-transparent rounded-full opacity-30"></div>
+            <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-gradient-to-tr from-blue-100 to-transparent rounded-full opacity-30"></div>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="lg:pr-8 animate-fade-in-up">
+                    <!-- Badge -->
+                    <div class="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6">
+                        <svg class="mr-2" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7 14l3-3 3 3 6-6-1.5-1.5L12 12 9 9 3.5 14.5z"/>
+                        </svg>
+                        #1 Mobile Lending loan App in Kenya
+                    </div>
+
+                    <h1 class="hero-title text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 leading-tight mb-6">
+                        Get instant loans up to 
+                        <span class="swift-primary relative">
+                            200,000 KES
+                            <svg class="absolute -bottom-2 left-0 w-full h-3 text-blue-200" viewBox="0 0 200 12" fill="currentColor">
+                                <path d="M0,6 Q50,0 100,6 T200,6 L200,12 L0,12 Z" />
+                            </svg>
+                        </span> 
+                        via M-Pesa
+                    </h1>
+                    
+                    <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+                        Swift Loan provides quick and secure mobile loans for everyone in Kenya. 
+                        Apply anywhere, anytime - get money transferred instantly to your M-Pesa account.
+                    </p>
+                    
+                    <!-- Key Features with Icons -->
+                    <div class="grid sm:grid-cols-2 gap-4 mb-8">
+                        <div class="flex items-center bg-white bg-opacity-50 backdrop-blur-sm rounded-lg p-3 hover:bg-white hover:bg-opacity-70 transition-all duration-200">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                <svg class="text-green-600" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-700 font-medium">Instant approval</span>
+                        </div>
+                        <div class="flex items-center bg-white bg-opacity-50 backdrop-blur-sm rounded-lg p-3 hover:bg-white hover:bg-opacity-70 transition-all duration-200">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                <svg class="text-green-600" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-700 font-medium">No collateral needed</span>
+                        </div>
+                        <div class="flex items-center bg-white bg-opacity-50 backdrop-blur-sm rounded-lg p-3 hover:bg-white hover:bg-opacity-70 transition-all duration-200">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                <svg class="text-green-600" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-700 font-medium">24/7 availability</span>
+                        </div>
+                        <div class="flex items-center bg-white bg-opacity-50 backdrop-blur-sm rounded-lg p-3 hover:bg-white hover:bg-opacity-70 transition-all duration-200">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                <svg class="text-green-600" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                    <polyline points="20,6 9,17 4,12"/>
+                                </svg>
+                            </div>
+                            <span class="text-gray-700 font-medium">Secure & confidential</span>
+                        </div>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="showLoadingAndRedirect('eligibility.html')" class="swift-primary-bg hover:swift-primary-hover text-white px-8 py-4 text-lg font-semibold shadow-swift transition-swift rounded-md group">
+                            Apply for Loan Now
+                            <svg class="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform inline" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <button onclick="downloadApp()" class="border-2 border-primary text-primary hover:bg-primary hover:bg-opacity-10 px-8 py-4 text-lg font-semibold transition-swift rounded-md group">
+                            <svg class="mr-2 inline" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                            </svg>
+                            Download App
+                        </button>
+                    </div>
+                                      
+                            <!-- Floating elements -->
+                            <div class="absolute -top-6 -right-6 w-16 h-16 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
+                                <svg class="text-white" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20 6L9 17l-5-5"/>
+                                </svg>
+                            </div>
+                            
+                            <div class="absolute -bottom-4 -left-4 bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                                Instant Approval ⚡
+                            </div>
+                        </div>
+
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-gray-200">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold swift-primary">52,848+</div>
+                            <div class="text-sm text-gray-600">Happy Customers</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold swift-primary">15 Min</div>
+                            <div class="text-sm text-gray-600">Average Approval</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold swift-primary">24/7</div>
+                            <div class="text-sm text-gray-600">Support Available</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Image Section -->
+                <div class="lg:pl-8 relative">
+                    <div class="relative">
+                        <!-- Background Decoration -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl transform rotate-3 scale-105"></div>
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl transform -rotate-1 scale-105"></div>
+                        
+                        <!-- Main Image -->
+                        <div class="relative bg-white rounded-3xl p-8 shadow-2xl">
+                            <img 
+                                src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+                                alt="Mobile banking and loans" 
+                                class="rounded-2xl w-full h-auto"
+                            />
+                            
+                            <!-- Floating Cards -->
+                            <div class="absolute -top-4 -right-4 bg-white rounded-lg shadow-lg p-3 animate-bounce">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <span class="text-sm font-medium text-gray-800">KSh 500k+ Loan Approved!</span>
+                                </div>
+                            </div>
+                            
+                            <div class="absolute -bottom-4 -left-4 bg-white rounded-lg shadow-lg p-3">
+                                <div class="text-xs text-gray-600">Amount Transferred</div>
+                                <div class="text-lg font-bold swift-primary">KSh 500k+</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loan Calculator Section -->
+    <section id="calculator" class="py-16 lg:py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+                    Calculate Your Loan
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Use our calculator to see how much you can borrow and what you'll pay. Quick, easy, and transparent.
+                </p>
+            </div>
+
+            <div class="calculator-card max-w-2xl mx-auto">
+                <!-- Loan Amount Slider -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <label class="text-lg font-semibold text-gray-700">Loan Amount</label>
+                        <div class="text-2xl font-bold swift-primary" id="loan-amount-display">KES 50,000</div>
+                    </div>
+                    <input type="range" class="loan-slider w-full" id="loan-amount" min="15000" max="200000" step="5000" value="50000" onchange="updateCalculation()">
+                    <div class="flex justify-between text-sm text-gray-500 mt-2">
+                        <span>KES 15,000</span>
+                        <span>KES 200,000</span>
+                    </div>
+                </div>
+
+                <!-- Loan Term Selection -->
+                <div class="mb-8">
+                    <label class="text-lg font-semibold text-gray-700 mb-4 block">Repayment Period</label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div class="term-option" data-term="7" onclick="selectTerm(7)">
+                            <div class="font-semibold">7 Days</div>
+                            <div class="text-sm text-gray-500">Short term</div>
+                        </div>
+                        <div class="term-option" data-term="14" onclick="selectTerm(14)">
+                            <div class="font-semibold">14 Days</div>
+                            <div class="text-sm text-gray-500">Popular</div>
+                        </div>
+                        <div class="term-option active" data-term="30" onclick="selectTerm(30)">
+                            <div class="font-semibold">30 Days</div>
+                            <div class="text-sm text-gray-500">Recommended</div>
+                        </div>
+                        <div class="term-option" data-term="90" onclick="selectTerm(90)">
+                            <div class="font-semibold">90 Days</div>
+                            <div class="text-sm text-gray-500">Extended</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loan Summary -->
+                <div class="bg-gray-50 rounded-lg p-6 mb-8">
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Loan Amount:</span>
+                            <span class="font-semibold text-gray-900" id="summary-amount">KES 50,000</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Repayment Period:</span>
+                            <span class="font-semibold text-gray-900" id="summary-term">30 days</span>
+                        </div>
+                        <div class="flex justify-between pt-3 border-t border-gray-200">
+                            <span class="font-semibold text-gray-700">You'll receive:</span>
+                            <span class="font-bold swift-primary text-lg" id="summary-receive">KES 50,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply Button -->
+                <button onclick="showLoadingAndRedirect('eligibility.html')" class="w-full swift-primary-bg hover:swift-primary-hover text-white py-4 text-lg font-semibold rounded-md transition-swift">
+                    Apply for This Loan
+                </button>
+
+                <p class="text-center text-sm text-gray-500 mt-4">
+                    Instant approval • Secure & confidential • 24/7 available
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advantages Section -->
+    <section id="advantages" class="py-16 lg:py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+                    Why choose Swift Loan?
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    We offer the most convenient and reliable loan service in Kenya with unmatched speed and security.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <!-- Profitable Card -->
+                <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mr-4">
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Profitable</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Simple and quick solution at the tip of your fingers</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <svg class="text-green-600 mt-1 mr-2 flex-shrink-0 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-gray-700">Apply anywhere you are</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="text-green-600 mt-1 mr-2 flex-shrink-0 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-gray-700">Only one document is needed</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Reliable Card -->
+                <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mr-4">
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Reliable</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Swift Loan is responsible direct lender with a new approach</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <svg class="text-green-600 mt-1 mr-2 flex-shrink-0 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-gray-700">We guarantee confidentiality and protection of your data</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="text-green-600 mt-1 mr-2 flex-shrink-0 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-gray-700">We are looking for solutions in difficult situations</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Simple Card -->
+                <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mr-4">
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Simple</h3>
+                    </div>
+                    <p class="text-gray-600 mb-4">Simple and quick solution without leaving home in just 15 minutes</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <svg class="text-green-600 mt-1 mr-2 flex-shrink-0 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-gray-700">No paperwork required</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="text-green-600 mt-1 mr-2 flex-shrink-0 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="text-gray-700">Money in your M-Pesa instantly</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="steps" class="py-16 lg:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+                    How to get your loan
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Get your loan in just 3 simple steps. Fast, secure, and completely digital.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 swift-primary-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-white text-2xl font-bold">1</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Calculate & Apply</h3>
+                    <p class="text-gray-600">Use our calculator to determine your loan amount, then fill out our simple application form. Takes less than 5 minutes.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 swift-primary-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-white text-2xl font-bold">2</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Instant Approval</h3>
+                    <p class="text-gray-600">Our AI system processes your application instantly. Get approved in under 2 minutes with multiple loan offers to choose from.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 swift-primary-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-white text-2xl font-bold">3</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Get Money</h3>
+                    <p class="text-gray-600">Select your preferred loan offer and receive funds directly in your M-Pesa account within minutes of approval.</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <button onclick="showLoadingAndRedirect('eligibility.html')" class="swift-primary-bg hover:swift-primary-hover text-white px-8 py-4 text-lg font-semibold rounded-md transition-swift">
+                    Start Your Application
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-16 lg:py-24 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+                    Frequently Asked Questions
+                </h2>
+                <p class="text-xl text-gray-600">
+                    Find answers to common questions about Swift Loan
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="bg-white border border-gray-200 rounded-lg">
+                    <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFAQ(1)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold text-gray-900">How quickly can I get a loan?</h3>
+                            <svg id="faq-icon-1" class="w-5 h-5 text-gray-500 transform transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                    </button>
+                    <div id="faq-content-1" class="hidden px-6 pb-6">
+                        <p class="text-gray-600">You can get approved in under 2 minutes and receive funds in your M-Pesa account within 5 minutes of approval. Our automated system works 24/7.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="bg-white border border-gray-200 rounded-lg">
+                    <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFAQ(2)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold text-gray-900">What are the requirements to apply?</h3>
+                            <svg id="faq-icon-2" class="w-5 h-5 text-gray-500 transform transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                    </button>
+                    <div id="faq-content-2" class="hidden px-6 pb-6">
+                        <p class="text-gray-600">You need to be 18+ years old, have a Kenyan national ID, an active M-Pesa account, and demonstrate some form of regular income.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="bg-white border border-gray-200 rounded-lg">
+                    <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFAQ(3)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold text-gray-900">How much can I borrow?</h3>
+                            <svg id="faq-icon-3" class="w-5 h-5 text-gray-500 transform transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                    </button>
+                    <div id="faq-content-3" class="hidden px-6 pb-6">
+                        <p class="text-gray-600">First-time borrowers can access loans from KES 15,000 to KES 50,000. With good repayment history, your limit can increase up to KES 200,000.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="bg-white border border-gray-200 rounded-lg">
+                    <button class="w-full text-left p-6 focus:outline-none" onclick="toggleFAQ(4)">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold text-gray-900">Is my information secure?</h3>
+                            <svg id="faq-icon-4" class="w-5 h-5 text-gray-500 transform transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                    </button>
+                    <div id="faq-content-4" class="hidden px-6 pb-6">
+                        <p class="text-gray-600">Yes, we use bank-level encryption and security measures. Your personal and financial information is protected and never shared with third parties without your consent.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<div class="bg-green-50 border border-green-200 rounded-lg p-6 mt-6">
+    <h3 class="text-lg font-semibold text-green-800 mb-3">Real Stories, Real Impact</h3>
+    <div class="space-y-4">
+        <div class="bg-white rounded-lg p-4">
+            <p class="text-gray-700 italic">"Swift Loan helped me expand my small business when banks couldn't. The process was so simple and fast!"</p>
+            <p class="text-sm text-gray-500 mt-2">- Mary K., Small Business Owner, Nakuru</p>
+        </div>
+        <div class="bg-white rounded-lg p-4">
+            <p class="text-gray-700 italic">"When my child fell sick, Swift Loan was there within minutes. No paperwork, no delays."</p>
+            <p class="text-sm text-gray-500 mt-2">- John M., Teacher, Mombasa</p>
+        </div>
+        <!-- New Testimonial 1 -->
+        <div class="bg-white rounded-lg p-4">
+            <p class="text-gray-700 italic">"Thanks to Swift Loan, I was able to pay my university fees on time. Truly a lifesaver!"</p>
+            <p class="text-sm text-gray-500 mt-2">- Alice N., Student, Nairobi</p>
+        </div>
+        <!-- New Testimonial 2 -->
+        <div class="bg-white rounded-lg p-4">
+            <p class="text-gray-700 italic">"I secured a quick loan to restock my shop before the holiday rush. My sales doubled!"</p>
+            <p class="text-sm text-gray-500 mt-2">- Peter O., Retailer, Kisumu</p>
+        </div>
+        <!-- New Testimonial 3 -->
+        <div class="bg-white rounded-lg p-4">
+            <p class="text-gray-700 italic">"The flexibility and speed of Swift Loan made it possible for me to cover emergency travel costs."</p>
+            <p class="text-sm text-gray-500 mt-2">- Grace W., Nurse, Eldoret</p>
+        </div>
+        <!-- New Testimonial 4 -->
+        <div class="bg-white rounded-lg p-4">
+            <p class="text-gray-700 italic">"Customer support was excellent. They guided me step by step until my loan was approved."</p>
+            <p class="text-sm text-gray-500 mt-2">- Samuel K., Mechanic, Thika</p>
+        </div>
+    </div>
+</div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 swift-primary-bg rounded-lg flex items-center justify-center">
+                            <svg class="text-white" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </div>
+                        <span class="ml-3 text-xl font-bold">Swift Loan</span>
+                    </div>
+                    <p class="text-gray-400 mb-4 max-w-md">
+                        Swift Loan provides instant mobile loans for everyone in Kenya. Quick application process with M-PESA integration for emergency financial needs.
+                    </p>
+                    
+                    <!-- Partner Badges -->
+                    <div class="flex items-center space-x-4 mb-4">
+                        <!-- SSL Secured Badge -->
+                        <div class="flex items-center bg-gray-800 rounded-lg px-3 py-2">
+                            <svg class="w-6 h-6 text-green-400 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18,8H17V6A5,5 0 0,0 12,1A5,5 0 0,0 7,6V8H6A2,2 0 0,0 4,10V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V10A2,2 0 0,0 18,8M12,17A2,2 0 0,1 10,15A2,2 0 0,1 12,13A2,2 0 0,1 14,15A2,2 0 0,1 12,17M15.8,8H8.2V6A3.8,3.8 0 0,1 12,2.2A3.8,3.8 0 0,1 15.8,6V8Z"/>
+                            </svg>
+                            <div>
+                                <div class="text-xs font-semibold text-green-400">SSL</div>
+                                <div class="text-xs text-gray-300">Secured</div>
+                            </div>
+                        </div>
+                        
+                        <!-- M-Pesa Partner Badge -->
+                        <div class="flex items-center bg-gray-800 rounded-lg px-3 py-2">
+                            <svg class="w-6 h-6 text-green-500 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12,2A3,3 0 0,1 15,5V7H9V5A3,3 0 0,1 12,2M21,16V14L20,13V7A2,2 0 0,0 18,5H17V3A1,1 0 0,0 16,2H8A1,1 0 0,0 7,3V5H6A2,2 0 0,0 4,7V13L3,14V16H21M16,8.5A1.5,1.5 0 0,1 14.5,10A1.5,1.5 0 0,1 13,8.5A1.5,1.5 0 0,1 14.5,7A1.5,1.5 0 0,1 16,8.5M11,8.5A1.5,1.5 0 0,1 9.5,10A1.5,1.5 0 0,1 8,8.5A1.5,1.5 0 0,1 9.5,7A1.5,1.5 0 0,1 11,8.5Z"/>
+                            </svg>
+                            <div>
+                                <div class="text-xs font-semibold text-green-500">M-PESA</div>
+                                <div class="text-xs text-gray-300">Partner</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.219-5.192 1.219-5.192s-.653-1.307-.653-3.237c0-3.032 1.759-5.296 3.951-5.296 1.864 0 2.765 1.401 2.765 3.081 0 1.877-1.196 4.685-1.815 7.286-.516 2.178.109 3.952 2.179 3.952 2.617 0 4.624-2.757 4.624-6.739 0-3.523-2.529-5.987-6.147-5.987-4.188 0-6.64 3.14-6.64 6.386 0 1.264.487 2.615 1.096 3.352.12.144.137.271.101.419-.11.459-.355 1.445-.403 1.649-.061.254-.2.308-.459.186-1.713-.799-2.785-3.309-2.785-5.32 0-4.344 3.157-8.34 9.1-8.34 4.777 0 8.491 3.404 8.491 7.95 0 4.741-2.988 8.554-7.137 8.554-1.393 0-2.704-.724-3.154-1.584l-.857 3.271c-.309 1.19-1.145 2.681-1.704 3.587C9.596 23.616 10.773 24 12.017 24c6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <div class="space-y-2">
+                      <li><a class='text-gray-400 hover:text-white transition-colors' href='/eligibility'>Check My Loan Eligibility</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/about'>About Us</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/terms'>Terms of Service</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/privacy'>Privacy Policy</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/track.html'>Track My Loan Application</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/rules'>Loan Rules</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/account-deletion'>Account Deletion</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/support'>Help</a></li>
+<li><a class='text-gray-400 hover:text-white transition-colors' href='/help'>FAQ</a></li>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+ <!-- Contact Info -->
+<div>
+    <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase mb-4">Contact</h3>
+    <ul class="space-y-2">
+        <!-- Live Chat -->
+        <li class="flex items-center">
+            <span class="flex items-center text-lg font-bold text-blue-400 hover:text-blue-500 cursor-pointer">
+                <svg class="mr-2 w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M4 4h16v12H5.17L4 17.17V4zm0-2a2 2 0 0 0-2 2v20l4-4h14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
+                </svg>
+                Live Chat: Use the chat bubble at the bottom-right corner
+            </span>
+        </li>
+    </ul>
+</div>
+
+        <!-- Email -->
+        <li class="flex items-center text-gray-300">
+            <a href="mailto:info@swiftloan.ke" class="flex items-center hover:text-blue-400">
+                <svg class="mr-2 w-4 h-4 swift-primary" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M2 4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h20a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H2zm0 2h20v.01L12 13 2 6.01V6zm0 12V8.24l9.47 6.36a1 1 0 0 0 1.06 0L22 8.24V18H2z"/>
+                </svg>
+                info@swiftloan.ke
+            </a>
+        </li>
+              <!-- Social Icons Section (above footer) -->
+<div class="bg-gray-900 border-t border-gray-700 py-6 mt-12">
+  <div class="max-w-7xl mx-auto flex justify-center space-x-10">
+
+    <!-- Facebook -->
+    <a href="https://facebook.com/swiftke" target="_blank"
+       class="flex flex-col items-center hover:opacity-80">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Facebook_icon.svg" 
+           alt="Facebook" class="w-10 h-10">
+      <span class="mt-1 text-sm text-blue-400">Facebook</span>
+    </a>
+
+  </div>
+</div>
+  </div>
+</div>
+
+        <!-- Working Hours -->
+        <li class="text-gray-400 text-sm">Mon-Sun: 8am - 6pm</li>
+    </ul>
+</div>
+
+            
+                <div class="mt-4 sm:mt-0">
+                    <ul class="flex space-x-6 text-sm text-gray-400">
+                        <li><a class='hover:text-white transition-colors' href='/privacy'>Privacy Policy</a></li>
+                        <li><a class='hover:text-white transition-colors' href='/terms'>Terms of Service</a></li>
+                        <li><a class='text-gray-400 hover:text-white transition-colors' href='/support'>Support</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+</footer>
+<footer class="text-center text-gray-400 text-sm py-6 bg-gray-900 border-t border-gray-700">
+    &copy; 2025 Swift Loan. All rights reserved.
+</footer>
+
+    <script>
+        // Global variables
+        let currentTerm = 30;
+        let currentAmount = 50000;
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Loading overlay functions
+                  function showLoadingAndRedirect(url) {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.add('show');
+            
+            setTimeout(() => {
+                window.location.href = url;
+            }, 1500);
+        }
+
+        // Loan calculator functions
+        function updateCalculation() {
+            const amount = parseInt(document.getElementById('loan-amount').value);
+            currentAmount = amount;
+            
+            document.getElementById('loan-amount-display').textContent = formatCurrency(amount);
+            document.getElementById('summary-amount').textContent = formatCurrency(amount);
+            document.getElementById('summary-receive').textContent = formatCurrency(amount);
+        }
+
+        function selectTerm(term) {
+            currentTerm = term;
+            
+            // Remove active class from all terms
+            document.querySelectorAll('.term-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            // Add active class to selected term
+            document.querySelector(`[data-term="${term}"]`).classList.add('active');
+            
+            // Update summary
+            document.getElementById('summary-term').textContent = `${term} days`;
+        }
+
+        function formatCurrency(amount) {
+            return `KES ${amount.toLocaleString()}`;
+        }
+
+        // FAQ toggle function
+        function toggleFAQ(index) {
+            const content = document.getElementById(`faq-content-${index}`);
+            const icon = document.getElementById(`faq-icon-${index}`);
+            
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        // Download app function
+        function downloadApp() {
+            alert('App download will be available soon! You can apply for loans directly on our website.');
+        }
+    </script>
+
+<!-- Firebase Authentication Script -->
+<script>
+  // Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBV01v57xGKUy-vUmVZw2vzHQa6FPBayHI",
+    authDomain: "imarikaweb.firebaseapp.com",
+    projectId: "imarikaweb",
+    storageBucket: "imarikaweb.firebasestorage.app",
+    messagingSenderId: "683019239334",
+    appId: "1:683019239334:web:37212f42f75d23aec81967",
+    measurementId: "G-6PJXZWQ6NE"
+  };
+
+  // ✅ Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // ✅ Check authentication and session age
+  firebase.auth().onAuthStateChanged(user => {
+    const loginKey = "imarika_last_login";
+    const lastLogin = localStorage.getItem(loginKey);
+    const now = Date.now();
+    const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+
+    const expired = !lastLogin || now - parseInt(lastLogin) > maxAge;
+
+    if (!user || expired) {
+      localStorage.removeItem(loginKey);
+      firebase.auth().signOut().finally(() => {
+        window.location.href = "login.html";
+      });
+    } else {
+      localStorage.setItem(loginKey, now.toString());
+      updateAuthUI?.(user); // Only if defined elsewhere
+    }
+  });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en-KE">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Swift Loan - Secure Authentication</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#225AAC',
+                        'primary-dark': '#1a4a8a',
+                        'primary-light': '#e8f1ff'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.3s ease-out',
+                        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                        'bounce-in': 'bounceIn 0.6s ease-out'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        slideIn: {
+                            '0%': { opacity: '0', transform: 'translateX(20px)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        bounceIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.3)' },
+                            '50%': { opacity: '1', transform: 'scale(1.05)' },
+                            '70%': { transform: 'scale(0.9)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .swift-primary { color: #225AAC; }
+        .swift-primary-bg { background-color: #225AAC; }
+        .swift-primary-hover:hover { background-color: #1a4a8a; }
+        .swift-primary-light { background-color: #e8f1ff; }
+        
+        .gradient-hero {
+            background: linear-gradient(135deg, #e8f1ff 0%, #ffffff 100%);
+        }
+        
+        .shadow-swift {
+            box-shadow: 0 10px 25px -5px rgba(34, 90, 172, 0.1), 0 10px 10px -5px rgba(34, 90, 172, 0.04);
+        }
+        
+        .transition-swift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .auth-form {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 50px rgba(34, 90, 172, 0.1);
+            border: 1px solid #e5e7eb;
+            min-height: 500px;
+        }
+
+        .form-input {
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 16px; /* Prevents zoom on iOS */
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #225AAC;
+            box-shadow: 0 0 0 3px rgba(34, 90, 172, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .form-input.success {
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .success-message {
+            color: #10b981;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+        }
+
+        .strength-bar {
+            height: 4px;
+            border-radius: 2px;
+            background: #e5e7eb;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .auth-tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .auth-tab.active {
+            background-color: #225AAC;
+            color: white;
+        }
+
+        .auth-tab:not(.active) {
+            color: #6b7280;
+            background-color: #f9fafb;
+        }
+
+        .auth-tab:not(.active):hover {
+            background-color: #e8f1ff;
+            color: #225AAC;
+        }
+
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            color: #374151;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .google-btn:hover {
+            border-color: #d1d5db;
+            background: #f9fafb;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-top: 2px solid #225AAC;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fade-in 0.3s ease-out;
+        }
+
+        .welcome-content {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px rgba(34, 90, 172, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: bounce-in 0.6s ease-out;
+        }
+
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f0f9ff;
+            border: 1px solid #e0f2fe;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            color: #0369a1;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            max-width: 400px;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            z-index: 9999;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 1px solid #bbf7d0;
+            color: #166534;
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        .notification.info {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+        }
+
+        .notification.warning {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border: 1px solid #fde68a;
+            color: #92400e;
+        }
+
+        .notification-close {
+            margin-left: auto;
+            cursor: pointer;
+            font-size: 1.25rem;
+            font-weight: bold;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            padding: 0.25rem;
+            border-radius: 4px;
+        }
+
+        .notification-close:hover {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .cookies-popup {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            z-index: 9998;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+        }
+
+        .cookies-popup.show {
+            transform: translateY(0);
+        }
+
+        .help-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 25px rgba(34, 90, 172, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .help-item {
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .help-item:hover {
+            border-color: #225AAC;
+            background: #f8fafc;
+        }
+
+        .help-item.active {
+            border-color: #225AAC;
+            background: #f0f9ff;
+        }
+
+        .help-content {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .help-content.show {
+            display: block;
+            animation: slide-up 0.3s ease-out;
+        }
+
+        .help-toggle-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .help-item.active .help-toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .countdown {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #225AAC;
+            margin: 1rem 0;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            stroke: #225AAC;
+            stroke-dasharray: 283;
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 640px) {
+            .auth-form {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            
+            .welcome-content {
+                padding: 2rem;
+            }
+            
+            .cookies-popup {
+                padding: 1rem;
+            }
+            
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+    </style>
+ <!-- Brevo Conversations {literal} -->
+<script>
+    (function(d, w, c) {
+        w.BrevoConversationsID = '67cfe70069e9058aa30db4b2';
+        w[c] = w[c] || function() {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        var s = d.createElement('script');
+        s.async = true;
+        s.src = 'https://conversations-widget.brevo.com/brevo-conversations.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'BrevoConversations');
+</script>
+<!-- /Brevo Conversations {/literal} -->
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-white to-blue-100 min-h-screen">
+    <!-- Cookies Consent Popup -->
+    <div id="cookiesPopup" class="cookies-popup">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex-1">
+                <div class="flex items-start gap-3">
+                    <svg class="w-6 h-6 text-blue-500 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Cookie Consent</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            We use cookies to enhance your experience, analyze site usage, and assist in our marketing efforts. 
+                            By continuing to use our site, you consent to our use of cookies. 
+                            <a href="#" class="text-primary hover:underline">Learn more about our privacy policy</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-3 flex-shrink-0">
+                <button id="cookiesDecline" class="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
+                    Decline
+                </button>
+                <button id="cookiesAccept" class="px-6 py-2 bg-primary text-white hover:bg-primary-dark rounded-lg transition-colors">
+                    Accept All
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Welcome Overlay -->
+    <div id="welcomeOverlay" class="welcome-overlay hidden">
+        <div class="welcome-content">
+            <div class="w-20 h-20 swift-primary-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="text-white" width="40" height="40" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome to Swift Loan!</h2>
+            <p class="text-gray-600 mb-4">You have successfully signed in as:</p>
+            <p id="welcomeEmail" class="text-lg font-semibold text-primary mb-6">user@example.com</p>
+            
+            <!-- Countdown Timer with Progress Ring -->
+            <div class="flex items-center justify-center mb-4">
+                <div class="relative">
+                    <svg class="progress-ring w-24 h-24" viewBox="0 0 100 100">
+                        <circle class="stroke-gray-200" stroke-width="4" fill="none" r="45" cx="50" cy="50"/>
+                        <circle id="progressRingCircle" class="progress-ring-circle" stroke-width="4" fill="none" r="45" cx="50" cy="50"/>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span id="countdownTimer" class="text-2xl font-bold text-primary">5</span>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="text-sm text-gray-500 mb-4">Redirecting to your dashboard in <span id="countdownText">5</span> seconds...</p>
+            <button id="continueNow" class="swift-primary-bg hover:swift-primary-hover text-white px-6 py-2 rounded-lg transition-colors">
+                Continue Now
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 swift-primary-bg rounded-lg flex items-center justify-center">
+                            <svg class="text-white" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                        </div>
+                        <span class="ml-3 text-xl font-bold text-gray-900">Swift Loan</span>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="flex items-center space-x-4">
+                    <div id="userInfo" class="hidden items-center space-x-3">
+                        <span id="userEmail" class="text-sm text-gray-700"></span>
+                        <button id="signOutBtn" class="text-sm text-red-600 hover:text-red-800 transition-colors">
+                            Sign Out
+                        </button>
+                    </div>
+                    <div id="authLinks" class="flex items-center space-x-4">
+                        <button id="helpToggle" class="text-gray-700 hover:text-primary transition-colors duration-200 flex items-center gap-2">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+                            </svg>
+                            Help
+                        </button>
+                        <a class='text-gray-700 hover:text-primary transition-colors duration-200' href='index.html'>
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full">
+            <!-- Authentication Tabs -->
+            <div class="flex justify-center mb-8">
+                <div class="flex bg-gray-100 rounded-lg p-1">
+                    <button class="auth-tab active" data-tab="login">Sign In</button>
+                    <button class="auth-tab" data-tab="register">Register</button>
+                    <button class="auth-tab" data-tab="forgot">Reset Password</button>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form animate-fade-in">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 swift-primary-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="text-white" width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1V3H9V1L3 7V9H21M4 11V19A2 2 0 0 0 6 21H18A2 2 0 0 0 20 19V11H4Z"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
+                    <p class="text-gray-600">Sign in to access your Swift Loan account</p>
+                </div>
+
+                <form id="loginFormElement" class="space-y-6">
+                    <!-- Google Sign In -->
+                    <button type="button" id="googleSignInBtn" class="google-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Continue with Google
+                    </button>
+
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">Or continue with email</span>
+                        </div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div>
+                        <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-2">
+                            Email Address
+                        </label>
+                        <input 
+                            type="email" 
+                            id="loginEmail" 
+                            name="email"
+                            class="form-input"
+                            placeholder="Enter your email"
+                            required
+                            autocomplete="email"
+                        />
+                        <div id="loginEmailError" class="error-message" style="display: none;">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" class="mr-1 flex-shrink-0">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                            </svg>
+                            <span></span>
+                        </div>
+                        <div id="loginEmailSuccess" class="success-message" style="display: none;">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" class="mr-1 flex-shrink-0">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            <span>Valid email format</span>
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div>
+                        <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                            Password
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="password" 
+                                id="loginPassword" 
+                                name="password"
+                                class="form-input pr-12"
+                                placeholder="Enter your password"
+                                required
+                                autocomplete="current-password"
+                            />
+                            <button 
+                                type="button" 
+                                id="toggleLoginPassword"
+                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                            >
+                                <svg id="loginEyeIcon" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="loginPasswordError" class="error-message" style="display: none;">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" class="mr-1 flex-shrink-0">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                            </svg>
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <!-- Remember Me -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input 
+                                type="checkbox" 
+                                id="remember" 
+                                name="remember"
+                                class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary"
+                            />
+                            <label for="remember" class="ml-2 text-sm text-gray-700">
+                                Remember me
+                            </label>
+                        </div>
+                        <div class="flex flex-col items-end space-y-1">
+                            <a href="#" id="forgotPasswordLink" class="text-sm swift-primary hover:underline">
+                                Forgot password?
+                            </a>
+                            <button type="button" id="registerQuickLink" class="text-xs text-gray-600 hover:text-primary transition-colors">
+                                Don't have an account? Register
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Error/Success Message -->
+                    <div id="loginMessage" class="text-center" style="display: none;"></div>
+
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit" 
+                        id="loginSubmitBtn"
+                        class="w-full swift-primary-bg hover:swift-primary-hover text-white font-semibold py-3 px-4 rounded-md transition-swift"
+                    >
+                        Sign In
+                    </button>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="auth-form animate-fade-in hidden">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 swift-primary-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="text-white" width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome to Swift Loan</h1>
+                    <p class="text-gray-600">Create your account to get started</p>
+                </div>
+
+                <form id="registerFormElement" class="space-y-6">
+                    <!-- Google Sign Up -->
+                    <button type="button" id="googleSignUpBtn" class="google-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Sign up with Google
+                    </button>
+
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">Or register with email</span>
+                        </div>
+                    </div>
+
+                    <!-- Full Name Field -->
+                    <div>
+                        <label for="registerName" class="block text-sm font-medium text-gray-700 mb-2">
+                            Full Name
+                        </label>
+                        <input 
+                            type="text" 
+                            id="registerName" 
+                            name="name"
+                            class="form-input"
+                            placeholder="Enter your full name"
+                            required
+                            autocomplete="name"
+                        />
+                    </div>
+
+                    <!-- Email Field -->
+                    <div>
+                        <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-2">
+                            Email Address
+                        </label>
+                        <input 
+                            type="email" 
+                            id="registerEmail" 
+                            name="email"
+                            class="form-input"
+                            placeholder="Enter your email"
+                            required
+                            autocomplete="email"
+                        />
+                    </div>
+
+                    <!-- Password Field -->
+                    <div>
+                        <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                            Password
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="password" 
+                                id="registerPassword" 
+                                name="password"
+                                class="form-input pr-12"
+                                placeholder="Create a password"
+                                required
+                                autocomplete="new-password"
+                            />
+                            <button 
+                                type="button" 
+                                id="toggleRegisterPassword"
+                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                            >
+                                <svg id="registerEyeIcon" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password Field -->
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                            Confirm Password
+                        </label>
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword"
+                            class="form-input"
+                            placeholder="Confirm your password"
+                            required
+                        />
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="flex items-start">
+                        <input 
+                            type="checkbox" 
+                            id="terms" 
+                            name="terms"
+                            class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary mt-1"
+                            required
+                        />
+                        <label for="terms" class="ml-2 text-sm text-gray-700">
+                            I agree to the <a href="#" class="swift-primary hover:underline">Terms of Service</a> 
+                            and <a href="#" class="swift-primary hover:underline">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <!-- Error/Success Message -->
+                    <div id="registerMessage" class="text-center" style="display: none;"></div>
+
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit" 
+                        id="registerSubmitBtn"
+                        class="w-full swift-primary-bg hover:swift-primary-hover text-white font-semibold py-3 px-4 rounded-md transition-swift"
+                    >
+                        Create Account
+                    </button>
+                </form>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div id="forgotForm" class="auth-form animate-fade-in hidden">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 swift-primary-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="text-white" width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Reset Password</h1>
+                    <p class="text-gray-600">Enter your email to receive a password reset link</p>
+                </div>
+
+                <form id="forgotFormElement" class="space-y-6">
+                    <!-- Email Field -->
+                    <div>
+                        <label for="forgotEmail" class="block text-sm font-medium text-gray-700 mb-2">
+                            Email Address
+                        </label>
+                        <input 
+                            type="email" 
+                            id="forgotEmail" 
+                            name="email"
+                            class="form-input"
+                            placeholder="Enter your email"
+                            required
+                            autocomplete="email"
+                        />
+                    </div>
+
+                    <!-- Error/Success Message -->
+                    <div id="forgotMessage" class="text-center" style="display: none;"></div>
+
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit" 
+                        id="forgotSubmitBtn"
+                        class="w-full swift-primary-bg hover:swift-primary-hover text-white font-semibold py-3 px-4 rounded-md transition-swift"
+                    >
+                        Send Reset Link
+                    </button>
+
+                    <!-- Back to Login -->
+                    <div class="text-center">
+                        <button type="button" id="backToLogin" class="text-sm swift-primary hover:underline">
+                            Back to Sign In
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Help Section -->
+            <div id="helpSection" class="help-section hidden">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="text-primary" width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Help & Support</h2>
+                    <p class="text-gray-600">Find answers to common questions and get help with your account</p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <div class="help-item" data-help="login">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-semibold text-gray-900">How do I sign in to my account?</h3>
+                            <svg class="help-toggle-icon w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="help-content">
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>Click on the "Sign In" tab above</li>
+                                <li>Enter your registered email address</li>
+                                <li>Enter your password</li>
+                                <li>Optionally check "Remember me" to stay logged in</li>
+                                <li>Click "Sign In" to access your account</li>
+                            </ol>
+                            <p class="mt-3 text-sm"><strong>Alternative:</strong> You can also sign in quickly using your Google account by clicking "Continue with Google".</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 2 -->
+                    <div class="help-item" data-help="register">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-semibold text-gray-900">How do I create a new account?</h3>
+                            <svg class="help-toggle-icon w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="help-content">
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>Click on the "Register" tab above</li>
+                                <li>Fill in your full name as it appears on your ID</li>
+                                <li>Enter a valid email address</li>
+                                <li>Create a strong password (at least 6 characters)</li>
+                                <li>Confirm your password by typing it again</li>
+                                <li>Read and accept our Terms of Service and Privacy Policy</li>
+                                <li>Click "Create Account" to complete registration</li>
+                            </ol>
+                            <p class="mt-3 text-sm"><strong>Tip:</strong> Use a password that includes uppercase letters, lowercase letters, numbers, and symbols for better security.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3 -->
+                    <div class="help-item" data-help="password">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-semibold text-gray-900">I forgot my password. What should I do?</h3>
+                            <svg class="help-toggle-icon w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="help-content">
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>Click on the "Reset Password" tab above</li>
+                                <li>Enter the email address associated with your account</li>
+                                <li>Click "Send Reset Link"</li>
+                                <li>Check your email inbox for a password reset link</li>
+                                <li>Click the link in the email to create a new password</li>
+                                <li>Return to this page and sign in with your new password</li>
+                            </ol>
+                            <p class="mt-3 text-sm"><strong>Note:</strong> The reset link will expire in 24 hours. If you don't see the email, check your spam folder.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4 -->
+                    <div class="help-item" data-help="google">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-semibold text-gray-900">How do I sign in with Google?</h3>
+                            <svg class="help-toggle-icon w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="help-content">
+                            <ol class="list-decimal list-inside space-y-2">
+                                <li>Click on "Continue with Google" or "Sign up with Google" button</li>
+                                <li>A Google sign-in window will appear</li>
+                                <li>Select or enter your Google account email</li>
+                                <li>Enter your Google account password</li>
+                                <li>Grant permission for Swift Loan to access your basic profile information</li>
+                                <li>You'll be automatically signed in and redirected to your dashboard</li>
+                            </ol>
+                            <p class="mt-3 text-sm"><strong>Benefits:</strong> Signing in with Google is faster and you don't need to remember another password.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 5 -->
+                    <div class="help-item" data-help="security">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-semibold text-gray-900">Is my account secure?</h3>
+                            <svg class="help-toggle-icon w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="help-content">
+                            <p class="mb-3">Yes! We take security very seriously and implement multiple layers of protection:</p>
+                            <ul class="list-disc list-inside space-y-1 mb-3">
+                                <li>SSL encryption for all data transmission</li>
+                                <li>Firebase Authentication with industry-standard security</li>
+                                <li>Password hashing and secure storage</li>
+                                <li>Regular security audits and updates</li>
+                                <li>Two-factor authentication support</li>
+                            </ul>
+                            <p class="text-sm"><strong>Your part:</strong> Use a strong, unique password and never share your login credentials with anyone.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 6 -->
+                    <div class="help-item" data-help="contact">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-semibold text-gray-900">How can I contact support?</h3>
+                            <svg class="help-toggle-icon w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <div class="help-content">
+    <p class="mb-3">We're here to help! You can reach our support team through:</p>
+    <ul class="list-disc list-inside space-y-1">
+        <li><strong>Live Chat:</strong> Use the chat blue chat bubble at the bottom-right corner of this page to talk to us instantly.</li>
+        <li><strong>Hours:</strong> Monday to Friday, 8:00 AM - 6:00 PM (EAT)</li>
+    </ul>
+    <p class="mt-3 text-sm">For fastest response, please include your email address and a detailed description of your issue.</p>
+</div>
+
+                <div class="mt-8 text-center">
+                    <button id="closeHelp" class="swift-primary-bg hover:swift-primary-hover text-white px-6 py-2 rounded-lg transition-colors">
+                        Close Help
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase SDK v9 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+        
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBV01v57xGKUy-vUmVZw2vzHQa6FPBayHI",
+            authDomain: "imarikaweb.firebaseapp.com",
+            projectId: "imarikaweb",
+            storageBucket: "imarikaweb.firebasestorage.app",
+            messagingSenderId: "683019239334",
+            appId: "1:683019239334:web:37212f42f75d23aec81967",
+            measurementId: "G-6PJXZWQ6NE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        // Session management constants
+        const LOGIN_KEY = "imarika_last_login";
+        const SESSION_DURATION = 10 * 60 * 60 * 1000; // 10 hours
+        const COOKIES_CONSENT_KEY = "swift_loan_cookies_consent";
+
+        // Session management functions
+        function updateSessionTimestamp() {
+            localStorage.setItem(LOGIN_KEY, Date.now().toString());
+        }
+
+        function clearSession() {
+            localStorage.removeItem(LOGIN_KEY);
+        }
+
+        // Advanced Notification System
+        class NotificationSystem {
+            constructor() {
+                this.container = document.getElementById('notificationContainer');
+                this.notifications = [];
+            }
+
+            show(message, type = 'info', duration = 5000) {
+                const id = Date.now().toString();
+                const notification = this.createNotification(id, message, type, duration);
+                
+                this.container.appendChild(notification);
+                this.notifications.push({ id, element: notification });
+
+                // Show notification with animation
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+
+                // Auto remove after duration
+                if (duration > 0) {
+                    setTimeout(() => {
+                        this.remove(id);
+                    }, duration);
+                }
+
+                return id;
+            }
+
+            createNotification(id, message, type, duration) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.setAttribute('data-id', id);
+
+                const icon = this.getIcon(type);
+                
+                notification.innerHTML = `
+                    ${icon}
+                    <div class="flex-1">
+                        <p class="font-medium">${this.getTitle(type)}</p>
+                        <p class="text-sm opacity-90">${message}</p>
+                    </div>
+                    <button class="notification-close">&times;</button>
+                `;
+
+                // Add close functionality
+                const closeBtn = notification.querySelector('.notification-close');
+                closeBtn.addEventListener('click', () => {
+                    this.remove(id);
+                });
+
+                return notification;
+            }
+
+            getIcon(type) {
+                const icons = {
+                    success: '<svg class="w-6 h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+                    error: '<svg class="w-6 h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+                    warning: '<svg class="w-6 h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+                    info: '<svg class="w-6 h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'
+                };
+                return icons[type] || icons.info;
+            }
+
+            getTitle(type) {
+                const titles = {
+                    success: 'Success!',
+                    error: 'Error!',
+                    warning: 'Warning!',
+                    info: 'Information'
+                };
+                return titles[type] || 'Notification';
+            }
+
+            remove(id) {
+                const notificationData = this.notifications.find(n => n.id === id);
+                if (notificationData) {
+                    notificationData.element.classList.remove('show');
+                    setTimeout(() => {
+                        if (notificationData.element.parentNode) {
+                            notificationData.element.parentNode.removeChild(notificationData.element);
+                        }
+                        this.notifications = this.notifications.filter(n => n.id !== id);
+                    }, 300);
+                }
+            }
+
+            clear() {
+                this.notifications.forEach(notification => {
+                    this.remove(notification.id);
+                });
+            }
+        }
+
+        // Initialize notification system
+        const notifications = new NotificationSystem();
+
+        // Cookies Consent Management
+        class CookiesConsent {
+            constructor() {
+                this.popup = document.getElementById('cookiesPopup');
+                this.acceptBtn = document.getElementById('cookiesAccept');
+                this.declineBtn = document.getElementById('cookiesDecline');
+                
+                this.init();
+            }
+
+            init() {
+                // Check if user has already made a choice
+                const consent = localStorage.getItem(COOKIES_CONSENT_KEY);
+                if (!consent) {
+                    this.show();
+                }
+
+                this.acceptBtn.addEventListener('click', () => {
+                    this.accept();
+                });
+
+                this.declineBtn.addEventListener('click', () => {
+                    this.decline();
+                });
+            }
+
+            show() {
+                setTimeout(() => {
+                    this.popup.classList.add('show');
+                }, 1000); // Show after 1 second
+            }
+
+            hide() {
+                this.popup.classList.remove('show');
+            }
+
+            accept() {
+                localStorage.setItem(COOKIES_CONSENT_KEY, 'accepted');
+                this.hide();
+                notifications.show('Cookie preferences saved. Thank you!', 'success', 3000);
+            }
+
+            decline() {
+                localStorage.setItem(COOKIES_CONSENT_KEY, 'declined');
+                this.hide();
+                notifications.show('Cookies declined. Some features may be limited.', 'warning', 4000);
+            }
+        }
+
+        // Welcome Overlay with Countdown
+        class WelcomeOverlay {
+            constructor() {
+                this.overlay = document.getElementById('welcomeOverlay');
+                this.emailElement = document.getElementById('welcomeEmail');
+                this.countdownTimer = document.getElementById('countdownTimer');
+                this.countdownText = document.getElementById('countdownText');
+                this.continueBtn = document.getElementById('continueNow');
+                this.progressCircle = document.getElementById('progressRingCircle');
+                
+                this.countdownValue = 5;
+                this.interval = null;
+                
+                this.init();
+            }
+
+            init() {
+                this.continueBtn.addEventListener('click', () => {
+                    this.redirect();
+                });
+            }
+
+            show(userEmail) {
+                this.emailElement.textContent = userEmail;
+                this.overlay.classList.remove('hidden');
+                this.startCountdown();
+            }
+
+            hide() {
+                this.overlay.classList.add('hidden');
+                this.stopCountdown();
+            }
+
+            startCountdown() {
+                this.countdownValue = 5;
+                this.updateDisplay();
+                
+                this.interval = setInterval(() => {
+                    this.countdownValue--;
+                    this.updateDisplay();
+                    
+                    if (this.countdownValue <= 0) {
+                        this.redirect();
+                    }
+                }, 1000);
+            }
+
+            stopCountdown() {
+                if (this.interval) {
+                    clearInterval(this.interval);
+                    this.interval = null;
+                }
+            }
+
+            updateDisplay() {
+                this.countdownTimer.textContent = this.countdownValue;
+                this.countdownText.textContent = this.countdownValue;
+                
+                // Update progress ring
+                const circumference = 2 * Math.PI * 45; // radius = 45
+                const progress = (5 - this.countdownValue) / 5;
+                const offset = circumference - (progress * circumference);
+                this.progressCircle.style.strokeDashoffset = offset;
+            }
+
+            redirect() {
+                this.stopCountdown();
+                this.hide();
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Help Section Management
+        class HelpSection {
+            constructor() {
+                this.section = document.getElementById('helpSection');
+                this.toggleBtn = document.getElementById('helpToggle');
+                this.closeBtn = document.getElementById('closeHelp');
+                this.helpItems = document.querySelectorAll('.help-item');
+                this.authForms = document.querySelectorAll('.auth-form');
+                
+                this.init();
+            }
+
+            init() {
+                this.toggleBtn.addEventListener('click', () => {
+                    this.toggle();
+                });
+
+                this.closeBtn.addEventListener('click', () => {
+                    this.hide();
+                });
+
+                this.helpItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        this.toggleItem(item);
+                    });
+                });
+            }
+
+            toggle() {
+                if (this.section.classList.contains('hidden')) {
+                    this.show();
+                } else {
+                    this.hide();
+                }
+            }
+
+            show() {
+                // Hide auth forms
+                this.authForms.forEach(form => {
+                    form.classList.add('hidden');
+                });
+                
+                // Show help section
+                this.section.classList.remove('hidden');
+                this.section.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            hide() {
+                // Hide help section
+                this.section.classList.add('hidden');
+                
+                // Show active auth form
+                const activeTab = document.querySelector('.auth-tab.active');
+                const tabType = activeTab.getAttribute('data-tab');
+                
+                if (tabType === 'login') {
+                    document.getElementById('loginForm').classList.remove('hidden');
+                } else if (tabType === 'register') {
+                    document.getElementById('registerForm').classList.remove('hidden');
+                } else if (tabType === 'forgot') {
+                    document.getElementById('forgotForm').classList.remove('hidden');
+                }
+            }
+
+            toggleItem(item) {
+                const content = item.querySelector('.help-content');
+                const isActive = item.classList.contains('active');
+                
+                // Close all items
+                this.helpItems.forEach(helpItem => {
+                    helpItem.classList.remove('active');
+                    helpItem.querySelector('.help-content').classList.remove('show');
+                });
+                
+                // Toggle current item
+                if (!isActive) {
+                    item.classList.add('active');
+                    content.classList.add('show');
+                }
+            }
+        }
+
+        // Initialize components
+        const cookiesConsent = new CookiesConsent();
+        const welcomeOverlay = new WelcomeOverlay();
+        const helpSection = new HelpSection();
+
+        // Check if user is already logged in on page load
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                updateSessionTimestamp();
+                // Show welcome overlay and then redirect
+                welcomeOverlay.show(user.email);
+            }
+        });
+
+        // DOM elements
+        const authTabs = document.querySelectorAll('.auth-tab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const forgotForm = document.getElementById('forgotForm');
+
+        // Tab switching
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabType = tab.getAttribute('data-tab');
+                
+                // Update active tab
+                authTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show/hide forms
+                loginForm.classList.add('hidden');
+                registerForm.classList.add('hidden');
+                forgotForm.classList.add('hidden');
+                
+                // Hide help section if visible
+                document.getElementById('helpSection').classList.add('hidden');
+                
+                if (tabType === 'login') {
+                    loginForm.classList.remove('hidden');
+                } else if (tabType === 'register') {
+                    registerForm.classList.remove('hidden');
+                } else if (tabType === 'forgot') {
+                    forgotForm.classList.remove('hidden');
+                }
+            });
+        });
+
+        // Helper functions
+        function showMessage(elementId, text, type = 'error') {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = type === 'error' ? 'error-message' : 'success-message';
+            element.textContent = text;
+        }
+
+        function hideMessage(elementId) {
+            document.getElementById(elementId).style.display = 'none';
+        }
+
+        function showLoading(buttonId) {
+            const button = document.getElementById(buttonId);
+            button.disabled = true;
+            button.innerHTML = '<div class="loading-spinner mx-auto"></div>';
+        }
+
+        function hideLoading(buttonId, originalText) {
+            const button = document.getElementById(buttonId);
+            button.disabled = false;
+            button.textContent = originalText;
+        }
+
+        // Login form handler
+        document.getElementById('loginFormElement').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessage('loginMessage');
+            showLoading('loginSubmitBtn');
+
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                updateSessionTimestamp();
+                
+                notifications.show('Login successful! Welcome back.', 'success');
+                welcomeOverlay.show(email);
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                let errorMessage = 'Login failed. Please try again.';
+                
+                if (error.code === 'auth/user-not-found') {
+                    errorMessage = 'No account found with this email.';
+                } else if (error.code === 'auth/wrong-password') {
+                    errorMessage = 'Incorrect password.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Invalid email address.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage = 'Too many failed attempts. Please try again later.';
+                }
+                
+                notifications.show(errorMessage, 'error');
+                hideLoading('loginSubmitBtn', 'Sign In');
+            }
+        });
+
+        // Register form handler
+        document.getElementById('registerFormElement').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessage('registerMessage');
+            showLoading('registerSubmitBtn');
+
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+
+            // Validation
+            if (!name || !email || !password || !confirmPassword) {
+                notifications.show('Please fill in all fields.', 'error');
+                hideLoading('registerSubmitBtn', 'Create Account');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                notifications.show('Passwords do not match.', 'error');
+                hideLoading('registerSubmitBtn', 'Create Account');
+                return;
+            }
+
+            if (password.length < 6) {
+                notifications.show('Password must be at least 6 characters.', 'error');
+                hideLoading('registerSubmitBtn', 'Create Account');
+                return;
+            }
+
+            if (!terms) {
+                notifications.show('Please accept the terms and conditions.', 'error');
+                hideLoading('registerSubmitBtn', 'Create Account');
+                return;
+            }
+
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                updateSessionTimestamp();
+                
+                notifications.show('Account created successfully! Welcome to Swift Loan.', 'success');
+                welcomeOverlay.show(email);
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                let errorMessage = 'Registration failed. Please try again.';
+                
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = 'Email already in use. Try signing in instead.';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = 'Password is too weak.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Invalid email address.';
+                }
+                
+                notifications.show(errorMessage, 'error');
+                hideLoading('registerSubmitBtn', 'Create Account');
+            }
+        });
+
+        // Forgot password form handler
+        document.getElementById('forgotFormElement').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            hideMessage('forgotMessage');
+            showLoading('forgotSubmitBtn');
+
+            const email = document.getElementById('forgotEmail').value.trim();
+
+            if (!email) {
+                notifications.show('Please enter your email address.', 'error');
+                hideLoading('forgotSubmitBtn', 'Send Reset Link');
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                notifications.show('Password reset email sent! Check your inbox.', 'success');
+                hideLoading('forgotSubmitBtn', 'Send Reset Link');
+            } catch (error) {
+                console.error('Password reset error:', error);
+                let errorMessage = 'Failed to send reset email. Please try again.';
+                
+                if (error.code === 'auth/user-not-found') {
+                    errorMessage = 'No account found with this email.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Invalid email address.';
+                }
+                
+                notifications.show(errorMessage, 'error');
+                hideLoading('forgotSubmitBtn', 'Send Reset Link');
+            }
+        });
+
+        // Google sign in handlers
+        document.getElementById('googleSignInBtn').addEventListener('click', async () => {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                updateSessionTimestamp();
+                notifications.show('Google sign in successful!', 'success');
+                welcomeOverlay.show(result.user.email);
+            } catch (error) {
+                console.error('Google sign in error:', error);
+                notifications.show('Google sign in failed. Please try again.', 'error');
+            }
+        });
+
+        document.getElementById('googleSignUpBtn').addEventListener('click', async () => {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                updateSessionTimestamp();
+                notifications.show('Google account created successfully!', 'success');
+                welcomeOverlay.show(result.user.email);
+            } catch (error) {
+                console.error('Google sign up error:', error);
+                notifications.show('Google sign up failed. Please try again.', 'error');
+            }
+        });
+
+        // Quick navigation links
+        document.getElementById('registerQuickLink').addEventListener('click', () => {
+            document.querySelector('[data-tab="register"]').click();
+        });
+
+        document.getElementById('forgotPasswordLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelector('[data-tab="forgot"]').click();
+        });
+
+        document.getElementById('backToLogin').addEventListener('click', () => {
+            document.querySelector('[data-tab="login"]').click();
+        });
+
+        // Password visibility toggles
+        document.getElementById('toggleLoginPassword').addEventListener('click', () => {
+            const passwordInput = document.getElementById('loginPassword');
+            const eyeIcon = document.getElementById('loginEyeIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
+            }
+        });
+
+        document.getElementById('toggleRegisterPassword').addEventListener('click', () => {
+            const passwordInput = document.getElementById('registerPassword');
+            const eyeIcon = document.getElementById('registerEyeIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
+            }
+        });
+
+        // Show initial notification about the enhanced features
+        setTimeout(() => {
+            notifications.show('Welcome to the enhanced Swift Loan authentication experience!', 'info', 4000);
+        }, 2000);
+    </script>
+
+    <section class="w-full px-6 py-6 bg-blue-50 border-t border-blue-100 text-sm text-gray-700">
+        <div class="max-w-4xl mx-auto space-y-4">
+            <!-- Security Tip -->
+            <div class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-blue-500 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0-1.1.9-2 2-2s2 .9 2 2m0 0v1a2 2 0 002 2h-6m0-3h.01M12 6.253v-.505a2.25 2.25 0 114.5 0v.505m-4.5 0A2.25 2.25 0 017.5 5.748v.505m4.5 0v12.5m0 0H9m3 0h3" />
+                </svg>
+                <p><strong>Security Tip:</strong> Always log out after using your account, especially on public or shared devices.</p>
+            </div>
+
+            <!-- Support Contact -->
+<div class="flex items-start gap-3 p-3 bg-blue-50 rounded-xl">
+    <svg class="w-7 h-7 text-blue-500 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M12 4v1m0 14v1m8-8h1M4 12H3m15.364-7.364l.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707" />
+    </svg>
+    <div>
+        <p class="text-lg font-semibold text-gray-800">Need help?</p>
+        <p class="text-base text-gray-700">
+            Our support team is available directly on this website.
+        </p>
+        <p class="text-lg font-bold text-blue-600 mt-1">
+             Just click the blue Floating chat bubble at the bottom-right corner to start a conversation.
+        </p>
+    </div>
+</div>
+
+            <!-- Password Tip -->
+            <div class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-yellow-500 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m0-6v2m-6 4v2a2 2 0 002 2h8a2 2 0 002-2v-2m-4-4h-4" />
+                </svg>
+                <p><strong>Password Advice:</strong> Use a strong password with a mix of letters, numbers, and symbols. Avoid using your name or email.</p>
+            </div>
+
+            <!-- Login Attempt Reminder -->
+            <div class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-1.414 1.414A9 9 0 105.636 18.364l1.414-1.414a7 7 0 119.9-9.9z" />
+                </svg>
+                <p><strong>Too many attempts?</strong> If you're locked out, wait a few minutes or reset your password via email.</p>
+            </div>
+        </div>
+    </section>
+  <!-- Trust Statistics Section -->
+<section class="stats-section py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Heading -->
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+        Trusted by Thousands of Kenyans
+      </h2>
+      <p class="text-lg text-gray-600">
+        Join our growing community of satisfied customers
+      </p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <div class="stat-card bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition">
+        <div class="stat-number text-3xl font-bold text-indigo-600">52,848+</div>
+        <div class="stat-label text-gray-500 mt-2">Trusted Users</div>
+      </div>
+      <div class="stat-card bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition">
+        <div class="stat-number text-3xl font-bold text-green-600">KSh 500k+</div>
+        <div class="stat-label text-gray-500 mt-2">Loans Disbursed</div>
+      </div>
+      <div class="stat-card bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition">
+        <div class="stat-number text-3xl font-bold text-blue-600">10,999</div>
+        <div class="stat-label text-gray-500 mt-2">Active Loans</div>
+      </div>
+      <div class="stat-card bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition">
+        <div class="stat-number text-3xl font-bold text-purple-600">4.8/5</div>
+        <div class="stat-label text-gray-500 mt-2">Customer Rating</div>
+      </div>
+    </div>
+
+    <!-- Trust Indicators -->
+    <div class="flex flex-wrap justify-center items-center gap-6 mt-12">
+      <div class="flex items-center space-x-2 text-gray-600">
+        <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+        </svg>
+        <span class="font-medium">256-bit SSL Secured</span>
+      </div>
+      <div class="flex items-center space-x-2 text-gray-600">
+        <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span class="font-medium">CBK Licensed</span>
+      </div>
+      <div class="flex items-center space-x-2 text-gray-600">
+        <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2l9 4-3.5 9H6.5L3 6l9-4z"/>
+        </svg>
+        <span class="font-medium">ISO Certified</span>
+      </div>
+    </div>
+  </div>
+</section>
+  <!-- Quick Links -->
+<div class="text-center bg-white py-6">
+  <h4 class="text-lg font-semibold mb-4 text-gray-800">Quick Links</h4>
+  <div class="flex justify-center flex-wrap gap-6 text-blue-600">
+    <a href="login.html" class="hover:text-blue-800 transition-colors">Login</a>
+  </div>
+</div>
+</div>
+
+     <!-- Social Icons Section (above footer) -->
+<div class="bg-gray-50 border-t border-gray-200 py-6 mt-12">
+  <div class="max-w-7xl mx-auto flex justify-center space-x-10">
+
+    
+
+    <!-- Facebook -->
+    <a href="https://facebook.com/swiftke" target="_blank"
+       class="flex flex-col items-center hover:opacity-80">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Facebook_icon.svg" 
+           alt="Facebook" class="w-10 h-10">
+      <span class="mt-1 text-sm text-blue-600">Facebook</span>
+    </a>
+
+  </div>
+</div>
+    <footer class="text-center text-gray-500 text-sm py-6 bg-white border-t border-gray-100">
+        &copy; 2025 Swift Loan. All rights reserved.
+    </footer>
+</body>
+</html>
