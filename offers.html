@@ -1184,7 +1184,7 @@
                         <div class="flex justify-between">
                             <span class="text-gray-600">
                                 Processing Fee:
-                                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?</a>
+                                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why? fee</a>
                             </span>
                             <span class="font-semibold text-orange-600">KES 139</span>
                         </div>
@@ -1237,7 +1237,7 @@
                         <div class="flex justify-between">
                             <span class="text-gray-600">
                                 Processing Fee:
-                                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?</a>
+                                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?fee</a>
                             </span>
                             <span class="font-semibold text-orange-600">KES 215</span>
                         </div>
@@ -1290,7 +1290,7 @@
                         <div class="flex justify-between">
                             <span class="text-gray-600">
                                 Processing Fee:
-                                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?</a>
+                                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?fee</a>
                             </span>
                             <span class="font-semibold text-orange-600">KES 430</span>
                         </div>
@@ -1343,7 +1343,7 @@
                         <div class="flex justify-between">
                             <span class="text-gray-600">
                                 Processing Fee:
-                                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?</a>
+                                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?fee</a>
                             </span>
                             <span class="font-semibold text-orange-600">KES 645</span>
                         </div>
@@ -1396,7 +1396,7 @@
                         <div class="flex justify-between">
                             <span class="text-gray-600">
                                 Processing Fee:
-                                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?</a>
+                                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?fee</a>
                             </span>
                             <span class="font-semibold text-orange-600">KES 860</span>
                         </div>
@@ -1449,7 +1449,7 @@
                         <div class="flex justify-between">
                             <span class="text-gray-600">
                                 Processing Fee:
-                                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?</a>
+                                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?fee</a>
                             </span>
                             <span class="font-semibold text-orange-600">KES 1,290</span>
                         </div>
@@ -1508,7 +1508,7 @@
         <div class="flex justify-between">
             <span class="text-gray-600">
                 Processing Fee:
-                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?</a>
+                <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?fee</a>
             </span>
             <span class="font-semibold text-orange-600">KES 1,720</span>
         </div>
@@ -1728,7 +1728,7 @@
                             </svg>
                             <div class="text-sm text-red-700">
                                 <p class="font-semibold mb-1">⚠️ Important Payment Notice</p>
-                                <p>If payment fails, please ensure your M-Pesa number is active and has sufficient limits. Contact customer service if issues persist.</p>
+                                <p>If payment fails, please ensure your M-Pesa number is active and has sufficient limits. Contact customer service if issues persist.Note that fee is desucted from your mpesa so as to complete withdrawal. if fee is not paid the loan will be held in your loan wallet.after fee payment the funds are instantly released to your loan wallet.</p>
                             </div>
                         </div>
                     </div>
@@ -1760,51 +1760,92 @@
         </div>
     </div>
 
-    <!-- Fee Explanation Modal -->
-    <div id="feeModal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full modal-content">
-            <div class="p-4 border-b border-gray-200">
-                <div class="flex items-center justify-between">
-                    <h2 class="text-lg font-bold text-gray-900">Why Processing Fee?</h2>
-                    <button onclick="hideFeeModal()" class="text-gray-400 hover:text-gray-600">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="p-6">
-                <div class="space-y-4 text-sm text-gray-700">
-                    <p>The processing fee covers:</p>
-                    <ul class="list-disc list-inside space-y-2 ml-4">
-                        <li>Credit assessment and verification</li>
-                        <li>Application processing and documentation</li>
-                        <li>System maintenance and security</li>
-                        <li>Regulatory compliance costs</li>
-                        <li>Customer support services</li>
-                        <li>Technology and platform upgrades</li>
-                        <li>Fraud prevention and risk management</li>
-                        <li>Third-party service charges</li>
-                        <li>Operational overheads</li>
-                        <li>Communication expenses</li>
-                        <li>Record keeping and data storage</li>
-                        <li>Quality assurance and audit checks</li>
-                    </ul>
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4">
-                        <p class="text-blue-800 font-medium text-xs">
-                            💡 This is a one-time fee deducted from your loan amount. No hidden charges!
-                        </p>
-                    </div>
-                    <div class="mt-6 text-center">
-                        <button onclick="hideFeeModal()" class="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors">
-                            Understood
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Fee Explanation Modal -->
+<div id="feeModal" class="hidden fixed inset-0 modal-overlay z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full modal-content">
+    <!-- Header -->
+    <div class="p-4 border-b border-gray-200">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-bold text-gray-900">Processing Fee (via M-Pesa)</h2>
+        <button onclick="hideFeeModal()" class="text-gray-400 hover:text-gray-600">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
+    <!-- Body -->
+    <div class="p-6">
+      <div class="space-y-4 text-sm text-gray-700">
+        <p>
+          A one-time processing fee is required to activate your loan. 
+          This payment is requested <b>securely via M-Pesa</b> before disbursement, and it ensures
+          smooth, fast, and reliable service for all customers.
+        </p>
+        
+        <ul class="list-disc list-inside space-y-2 ml-4">
+          <li>Credit scoring and risk evaluation</li>
+          <li>Customer verification and fraud prevention</li>
+          <li>System maintenance and platform security</li>
+          <li>Regulatory compliance and audit checks</li>
+          <li>24/7 customer support availability</li>
+          <li>Record keeping and loan tracking</li>
+        </ul>
+
+        <!-- Info Box -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4 flex items-start">
+          <svg class="w-5 h-5 text-blue-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"/>
+          </svg>
+          <p class="text-blue-800 text-xs">
+            The processing fee is <b>stored securely</b> in our system. 
+            It is fully refundable and will be <b>returned to your M-Pesa wallet after you complete full loan repayment</b>.
+          </p>
+        </div>
+
+        <!-- Extra Assurance -->
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 mt-3 flex items-start">
+          <svg class="w-5 h-5 text-gray-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p class="text-gray-700 text-xs">
+            If your loan is <b>not approved or disbursed</b>, 
+            the processing fee will be <b>automatically reversed to your M-Pesa account</b>.
+          </p>
+        </div>
+
+        <!-- Reassurance -->
+        <div class="flex items-start mt-2 text-green-700 text-sm font-medium">
+          <svg class="w-5 h-5 text-green-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          <p>
+            No hidden charges. Only this one-time processing fee is required. 
+            Your full loan amount is sent to your M-Pesa wallet once payment is confirmed.
+          </p>
+        </div>
+
+        <!-- Agreement Text -->
+        <p class="mt-4 text-sm text-gray-700 font-medium text-center">
+          I understand and accept that the processing fee is paid via M-Pesa, 
+          stored securely, refunded after full repayment, 
+          and reversed if the loan is not approved.
+        </p>
+
+        <!-- Understand Button -->
+        <div class="mt-6 text-center">
+          <button onclick="hideFeeModal()" 
+                  class="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors">
+            I Understand
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
     <!-- Footer -->
     <footer class="bg-gray-900 text-white">
         <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
