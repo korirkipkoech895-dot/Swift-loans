@@ -771,13 +771,12 @@
                     <span>Loan Eligibility Checker</span>
                     <i class="fas fa-arrow-right text-xs ml-auto"></i>
                 </a>
-                <a href="javascript:void(0);" 
-   onclick="openBrevoChat()"
-   class="flex items-center space-x-3 p-3 rounded-lg text-blue-700 bg-white hover:bg-blue-100 hover:text-blue-600 transition-all font-medium border border-blue-100 shadow-sm">
-    <i class="fas fa-headset text-green-500 text-lg"></i>
-    <span>24/7 Customer Support</span>
-    <i class="fas fa-arrow-right text-xs ml-auto"></i>
-</a>
+                <a href="/help" 
+                   class="flex items-center space-x-3 p-3 rounded-lg text-blue-700 bg-white hover:bg-blue-100 hover:text-blue-600 transition-all font-medium border border-blue-100 shadow-sm">
+                    <i class="fas fa-headset text-green-500 text-lg"></i>
+                    <span>24/7 Customer Support</span>
+                    <i class="fas fa-arrow-right text-xs ml-auto"></i>
+                </a>
                 <a href="/track" 
                    class="flex items-center space-x-3 p-3 rounded-lg text-blue-700 bg-white hover:bg-blue-100 hover:text-blue-600 transition-all font-medium border border-blue-100 shadow-sm">
                     <i class="fas fa-search text-purple-500 text-lg"></i>
@@ -976,20 +975,14 @@
     <div id="helpResult" class="text-sm mt-2"></div>
 
     <div class="flex space-x-3 mt-6">
-  <button onclick="closeHelpModal()" 
-          class="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
-    Cancel
-  </button>
-  <button onclick="checkMpesaCode()" 
-          class="flex-1 px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark">
-    Check Code
-  </button>
-  <button onclick="openBrevoChat()" 
-          class="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center space-x-2">
-    <span>Contact Support Team</span>
-    <i class="fas fa-headset text-white text-lg"></i>
-  </button>
-</div>
+      <button onclick="closeHelpModal()" class="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+        Cancel
+      </button>
+      <button onclick="checkMpesaCode()" class="flex-1 px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark">
+        Check Code
+      </button>
+    </div>
+  </div>
 </div>
     <footer class="text-center text-gray-400 text-sm py-6 bg-gray-900 border-t border-gray-700">
         <div class="flex flex-col items-center space-y-3">
@@ -1769,21 +1762,6 @@ function checkMpesaCode() {
         resultBox.innerHTML = `<p class="text-red-600">❌ Invalid code or formart. Please try again.</p>`;
     }
 }
-   
-  function openBrevoChat() {
-    if (window.BrevoConversations) {
-      BrevoConversations('openChat'); // This opens the Brevo chat widget
-    } else {
-      alert("Chat is not ready yet, please try again in a moment.");
-    }
-  }
- function openBrevoChat() {
-  if (typeof BrevoConversations !== 'undefined') {
-    BrevoConversations('open');
-  } else {
-    alert('Support chat is currently unavailable. Please try again later.');
-  }
-}
-</script>
+    </script>
 </body>
 </html>
