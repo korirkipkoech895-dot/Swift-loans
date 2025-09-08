@@ -272,6 +272,23 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
+                 .regulatory-info {
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .regulatory-info::before {
+            content: '🛡️';
+            position: absolute;
+            top: -8px;
+            left: 12px;
+            background: #f59e0b;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
 
         .method-card.selected {
             border-color: #225AAC;
