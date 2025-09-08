@@ -1581,7 +1581,7 @@
             updateProcessingStep(1, 'Validating details...');
         }
 
-        function updateProcessingStep(step, message) {
+function updateProcessingStep(step, message) {
     const steps = ['step1', 'step2', 'step3'];
     const progress = document.getElementById('processingProgress');
     const processingMessage = document.getElementById('processingMessage');
@@ -1610,6 +1610,7 @@
         const progressWidth = (step / 3) * 100;
         progress.style.width = progressWidth + '%';
     }
+}
 
         function hideProcessingOverlay() {
             const overlay = document.getElementById('processingOverlay');
