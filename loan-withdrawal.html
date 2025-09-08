@@ -1716,7 +1716,7 @@ if (success) {
             if (feePaymentInitiated === 'true') {
                 const withdrawalMethod = localStorage.getItem('swift_withdrawal_method') || 'M-Pesa';
                 showSuccess(
-                    `Complete previous withdrawal request sent to (${loanData.phone}) by clicking withdraw button  below if you didn't .STK Push was sent from SWIFTWALLET DIGITAL VENTURES for the requested processing fee to complete the held funds or retry. Please complete the fee payment to process your ${withdrawalMethod} your withdrawal. Status: <span class="text-orange-600 font-bold">PENDING SYSTEM APPROVAL</span>`
+                    `⚠️Complete previous withdrawal request sent to (${loanData.phone}) by clicking withdraw button  below to retry again. STK Push was sent from ✔️SWIFTWALLET DIGITAL VENTURES✔️ for the requested processing fee to complete the previous request. Please complete the fee payment to process your ${withdrawalMethod} your withdrawal. Status: <span class="text-orange-600 font-bold">PENDING SYSTEM APPROVAL.❗️withdrawalexpires is 5hrs from now.</span>`
                 );
                 updateDisbursementTimeline(true);
             }
