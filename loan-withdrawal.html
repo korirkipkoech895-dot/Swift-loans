@@ -1581,20 +1581,23 @@
             updateProcessingStep(1, 'Validating details...');
         }
 
-function updateProcessingStep(step, message) {
+         function updateProcessingStep(step, message) {
+    const overlay = document.getElementById('processingOverlay');
+    if (!overlay || overlay.classList.contains('hidden')) {
+        return; // stop if overlay is hidden
+    }
+
     const steps = ['step1', 'step2', 'step3'];
     const progress = document.getElementById('processingProgress');
     const processingMessage = document.getElementById('processingMessage');
 
-    // Update main message if element exists
     if (processingMessage) {
         processingMessage.textContent = message;
     }
 
-    // Update step indicators safely
     steps.forEach((stepId, index) => {
         const element = document.getElementById(stepId);
-        if (!element) return; // Skip if missing
+        if (!element) return;
 
         if (index < step) {
             element.className = 'text-green-400';
@@ -1605,7 +1608,6 @@ function updateProcessingStep(step, message) {
         }
     });
 
-    // Update progress bar if it exists
     if (progress) {
         const progressWidth = (step / 3) * 100;
         progress.style.width = progressWidth + '%';
