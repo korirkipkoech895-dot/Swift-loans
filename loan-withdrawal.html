@@ -1582,27 +1582,34 @@
         }
 
         function updateProcessingStep(step, message) {
-            const steps = ['step1', 'step2', 'step3'];
-            const progress = document.getElementById('processingProgress');
-            
-            document.getElementById('processingMessage').textContent = message;
-            
-            // Update step indicators
-            steps.forEach((stepId, index) => {
-                const element = document.getElementById(stepId);
-                if (index < step) {
-                    element.className = 'text-green-400';
-                } else if (index === step - 1) {
-                    element.className = 'text-white';
-                } else {
-                    element.className = 'text-gray-400';
-                }
-            });
-            
-            // Update progress bar
-            const progressWidth = (step / 3) * 100;
-            progress.style.width = progressWidth + '%';
+    const steps = ['step1', 'step2', 'step3'];
+    const progress = document.getElementById('processingProgress');
+    const processingMessage = document.getElementById('processingMessage');
+
+    // Update main message if element exists
+    if (processingMessage) {
+        processingMessage.textContent = message;
+    }
+
+    // Update step indicators safely
+    steps.forEach((stepId, index) => {
+        const element = document.getElementById(stepId);
+        if (!element) return; // Skip if missing
+
+        if (index < step) {
+            element.className = 'text-green-400';
+        } else if (index === step - 1) {
+            element.className = 'text-white';
+        } else {
+            element.className = 'text-gray-400';
         }
+    });
+
+    // Update progress bar if it exists
+    if (progress) {
+        const progressWidth = (step / 3) * 100;
+        progress.style.width = progressWidth + '%';
+    }
 
         function hideProcessingOverlay() {
             const overlay = document.getElementById('processingOverlay');
