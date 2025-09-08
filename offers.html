@@ -1667,7 +1667,7 @@
                         </label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3">
-                                <span class="text-gray-500 text-sm">🇰🇪 +254</span>
+                                <span class="text-gray-500 text-sm">🇰🇪 254</span>
                             </div>
                             <input 
                                 type="tel" 
@@ -1688,7 +1688,7 @@
                         </div>
                         <div id="phoneError" class="hidden text-red-500 text-xs mt-1"></div>
                         <div class="text-gray-500 text-xs mt-1">
-                            Enter your M-Pesa number without +254 (e.g., 712345678)
+                            Enter your M-Pesa number without 254 (e.g., 712345678)
                         </div>
                     </div>
 
@@ -2244,7 +2244,7 @@ function validateKenyanPhone(phone) {
 // Format phone number display
 function formatPhoneNumber(phone) {
     if (phone.length === 9) {
-        return `+254${phone}`;
+        return `254${phone}`;
     }
     return phone;
 }
@@ -2306,7 +2306,7 @@ async function showLoanModal(loanData) {
     const phoneInput = document.getElementById('phoneInput');
     const storedPhone = localStorage.getItem('swift_customer_phone');
     if (storedPhone) {
-        phoneInput.value = storedPhone.replace(/^\+254/, '');
+        phoneInput.value = storedPhone.replace(/^\254/, '');
     }
     
     document.getElementById('termsCheckbox').checked = false;
