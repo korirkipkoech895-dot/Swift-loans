@@ -830,7 +830,7 @@
 }
 
 .not-qualified::after {
-  content: "NOT QUALIFIED";
+  content: "NOT QUALIFIED YET";
   position: absolute;
   top: 40%;
   left: -30%;
@@ -1840,7 +1840,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-bold mb-2">
-                        Processing Your Loan Application
+                        Validating 
                     </h3>
                     <p class="text-sm opacity-90">
                         Please wait while we prepare your loan wallet...
@@ -2684,7 +2684,7 @@ window.showFeeModal = showFeeModal;
         if (!card.querySelector(".not-qualified-reason")) {
           const reason = document.createElement("p");
           reason.className = "not-qualified-reason text-red-600 text-sm font-medium mt-3";
-          reason.innerText = "We’re sorry, this loan amount isn’t available for you right now. Try selecting another offer.";
+          reason.innerText = "We’re sorry, this loan amount isn’t available for you right now,You need t have a credit sxore of 100% by borrowing and repaying your first Loan.Try selecting another offer.";
           card.appendChild(reason);
         }
 
