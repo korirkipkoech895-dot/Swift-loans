@@ -822,7 +822,33 @@
             background: linear-gradient(90deg, #f8fafc 0%, #e8f1ff 100%);
 
         }
+   /* Red strip overlay for not qualified offers */
+.not-qualified {
+  position: relative;
+  pointer-events: none; /* disable button clicks */
+  opacity: 0.6;
+}
 
+.not-qualified::after {
+  content: "NOT QUALIFIED";
+  position: absolute;
+  top: 40%;
+  left: -30%;
+  width: 160%;
+  text-align: center;
+  transform: rotate(-20deg);
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: white;
+  background: rgba(239, 68, 68, 0.95); /* red background */
+  padding: 0.75rem 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  text-transform: uppercase;
+}
+  #progressFill {
+  transition: width 0.2s ease;
+}
     </style>
 
  <!-- Brevo Conversations {literal} -->
@@ -1222,7 +1248,7 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 <!-- Loan Offer 1 - Quick Loan -->
-                <div class="loan-card bg-white rounded-xl shadow-swift hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 transform hover:scale-105 hover:rotate-1 hover:shadow-2xl" data-amount="15000" data-fee="139" data-tracking="LN-10001" data-months="3" data-offer-name="Quick Loan">
+                <div class="loan-card bg-white rounded-xl shadow-swift hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 transform hover:scale-105 hover:rotate-1 hover:shadow-2xl" data-amount="15000" data-fee="129" data-tracking="LN-10001" data-months="3" data-offer-name="Quick Loan">
                     <div class="flex justify-between items-start mb-4">
                         <h3 class="text-lg font-bold text-gray-800">Quick Loan</h3>
                         <span class="bg-primary text-white text-xs px-3 py-1 rounded-full">LN-10001</span>
@@ -1238,7 +1264,7 @@
                                 Processing Fee:
                                 <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why? fee</a>
                             </span>
-                            <span class="font-semibold text-orange-600">KES 139</span>
+                            <span class="font-semibold text-orange-600">KES 129</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Monthly Rate:</span>
@@ -1397,7 +1423,7 @@
                                 Processing Fee:
                                 <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?fee</a>
                             </span>
-                            <span class="font-semibold text-orange-600">KES 645</span>
+                            <span class="font-semibold text-orange-600">SYSTEM PROCESSING...</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Monthly Rate:</span>
@@ -1450,7 +1476,7 @@
                                 Processing Fee:
                                 <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?fee</a>
                             </span>
-                            <span class="font-semibold text-orange-600">KES 860</span>
+                            <span class="font-semibold text-orange-600">SYSTEM PROCESSING...</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Monthly Rate:</span>
@@ -1503,7 +1529,7 @@
                                 Processing Fee:
                                 <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?fee</a>
                             </span>
-                            <span class="font-semibold text-orange-600">KES 1,290</span>
+                            <span class="font-semibold text-orange-600">SYSTEM PROCESSING...</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Monthly Rate:</span>
@@ -1562,7 +1588,7 @@
                 Processing Fee:
                 <a href="#" class="explain-fee-link text-primary text-xs underline ml-1">why?fee</a>
             </span>
-            <span class="font-semibold text-orange-600">KES 1,720</span>
+            <span class="font-semibold text-orange-600">SYSTEM PROCESSING...</span>
         </div>
 
         <div class="flex justify-between">
@@ -1605,8 +1631,7 @@
             </div>
         </div>
     </main>
-
-      <!-- Offers Eligibility Popup -->
+   <!-- Offers Eligibility Popup -->
 <div id="welcomePopup" 
      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
   <div id="welcomeContent" 
@@ -1635,14 +1660,23 @@
       </h3>
 
       <!-- Subtext -->
-      <p class="text-gray-600 text-base mb-6 leading-relaxed">
+      <p class="text-gray-600 text-base mb-3 leading-relaxed">
         You’re eligible and we’ve found <span class="font-semibold text-primary">7 loan offers</span> for you.  
         Pick the one that works best and unlock instant funds.
       </p>
 
-      <!-- Progress Bar (Full Width) -->
-      <div class="w-full bg-gray-200 rounded-full h-2 mb-6 overflow-hidden shadow-inner">
-        <div class="bg-gradient-to-r from-green-500 to-blue-600 h-2 w-full animate-pulse"></div>
+      <!-- Disclaimer -->
+      <p class="text-gray-500 text-sm italic mb-6">
+        ⚠️ Please note, some offers may not be available depending on your credit score and eligibility.
+      </p>
+
+      <!-- Progress Bar (processing Credit Score) -->
+      <div class="w-full bg-gray-200 rounded-full h-4 mb-6 overflow-hidden shadow-inner relative">
+        <div id="progressFill" class="bg-gradient-to-r from-green-500 to-blue-600 h-4 w-0"></div>
+        <span id="progressText" 
+              class="absolute inset-0 flex items-center justify-center text-xs font-semibold text-gray-700">
+          Credit Score: 0%
+        </span>
       </div>
       
       <!-- CTA -->
@@ -1655,6 +1689,7 @@
       </button>
     </div>
   </div>
+</div>
 </div>
 </div>
     <!-- Loan Confirmation Modal -->
@@ -2625,7 +2660,60 @@ document.addEventListener('DOMContentLoaded', function() {
 window.toggleMobileMenu = toggleMobileMenu;
 window.hideFeeModal = hideFeeModal;
 window.showFeeModal = showFeeModal;
-</script>
+ 
+  
+  
+  document.querySelectorAll(".select-offer-btn").forEach((btn) => {
+    btn.addEventListener("click", function (e) {
+      const card = this.closest(".loan-card");
+      const trackingId = card.getAttribute("data-tracking");
 
+      // Disable specific offers
+      if (trackingId === "LN-10004" ||  // KES 75,000
+          trackingId === "LN-10005" ||  // KES 100,000
+          trackingId === "LN-10006" ||  // KES 150,000
+          trackingId === "LN-10007") {  // KES 200,000
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        card.classList.add("not-qualified");
+
+        // Add explanation text if not already there
+        if (!card.querySelector(".not-qualified-reason")) {
+          const reason = document.createElement("p");
+          reason.className = "not-qualified-reason text-red-600 text-sm font-medium mt-3";
+          reason.innerText = "We’re sorry, this loan amount isn’t available for you right now. Try selecting another offer.";
+          card.appendChild(reason);
+        }
+
+        return false;
+      }
+
+      // All other offers run normally
+    }, true);
+  });
+
+
+  // Example credit score value (can be dynamic later)
+  const creditScorePercent = 60; 
+
+  function animateProgressBar() {
+    const fill = document.getElementById("progressFill");
+    const text = document.getElementById("progressText");
+    let progress = 0;
+
+    const interval = setInterval(() => {
+      if (progress >= creditScorePercent) {
+        clearInterval(interval);
+      } else {
+        progress++;
+        fill.style.width = progress + "%";
+        text.innerText = "Credit Score: " + progress + "%";
+      }
+    }, 20); // 20ms per step = ~2 seconds animation
+  }
+
+  // Run animation when popup is shown
+  window.addEventListener("load", animateProgressBar);
+</script>
 </body>
     </html>
