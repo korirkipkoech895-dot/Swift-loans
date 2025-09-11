@@ -1438,59 +1438,6 @@
     }
   });
 
-  let deferredPrompt;
-  const popup = document.getElementById("installPopup");
-  const installBtn = document.getElementById("installBtn");
-  const closePopup = document.getElementById("closePopup");
-
-  // Listen for the install event
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    popup.style.display = "flex"; // show popup
-  });
-
-  // Handle install click
-  installBtn.addEventListener("click", () => {
-    popup.style.display = "none"; // hide popup
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === "accepted") {
-          console.log("User accepted the install prompt");
-        } else {
-          console.log("User dismissed the install prompt");
-        }
-        deferredPrompt = null;
-      });
-    }
-  });
-
-  // Handle close (X) click
-  closePopup.addEventListener("click", () => {
-    popup.style.display = "none";
-  });
-</script>
-
-    </script>
- <div id="installPopup" style="
-  display:none; 
-  position:fixed; 
-  top:0; left:0; right:0; bottom:0; 
-  background:rgba(0,0,0,0.6); 
-  display:flex; 
-  justify-content:center; 
-  align-items:center; 
-  z-index:1000;">
-  
-  <div style="background:#fff; padding:20px; border-radius:12px; width:300px; text-align:center; position:relative;">
-    <button id="closePopup" style="position:absolute; top:8px; right:8px; border:none; background:none; font-size:18px; cursor:pointer;">✖</button>
-    <h2>Install Swift Loan</h2>
-    <p>Get quick access by installing our app!</p>
-    <button id="installBtn" style="margin-top:15px; padding:10px 20px; background:#0818f5; color:#fff; border:none; border-radius:8px; font-size:16px; cursor:pointer;">
-      📲 Install App
-    </button>
-  </div>
-</div>
+  </script>
 </body>
 </html>
