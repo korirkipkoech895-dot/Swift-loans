@@ -1,0 +1,20 @@
+{
+  "background_color": "rgb(8, 24, 245)",
+  "description": "Emergency instant mobile loans in Kenya. Apply for quick loans from 15,000 to 200,000 KES via M-Pesa. Swift Loan provides fast, secure mobile lending with instant approval.",
+  "dir": "auto",
+  "display": "standalone",
+  "name": "Swift Loan App",
+  "orientation": "any",
+  "scope": "https://swiftloanapp.onrender.com/",
+  "short_name": "SwiftLoan",
+  "start_url": "https://swiftloanapp.onrender.com/index.html",
+  "theme_color": "#ffffff",
+  "id": "com.swiftloan.app",
+  "lang": "en",
+  "categories": [
+    "finance"
+  ],
+  "share_target": {
+    "method": "GET"
+  }
+}
