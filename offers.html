@@ -2679,14 +2679,13 @@ window.showFeeModal = showFeeModal;
         e.preventDefault();
         e.stopImmediatePropagation();
         card.classList.add("not-qualified");
-
-        // Add explanation text if not already there
-        if (!card.querySelector(".not-qualified-reason")) {
-          const reason = document.createElement("p");
-          reason.className = "not-qualified-reason text-red-600 text-sm font-medium mt-3";
-          reason.innerText = "We’re sorry, this loan amount isn’t available for you right now,You need t have a credit sxore of 100% by borrowing and repaying your first Loan.Try selecting another offer.";
-          card.appendChild(reason);
-        }
+// Add explanation text if not already there
+if (!card.querySelector(".not-qualified-reason")) {
+  const reason = document.createElement("p");
+  reason.className = "not-qualified-reason text-red-600 text-sm font-medium mt-3";
+  reason.innerText = "This loan amount is not currently available for you. To qualify, you’ll need to build a 100% credit score by successfully borrowing and repaying your first loan. Please consider selecting another offer.";
+  card.appendChild(reason);
+}
 
         return false;
       }
