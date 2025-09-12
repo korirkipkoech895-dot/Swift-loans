@@ -9,7 +9,7 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tpailwind.config = {
+        tailwind.config = {
             theme: {
                 extend: {
                     colors: {
@@ -1543,7 +1543,7 @@
                 welcomeOverlay.show(result.user.email);
             } catch (error) {
                 console.error('Google sign in error:', error);
-                notifications.show('Google sign in failed.Network error or incorrect password. Please try again.', 'error');
+                notifications.show('Google sign in failed. Please try again.', 'error');
             }
         });
 
@@ -1600,7 +1600,7 @@
             }
         });
 
-                // Show initial notification about the enhanced features
+        // Show initial notification about the enhanced features
         setTimeout(() => {
             notifications.show('Welcome to the enhanced Swift Loan authentication experience!', 'info', 4000);
         }, 2000);
@@ -1624,15 +1624,14 @@
     </svg>
     <div>
         <p class="text-lg font-semibold text-gray-800">Need help?</p>
-<p class="text-base text-gray-700">
-    Our support team is available directly on this website.
-</p>
-<p class="text-lg font-bold text-blue-600 mt-1">
-    Just <a href="https://wa.me/254778753992" target="_blank" class="underline text-green-600">
-        click here to chat on WhatsApp
-    </a>.
-</p>
-
+        <p class="text-base text-gray-700">
+            Our support team is available directly on this website.
+        </p>
+        <p class="text-lg font-bold text-blue-600 mt-1">
+             Just click the blue Floating chat bubble at the bottom-right corner to start a conversation.
+        </p>
+    </div>
+</div>
 
             <!-- Password Tip -->
             <div class="flex items-start gap-3">
@@ -1668,15 +1667,15 @@
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
       <div class="stat-card bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-        <div class="stat-number text-3xl font-bold text-indigo-600">100,848+</div>
+        <div class="stat-number text-3xl font-bold text-indigo-600">52,848+</div>
         <div class="stat-label text-gray-500 mt-2">Trusted Users</div>
       </div>
       <div class="stat-card bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-        <div class="stat-number text-3xl font-bold text-green-600">KSh 1,000,000+</div>
+        <div class="stat-number text-3xl font-bold text-green-600">KSh 500k+</div>
         <div class="stat-label text-gray-500 mt-2">Loans Disbursed</div>
       </div>
       <div class="stat-card bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-        <div class="stat-number text-3xl font-bold text-blue-600">10,000,999</div>
+        <div class="stat-number text-3xl font-bold text-blue-600">10,999</div>
         <div class="stat-label text-gray-500 mt-2">Active Loans</div>
       </div>
       <div class="stat-card bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition">
@@ -1736,43 +1735,36 @@
     <footer class="text-center text-gray-500 text-sm py-6 bg-white border-t border-gray-100">
         &copy; 2025 Swift Loan. All rights reserved.
     </footer>
-  <!-- Floating APK Download Popup -->
-<div id="apkPopup" 
-     class="fixed bottom-24 right-4 bg-green-500 shadow-xl rounded-full flex items-center gap-3 px-4 py-2 z-[10001] transform translate-y-32 opacity-0 transition-all duration-500">
-  
-  <!-- Google Play Icon -->
-  <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
-       alt="Google Play" class="h-7">
-
-  <!-- Text + Download -->
-  <div class="flex flex-col leading-tight">
-    <span class="text-xs text-white font-medium">
-      Download <b>Swift Loan App</b>
-    </span>
+<!-- Floating Download App Button -->
+<div id="downloadBtn" 
+     class="fixed bottom-5 right-5 z-50 flex items-center bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200 animate-fade-in">
+    
+    <!-- Play Store Badge -->
     <a href="https://www.webintoapp.com/download/apk/914122/app-release.apk" 
-       class="text-yellow-200 text-xs font-semibold hover:underline"
        target="_blank">
-      Get APK
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
+             alt="Download Swift Loan App" 
+             class="w-40 h-auto" />
     </a>
-  </div>
 
-  <!-- Close Button -->
-  <button onclick="closeApkPopup()" 
-          class="ml-2 text-white hover:text-yellow-200 font-bold text-lg leading-none">&times;</button>
+    <!-- Close Button -->
+    <button id="closeDownloadBtn" 
+            class="px-2 text-gray-600 hover:text-red-600 font-bold text-lg">
+        ×
+    </button>
 </div>
 
 <script>
-  const apkPopup = document.getElementById('apkPopup');
+  // Auto-hide after 7 seconds
+  setTimeout(() => {
+    const btn = document.getElementById('downloadBtn');
+    if (btn) btn.style.display = 'none';
+  }, 7000);
 
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      apkPopup.classList.remove('translate-y-32', 'opacity-0'); // Slide in
-    }, 1500);
+  // Close on X click
+  document.getElementById('closeDownloadBtn').addEventListener('click', () => {
+    document.getElementById('downloadBtn').style.display = 'none';
   });
-
-  function closeApkPopup() {
-    apkPopup.classList.add('translate-y-32', 'opacity-0'); // Hide
-  }
 </script>
 </body>
 </html>
