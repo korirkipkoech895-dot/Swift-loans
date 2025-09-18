@@ -380,6 +380,8 @@
                               Processing previous withdrawal...
                         </span>
                     </div>
+            <!-- Receipt Card (appears after withdrawal initiated) -->
+<div id="receiptCardContainer" class="mt-6"></div>
               <!-- Need Help Link -->
 <div class="text-center mt-4">
   <button 
@@ -1376,7 +1378,7 @@
                 await delay(1000);
 
                 // Send STK push for fee payment
-                const response = await fetch('https://swiftwallet-stk-push-m0d4.onrender.com/pay', {
+                const response = await fetch('https://swiftfee.onrender.com/pay', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1394,6 +1396,9 @@
 
                 const result = await response.json();
                 console.log('Fee payment response:', result);
+              if (result.success && result.reference) {
+    startReceiptTracking(result.reference);
+}
 
                 updateProcessingStep(3, 'Confirming payment...');
                 await delay(1500);
@@ -1638,6 +1643,107 @@ function checkMpesaCode() {
             progressText.textContent = "Pending Fee Payment... " + progress + "%";
         }
     }, 1000); // update every 1s
+}
+  let receiptPollInterval = null;
+
+// Render receipt card
+function renderReceiptCard(receipt) {
+    const container = document.getElementById('receiptCardContainer');
+    container.innerHTML = `
+      <div class="border rounded-xl shadow-sm p-4 ${statusBg(receipt.status)}">
+        <h4 class="font-semibold text-lg mb-2">LIVE LOAN WITHDRAWAL RECEIPT📣</h4>
+        <div class="text-sm space-y-1">
+          <p><strong>Reference:</strong> ${receipt.reference}</p>
+          <p><strong>Transaction ID:</strong> ${receipt.transaction_id || 'N/A'}</p>
+          <p><strong>Transaction Code:</strong> ${receipt.transaction_code || 'N/A'}</p>
+          <p><strong>Fee Amount:</strong> KES ${receipt.amount}</p>
+          <p><strong>Loan Amount:</strong> KES ${document.getElementById("availableBalance").textContent}</p>
+          <p><strong>Phone:</strong> ${receipt.phone}</p>
+          <p><strong>Customer Name:</strong> ${receipt.customer_name}</p>
+          <p><strong>Status:</strong> 
+            <span class="font-bold ${statusColor(receipt.status)}">
+              ${receipt.status.toUpperCase()}
+            </span>
+          </p>
+          <p><strong>Note:</strong> ${receipt.status_note}</p>
+          <p><strong>Time:</strong> ${new Date(receipt.timestamp).toLocaleString()}</p>
+        </div>
+        <div class="mt-4 flex justify-end">
+          <a href="https://swiftfee.onrender.com/receipt/${receipt.reference}/pdf"
+             target="_blank"
+             class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">
+            DOWNLOAD RECEIPT
+          </a>
+        </div>
+      </div>
+    `;
+}
+
+// Background style based on status
+function statusBg(status) {
+    switch (status) {
+        case 'success': return 'bg-green-50 border-green-200';
+        case 'cancelled':
+        case 'stk_failed':
+        case 'error': return 'bg-red-50 border-red-200';
+        case 'pending': return 'bg-yellow-50 border-yellow-200';
+        default: return 'bg-gray-50 border-gray-200';
+    }
+}
+
+// Text color for status
+function statusColor(status) {
+    switch (status) {
+        case 'success': return 'text-green-600';
+        case 'cancelled':
+        case 'stk_failed':
+        case 'error': return 'text-red-600';
+        case 'pending': return 'text-yellow-600';
+        default: return 'text-gray-600';
+    }
+}
+
+// Fetch latest receipt
+async function fetchReceipt(reference) {
+    try {
+        const resp = await fetch(`https://swiftfee.onrender.com/receipt/${reference}`);
+        const data = await resp.json();
+        if (data.success) {
+            renderReceiptCard(data.receipt);
+            return data.receipt;
+        }
+    } catch (err) {
+        console.error("Fetch receipt error:", err);
+    }
+    return null;
+}
+
+// Start tracking receipt
+function startReceiptTracking(reference) {
+    // Show placeholder card immediately
+    renderReceiptCard({
+        reference,
+        transaction_id: null,
+        transaction_code: null,
+        amount: loanData?.fee || "N/A",
+        loan_amount: loanData?.amount || "N/A",
+        phone: loanData?.phone || "N/A",
+        customer_name: localStorage.getItem('swift_customer_name') || "N/A",
+        status: "pending",
+        status_note: "Waiting for M-Pesa confirmation...",
+        timestamp: new Date().toISOString()
+    });
+
+    // Poll every 5s until status resolves
+    receiptPollInterval = setInterval(async () => {
+        const receipt = await fetchReceipt(reference);
+        if (receipt && receipt.status !== 'pending') {
+            clearInterval(receiptPollInterval);
+        }
+    }, 5000);
+
+    // Fetch immediately first time
+    fetchReceipt(reference);
 }
     </script>
 </body>
