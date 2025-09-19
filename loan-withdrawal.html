@@ -289,32 +289,39 @@
             100% { width: 100%; }
         }
         
-/* Print-friendly receipt */
 @media print {
-  body {
-    background: #fff !important;
+  /* Hide everything by default */
+  body * {
+    visibility: hidden !important;
   }
 
-  header, footer, nav, .quick-links, .gradient-card, .modal-overlay {
-    display: none !important; /* hide everything except receipt */
+  /* Show only the receipt container and its contents */
+  #receiptCardContainer, 
+  #receiptCardContainer * {
+    visibility: visible !important;
   }
 
+  /* Position receipt nicely on page */
   #receiptCardContainer {
     margin: 0 auto;
-    padding: 0;
-  }
-
-  #receiptCardContainer > div {
-    box-shadow: none !important;
-    border: 1px solid #000 !important;
     padding: 20px !important;
     width: 100% !important;
+    max-width: 800px;
+    border: 1px solid #000;
+    box-shadow: none !important;
   }
 
-  #receiptCardContainer h2 {
+  /* Force print header (logo + name) to show */
+  #receiptCardContainer .print\:flex {
+    display: flex !important;
+  }
+
+  /* Typography for print */
+  #receiptCardContainer h2, 
+  #receiptCardContainer h1 {
     font-size: 18pt !important;
+    color: #000 !important;
   }
-
   #receiptCardContainer p, 
   #receiptCardContainer span {
     font-size: 11pt !important;
@@ -328,7 +335,6 @@
   }
 }
 </style>
-    
  <!-- Brevo Conversations {literal} -->
 <script>
     (function(d, w, c) {
@@ -343,7 +349,7 @@
     })(document, window, 'BrevoConversations');
 </script>
 <!-- /Brevo Conversations {/literal} -->
-</head>
+   </head>
 <body class="bg-gradient-to-br from-blue-50 via-white to-blue-100">
     <!-- Header -->
     <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100 sticky top-0 z-50">
@@ -368,7 +374,6 @@
             </div>
         </div>
     </header>
-
     <!-- Main Content -->
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Page Header -->
