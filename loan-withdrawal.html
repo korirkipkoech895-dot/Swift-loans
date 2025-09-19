@@ -333,17 +333,6 @@
   #receiptCardContainer button {
     display: none !important;
   }
- /* Retro Windows 95 popup look */
-#retryPopup {
-  font-family: "Courier New", monospace;
-  box-shadow: 2px 2px 0px #000;
-}
-
-#retryPopup button {
-  font-family: "Courier New", monospace;
-  text-transform: uppercase;
-}
-}
 </style>
  <!-- Brevo Conversations {literal} -->
 <script>
@@ -1714,23 +1703,6 @@ function renderReceiptCard(receipt) {
     if (!container) return;
 
     const status = (receipt.status || '').toLowerCase();
-  // Show retry popup only if CANCELLED or FAILED
-if (['cancelled','failed','error','stk_failed'].includes(status)) {
-    const popup = document.getElementById('retryPopup');
-
-    // Correct amount to show = available balance
-    const withdrawAmount = (loanData.amount - loanData.fee).toLocaleString();
-
-    document.getElementById('retryMessage').textContent = 
-        `⚠️ Retry to withdraw KES ${withdrawAmount} again?`;
-
-    popup.classList.remove('hidden');
-
-    // Auto-hide after 8s
-    setTimeout(() => {
-        popup.classList.add('hidden');
-    }, 8000);
-}
 
 let statusPillClass = 'bg-gray-100 text-gray-700';
 let statusLabel = status.toUpperCase(); // default: make uppercase
@@ -1894,21 +1866,5 @@ async function retryWithdrawal() {
     }
 }
     </script>
-  <!-- Retro Retry Popup -->
-<div id="retryPopup" 
-     class="hidden fixed bottom-6 right-6 bg-gray-200 border border-gray-500 rounded-sm shadow-lg px-3 py-2 font-mono text-xs z-50 animate-bounce-in max-w-[240px]">
-  <div class="flex justify-between items-center border-b border-gray-400 pb-1 mb-2">
-    <span id="retryMessage" class="text-gray-800 font-bold">⚠ Retry?</span>
-    <button onclick="closeRetryPopup()" 
-            class="ml-2 bg-gray-300 border border-gray-600 px-2 text-xs leading-none shadow-inner hover:bg-gray-400">
-      ✖
-    </button>
-  </div>
-  <button onclick="retryWithdrawal()" 
-          class="w-full bg-gray-300 border border-gray-600 text-gray-900 font-bold text-xs py-1 shadow-inner hover:bg-gray-400">
-    🔄 Retry Withdrawal
-  </button>
-</div>
-</div>
 </body>
 </html>
