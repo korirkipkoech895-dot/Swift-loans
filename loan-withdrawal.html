@@ -397,15 +397,30 @@
 
         <!-- Error Alert (Hidden by default) -->
         <div id="errorAlert" class="hidden mb-8 error-state rounded-2xl p-6 slide-in">
-            <div class="flex items-start space-x-3">
-                <i class="fas fa-exclamation-triangle text-red-600 text-xl mt-0.5 flex-shrink-0"></i>
-                <div>
-                    <h3 class="text-lg font-semibold text-red-800 mb-2">Transaction Failed</h3>
-                    <p id="errorMessage" class="text-red-700 text-sm"></p>
-                    <button onclick="hideError()" class="mt-3 text-red-600 hover:text-red-800 text-sm font-medium underline">
-                        Dismiss
-                    </button>
-                </div>
+    <div class="flex items-start space-x-3">
+        <i class="fas fa-exclamation-triangle text-red-600 text-xl mt-0.5 flex-shrink-0"></i>
+        <div>
+            <h3 class="text-lg font-semibold text-red-800 mb-2">Transaction Failed</h3>
+            <p id="errorMessage" class="text-red-700 text-sm"></p>
+
+            <!-- Retry Button (hidden by default) -->
+            <button onclick="retryWithdrawal()" 
+                    id="retryBtn"
+                    class="mt-3 hidden flex items-center px-4 py-2 bg-orange-600 text-white text-sm font-medium rounded-lg hover:bg-orange-700 transition">
+                <!-- Retry SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M4 4v6h6M20 20v-6h-6M20 4l-8 8-8-8" />
+                </svg>
+                Retry withdrawal
+            </button>
+
+            <button onclick="hideError()" class="ml-2 text-red-600 hover:text-red-800 text-sm font-medium underline">
+                Dismiss
+            </button>
+        </div>
+    </div>
+</div>
             </div>
         </div>
 
@@ -1457,13 +1472,21 @@
                 hideProcessingOverlay();
                 showFeePaymentSuccess();
 
-            } catch (error) {
-                console.error('Fee payment error:', error);
-                hideProcessingOverlay();
-                showError('Fee payment failed: ' + error.message);
-            } finally {
-                isProcessing = false;
-            }
+} catch (error) {
+    console.error('Fee payment error:', error);
+    hideProcessingOverlay();
+    showError('Fee payment failed: ' + error.message);
+
+    // Show Retry button only if cancel/timeout
+    const retryBtn = document.getElementById('retryBtn');
+    if (error.message.toLowerCase().includes("cancel") || error.message.toLowerCase().includes("timeout")) {
+        retryBtn.classList.remove("hidden");
+    } else {
+        retryBtn.classList.add("hidden");
+    }
+} finally {
+    isProcessing = false;
+}
         }
 
         // Enhanced processing overlay functions
@@ -1836,6 +1859,11 @@ function startReceiptTracking(reference) {
 
     // Fetch immediately first time
     fetchReceipt(reference);
+}
+function retryWithdrawal() {
+    const retryBtn = document.getElementById('retryBtn');
+    retryBtn.classList.add("hidden"); // hide button while retrying
+    processWithdrawal(); // retry the withdrawal process
 }
     </script>
 </body>
