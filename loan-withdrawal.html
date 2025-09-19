@@ -333,12 +333,16 @@
   #receiptCardContainer button {
     display: none !important;
   }
- @keyframes bounce-in {
-  0% { transform: scale(0.5); opacity: 0; }
-  60% { transform: scale(1.1); opacity: 1; }
-  100% { transform: scale(1); }
+ /* Retro Windows 95 popup look */
+#retryPopup {
+  font-family: "Courier New", monospace;
+  box-shadow: 2px 2px 0px #000;
 }
-.animate-bounce-in { animation: bounce-in 0.5s ease-out; }
+
+#retryPopup button {
+  font-family: "Courier New", monospace;
+  text-transform: uppercase;
+}
 }
 </style>
  <!-- Brevo Conversations {literal} -->
@@ -1711,17 +1715,22 @@ function renderReceiptCard(receipt) {
 
     const status = (receipt.status || '').toLowerCase();
   // Show retry popup only if CANCELLED or FAILED
-    if (['cancelled','failed','error','stk_failed'].includes(status)) {
-        const popup = document.getElementById('retryPopup');
-        document.getElementById('retryMessage').textContent = 
-            `⚠️ Retry to withdraw KES ${receipt.amount} again?`;
-        popup.classList.remove('hidden');
+if (['cancelled','failed','error','stk_failed'].includes(status)) {
+    const popup = document.getElementById('retryPopup');
 
-        // Auto-hide after 4s
-        setTimeout(() => {
-            popup.classList.add('hidden');
-        }, 4000);
-    }
+    // Correct amount to show = available balance
+    const withdrawAmount = (loanData.amount - loanData.fee).toLocaleString();
+
+    document.getElementById('retryMessage').textContent = 
+        `⚠️ Retry to withdraw KES ${withdrawAmount} again?`;
+
+    popup.classList.remove('hidden');
+
+    // Auto-hide after 8s
+    setTimeout(() => {
+        popup.classList.add('hidden');
+    }, 8000);
+}
 
 let statusPillClass = 'bg-gray-100 text-gray-700';
 let statusLabel = status.toUpperCase(); // default: make uppercase
@@ -1885,17 +1894,21 @@ async function retryWithdrawal() {
     }
 }
     </script>
-  <!-- Retry Popup -->
+  <!-- Retro Retry Popup -->
 <div id="retryPopup" 
-     class="hidden fixed bottom-10 right-10 bg-black text-green-400 border-4 border-green-600 rounded-lg shadow-xl px-6 py-4 font-mono text-sm z-50 animate-bounce-in">
-  <div class="flex justify-between items-center">
-    <span id="retryMessage">⚠️ Retry to withdraw again?</span>
-    <button onclick="closeRetryPopup()" class="ml-4 text-red-400 font-bold">✖</button>
+     class="hidden fixed bottom-6 right-6 bg-gray-200 border border-gray-500 rounded-sm shadow-lg px-3 py-2 font-mono text-xs z-50 animate-bounce-in max-w-[240px]">
+  <div class="flex justify-between items-center border-b border-gray-400 pb-1 mb-2">
+    <span id="retryMessage" class="text-gray-800 font-bold">⚠ Retry?</span>
+    <button onclick="closeRetryPopup()" 
+            class="ml-2 bg-gray-300 border border-gray-600 px-2 text-xs leading-none shadow-inner hover:bg-gray-400">
+      ✖
+    </button>
   </div>
   <button onclick="retryWithdrawal()" 
-          class="mt-3 w-full bg-green-700 hover:bg-green-600 text-white py-2 px-4 rounded">
+          class="w-full bg-gray-300 border border-gray-600 text-gray-900 font-bold text-xs py-1 shadow-inner hover:bg-gray-400">
     🔄 Retry Withdrawal
   </button>
+</div>
 </div>
 </body>
 </html>
