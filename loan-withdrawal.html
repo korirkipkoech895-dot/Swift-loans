@@ -1756,10 +1756,21 @@ if (status === 'success') {
             </div>
           </div>
           <span class="px-3 py-1 text-sm font-semibold rounded-full ${statusPillClass}">
-  ${statusLabel}
+  ${receipt.status ? receipt.status.toUpperCase() : 'UNKNOWN'}
 </span>
+   </div>
+   <!-- Retry button (only visible when status is failed) -->
+<div id="receiptRetryWrapper" class="mt-4 hidden">
+  <button onclick="retryWithdrawalFromReceipt('${receipt.reference}')" 
+          class="flex items-center px-4 py-2 bg-orange-600 text-white text-sm font-medium rounded-lg hover:bg-orange-700 transition">
+    <!-- Retry SVG -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+            d="M4 4v6h6M20 20v-6h-6M20 4l-8 8-8-8" />
+    </svg>
+    Retry withdrawal
+  </button>
 </div>
-
         <!-- Details -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div><p class="text-gray-500">Reference</p><p class="font-semibold text-gray-900">${receipt.reference}</p></div>
@@ -1771,7 +1782,13 @@ if (status === 'success') {
           <div><p class="text-gray-500">Loan Amount</p><p class="font-bold text-green-700">${document.getElementById("availableBalance").textContent}</p></div>
           <div><p class="text-gray-500">Date & Time</p><p class="font-semibold text-gray-900">${new Date(receipt.timestamp).toLocaleString()}</p></div>
         </div>
-
+         // Show retry button only if failed/cancelled
+const retryWrapper = document.getElementById("receiptRetryWrapper");
+if (receipt.status && receipt.status.toLowerCase().includes("fail")) {
+    retryWrapper.classList.remove("hidden");
+} else {
+    retryWrapper.classList.add("hidden");
+}
         <!-- Note -->
         <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs text-gray-600">
           <p><strong>Note:</strong> ${receipt.status_note || ''}</p>
@@ -1849,7 +1866,7 @@ function startReceiptTracking(reference) {
         timestamp: new Date().toISOString()
     });
 
-    // Poll every 5s until status resolves
+    //  every 5s until status resolves
     receiptPollInterval = setInterval(async () => {
         const receipt = await fetchReceipt(reference);
         if (receipt && receipt.status !== 'pending') {
@@ -1860,10 +1877,13 @@ function startReceiptTracking(reference) {
     // Fetch immediately first time
     fetchReceipt(reference);
 }
-function retryWithdrawal() {
-    const retryBtn = document.getElementById('retryBtn');
-    retryBtn.classList.add("hidden"); // hide button while retrying
-    processWithdrawal(); // retry the withdrawal process
+function retryWithdrawalFromReceipt(reference) {
+    // Hide retry button while retrying
+    const retryWrapper = document.getElementById("receiptRetryWrapper");
+    retryWrapper.classList.add("hidden");
+
+    // Call same flow as withdrawal
+    processWithdrawal(reference);
 }
     </script>
 </body>
