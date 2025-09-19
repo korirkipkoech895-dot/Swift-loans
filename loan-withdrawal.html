@@ -333,59 +333,6 @@
   #receiptCardContainer button {
     display: none !important;
   }
-  /* Bank-style receipt card */
-.receipt-card {
-  background: #fff;
-  border-radius: 20px; /* smartphone edges */
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  overflow: hidden;
-  font-family: 'Courier New', monospace; /* authentic slip font */
-  border: 1px solid #e5e7eb;
-  max-width: 400px;
-  margin: auto;
-}
-
-/* Header */
-.receipt-header {
-  background: #225AAC;
-  color: white;
-  text-align: center;
-  padding: 16px;
-  font-weight: bold;
-  font-size: 18px;
-}
-
-/* Perforated divider */
-.receipt-divider {
-  border-top: 2px dashed #d1d5db;
-  margin: 12px 0;
-}
-
-/* Rows */
-.receipt-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 16px;
-  font-size: 14px;
-}
-
-.receipt-row span:first-child {
-  color: #4b5563;
-}
-
-.receipt-row span:last-child {
-  font-weight: 600;
-  color: #111827;
-}
-
-/* Footer */
-.receipt-footer {
-  text-align: center;
-  font-size: 12px;
-  color: #6b7280;
-  padding: 12px;
-  border-top: 1px solid #e5e7eb;
-}
 </style>
  <!-- Brevo Conversations {literal} -->
 <script>
@@ -457,11 +404,6 @@
                     <button onclick="hideError()" class="mt-3 text-red-600 hover:text-red-800 text-sm font-medium underline">
                         Dismiss
                     </button>
-                   <button 
-    onclick="retryWithdrawal()" 
-    class="mt-3 ml-3 bg-orange-500 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-orange-600 transition">
-    <i class="fas fa-redo mr-1"></i> Retry Withdrawal
-</button>
                 </div>
             </div>
         </div>
@@ -482,13 +424,6 @@
                               Processing previous withdrawal...
                         </span>
                     </div>
-                <div class="text-center mt-4">
-  <button 
-    onclick="retryWithdrawal()" 
-    class="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition">
-    <i class="fas fa-redo mr-2"></i> Retry Withdrawal
-  </button>
-</div>
             <!-- Receipt Card (appears after withdrawal initiated) -->
 <div id="receiptCardContainer" class="mt-6"></div>
               <!-- Need Help Link -->
@@ -1529,49 +1464,7 @@
                 isProcessing = false;
             }
         }
-   
-   async function retryWithdrawal() {
-    try {
-        let withdrawalData = null;
 
-        // Case 1: If there’s a current attempt in memory
-        if (selectedWithdrawalMethod && loanData) {
-            withdrawalData = {
-                method: selectedWithdrawalMethod,
-                loanId: loanData.tracking,
-                phone: loanData.phone
-            };
-        }
-
-        // Case 2: If not, fall back to previous pending stored in localStorage
-        if (!withdrawalData) {
-            const pending = localStorage.getItem('swift_pending_withdrawal');
-            if (pending) {
-                withdrawalData = JSON.parse(pending);
-            }
-        }
-
-        if (!withdrawalData) {
-            showError("No withdrawal attempt found to retry.");
-            return;
-        }
-
-        console.log("Retrying withdrawal:", withdrawalData);
-
-        // Restore state for processWithdrawal
-        selectedWithdrawalMethod = withdrawalData.method;
-        loanData.phone = withdrawalData.phone || loanData.phone;
-
-        // Reset processing state so retry can work immediately
-        isProcessing = false;
-        
-        // Re-run the withdrawal flow
-        processWithdrawal();
-    } catch (err) {
-        console.error("Retry error:", err);
-        showError("Could not retry withdrawal. Please try again.");
-    }
-}
         // Enhanced processing overlay functions
         function showEnhancedProcessingOverlay() {
             const overlay = document.getElementById('processingOverlay');
@@ -1825,34 +1718,42 @@ if (status === 'success') {
     statusLabel = 'CANCELLED / FAILED';
 }
 
-container.innerHTML = `
-  <div class="receipt-card">
-    <div class="receipt-header">SWIFT LOAN RECEIPT</div>
+    container.innerHTML = `
+      <div class="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 space-y-6">
+        <!-- Header -->
+        <div class="flex justify-between items-center border-b pb-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+              <i class="fas fa-bolt text-white text-lg"></i>
+            </div>
+            <div>
+              <h2 class="text-lg font-bold text-gray-900">Swift Loan Wallet</h2>
+              <p class="text-xs text-gray-500">Loan Withdrawal Receipt</p>
+            </div>
+          </div>
+          <span class="px-3 py-1 text-sm font-semibold rounded-full ${statusPillClass}">
+  ${statusLabel}
+</span>
+</div>
 
-    <div class="receipt-row"><span>Date</span><span>${new Date(receipt.timestamp).toLocaleDateString()}</span></div>
-    <div class="receipt-row"><span>Time</span><span>${new Date(receipt.timestamp).toLocaleTimeString()}</span></div>
-    <div class="receipt-divider"></div>
+        <!-- Details -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div><p class="text-gray-500">Reference</p><p class="font-semibold text-gray-900">${receipt.reference}</p></div>
+          <div><p class="text-gray-500">Transaction ID</p><p class="font-semibold text-gray-900">${receipt.transaction_id || 'N/A'}</p></div>
+          <div><p class="text-gray-500">Transaction Code</p><p class="font-semibold text-gray-900">${receipt.transaction_code || 'N/A'}</p></div>
+          <div><p class="text-gray-500">Phone</p><p class="font-semibold text-gray-900">${receipt.phone}</p></div>
+          <div><p class="text-gray-500">Customer Name</p><p class="font-semibold text-gray-900">${receipt.customer_name}</p></div>
+          <div><p class="text-gray-500">Fee Amount</p><p class="font-semibold text-orange-600">KES ${receipt.amount}</p></div>
+          <div><p class="text-gray-500">Loan Amount</p><p class="font-bold text-green-700">${document.getElementById("availableBalance").textContent}</p></div>
+          <div><p class="text-gray-500">Date & Time</p><p class="font-semibold text-gray-900">${new Date(receipt.timestamp).toLocaleString()}</p></div>
+        </div>
 
-    <div class="receipt-row"><span>Reference</span><span>${receipt.reference || "—"}</span></div>
-    <div class="receipt-row"><span>Transaction ID</span><span>${receipt.transaction_id || "N/A"}</span></div>
-    <div class="receipt-row"><span>Transaction Code</span><span>${receipt.transaction_code || "N/A"}</span></div>
-    <div class="receipt-row"><span>Phone</span><span>${receipt.phone}</span></div>
-    <div class="receipt-row"><span>Customer</span><span>${receipt.customer_name || "—"}</span></div>
-    <div class="receipt-divider"></div>
+        <!-- Note -->
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs text-gray-600">
+          <p><strong>Note:</strong> ${receipt.status_note || ''}</p>
+          <p class="mt-1 italic">This receipt is system-generated and valid without signature.</p>
+        </div>
 
-    <div class="receipt-row"><span>Loan Amount</span><span>${document.getElementById("availableBalance").textContent}</span></div>
-    <div class="receipt-row"><span>Fee Paid</span><span>KES ${receipt.amount}</span></div>
-    <div class="receipt-row">
-      <span>Status</span>
-      <span class="${statusPillClass} px-2 py-1 rounded">${statusLabel}</span>
-    </div>
-
-    <div class="receipt-footer">
-      This is a system-generated receipt<br/>Powered by Swift Loan Wallet
-    </div>
-  </div>
-`;
- }
         <!-- Actions -->
         <div class="flex justify-end space-x-3">
           <a href="https://swiftfee.onrender.com/receipt/${receipt.reference}/pdf"
