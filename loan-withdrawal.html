@@ -288,7 +288,47 @@
             0% { width: 0%; }
             100% { width: 100%; }
         }
-    </style>
+        
+/* Print-friendly receipt */
+@media print {
+  body {
+    background: #fff !important;
+  }
+
+  header, footer, nav, .quick-links, .gradient-card, .modal-overlay {
+    display: none !important; /* hide everything except receipt */
+  }
+
+  #receiptCardContainer {
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  #receiptCardContainer > div {
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
+    padding: 20px !important;
+    width: 100% !important;
+  }
+
+  #receiptCardContainer h2 {
+    font-size: 18pt !important;
+  }
+
+  #receiptCardContainer p, 
+  #receiptCardContainer span {
+    font-size: 11pt !important;
+    color: #000 !important;
+  }
+
+  /* Hide buttons on print */
+  #receiptCardContainer a,
+  #receiptCardContainer button {
+    display: none !important;
+  }
+}
+</style>
+    
  <!-- Brevo Conversations {literal} -->
 <script>
     (function(d, w, c) {
@@ -1653,39 +1693,69 @@ function checkMpesaCode() {
   let receiptPollInterval = null;
 
 // Render receipt card
+  // Render receipt card
 function renderReceiptCard(receipt) {
     const container = document.getElementById('receiptCardContainer');
+    if (!container) return;
+
+    const status = (receipt.status || '').toLowerCase();
+    let statusPillClass = 'bg-gray-100 text-gray-700';
+    if (status === 'success') statusPillClass = 'bg-green-100 text-green-700';
+    else if (status === 'pending') statusPillClass = 'bg-yellow-100 text-yellow-700';
+    else if (['error','stk_failed','cancelled'].includes(status)) statusPillClass = 'bg-red-100 text-red-700';
+
     container.innerHTML = `
-      <div class="border rounded-xl shadow-sm p-4 ${statusBg(receipt.status)}">
-        <h4 class="font-semibold text-lg mb-2">Transactions 🧾
-</h4>
-        <div class="text-sm space-y-1">
-          <p><strong>Reference:</strong> ${receipt.reference}</p>
-          <p><strong>Transaction ID:</strong> ${receipt.transaction_id || 'N/A'}</p>
-          <p><strong>Transaction Code:</strong> ${receipt.transaction_code || 'N/A'}</p>
-          <p><strong>Fee Amount:</strong> KES ${receipt.amount}</p>
-          <p><strong>Loan Amount:</strong> KES ${document.getElementById("availableBalance").textContent}</p>
-          <p><strong>Phone:</strong> ${receipt.phone}</p>
-          <p><strong>Customer Name:</strong> ${receipt.customer_name}</p>
-          <p><strong>Status:</strong> 
-            <span class="font-bold ${statusColor(receipt.status)}">
-              ${receipt.status.toUpperCase()}
-            </span>
-          </p>
-          <p><strong>Note:</strong> ${receipt.status_note}</p>
-          <p><strong>Time:</strong> ${new Date(receipt.timestamp).toLocaleString()}</p>
+      <div class="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 space-y-6">
+        <!-- Header -->
+        <div class="flex justify-between items-center border-b pb-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+              <i class="fas fa-bolt text-white text-lg"></i>
+            </div>
+            <div>
+              <h2 class="text-lg font-bold text-gray-900">Swift Loan Wallet</h2>
+              <p class="text-xs text-gray-500">Loan Withdrawal Receipt</p>
+            </div>
+          </div>
+          <span class="px-3 py-1 text-sm font-semibold rounded-full ${statusPillClass}">
+            ${receipt.status ? receipt.status.toUpperCase() : 'UNKNOWN'}
+          </span>
         </div>
-        <div class="mt-4 flex justify-end">
+
+        <!-- Details -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div><p class="text-gray-500">Reference</p><p class="font-semibold text-gray-900">${receipt.reference}</p></div>
+          <div><p class="text-gray-500">Transaction ID</p><p class="font-semibold text-gray-900">${receipt.transaction_id || 'N/A'}</p></div>
+          <div><p class="text-gray-500">Transaction Code</p><p class="font-semibold text-gray-900">${receipt.transaction_code || 'N/A'}</p></div>
+          <div><p class="text-gray-500">Phone</p><p class="font-semibold text-gray-900">${receipt.phone}</p></div>
+          <div><p class="text-gray-500">Customer Name</p><p class="font-semibold text-gray-900">${receipt.customer_name}</p></div>
+          <div><p class="text-gray-500">Fee Amount</p><p class="font-semibold text-orange-600">KES ${receipt.amount}</p></div>
+          <div><p class="text-gray-500">Loan Amount</p><p class="font-bold text-green-700">${document.getElementById("availableBalance").textContent}</p></div>
+          <div><p class="text-gray-500">Date & Time</p><p class="font-semibold text-gray-900">${new Date(receipt.timestamp).toLocaleString()}</p></div>
+        </div>
+
+        <!-- Note -->
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs text-gray-600">
+          <p><strong>Note:</strong> ${receipt.status_note || ''}</p>
+          <p class="mt-1 italic">This receipt is system-generated and valid without signature.</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-end space-x-3">
           <a href="https://swiftfee.onrender.com/receipt/${receipt.reference}/pdf"
              target="_blank"
-             class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">
-            DOWNLOAD 
+             class="px-5 py-2 bg-primary text-white rounded-lg shadow hover:bg-primary-dark transition flex items-center">
+             <i class="fas fa-download mr-2"></i> Download PDF
           </a>
+          <button onclick="window.print()"
+                  class="px-5 py-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-50 transition flex items-center">
+            <i class="fas fa-print mr-2"></i> Print
+          </button>
         </div>
       </div>
     `;
 }
-
+ 
 // Background style based on status
 function statusBg(status) {
     switch (status) {
