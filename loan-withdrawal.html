@@ -333,6 +333,70 @@
   #receiptCardContainer button {
     display: none !important;
   }
+   /* Receipt background colors */
+.bg-receipt-success {
+  background: linear-gradient(135deg, #dcfce7 0%, #f0fdf4 100%);
+  border: 1px solid #bbf7d0;
+}
+
+.bg-receipt-pending {
+  background: linear-gradient(135deg, #fef9c3 0%, #fefce8 100%);
+  border: 1px solid #fde68a;
+}
+
+.bg-receipt-failed {
+  background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+  border: 1px solid #fecaca;
+}
+ /* Smartphone look */
+.smartphone-frame {
+  width: 360px;                /* typical smartphone width */
+  border: 16px solid #333;     /* outer frame */
+  border-top: 60px solid #333; /* top bezel */
+  border-bottom: 60px solid #333; /* bottom bezel */
+  border-radius: 36px;         /* rounded corners */
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  background: #000;            /* black bezel */
+}
+
+.smartphone-frame::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 8px;
+  background: #222;
+  border-radius: 10px;
+}
+
+/* Inner "screen" */
+.receipt-inner {
+  width: 100%;
+  min-height: 500px; /* keep it tall like a phone */
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 16px;
+}
+
+/* Dynamic receipt backgrounds */
+.bg-receipt-success {
+  background: linear-gradient(135deg, #dcfce7 0%, #f0fdf4 100%);
+  border: 1px solid #bbf7d0;
+}
+
+.bg-receipt-pending {
+  background: linear-gradient(135deg, #fef9c3 0%, #fefce8 100%);
+  border: 1px solid #fde68a;
+}
+
+.bg-receipt-failed {
+  background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+  border: 1px solid #fecaca;
+}
 </style>
  <!-- Brevo Conversations {literal} -->
 <script>
@@ -425,7 +489,11 @@
                         </span>
                     </div>
             <!-- Receipt Card (appears after withdrawal initiated) -->
-<div id="receiptCardContainer" class="mt-6"></div>
+ <div class="flex justify-center mt-6">
+  <div class="smartphone-frame">
+    <div id="receiptCardContainer" class="receipt-inner"></div>
+  </div>
+</div>
               <!-- Need Help Link -->
 <div class="text-center mt-4">
   <button 
@@ -1716,6 +1784,19 @@ if (status === 'success') {
 } else if (['error','stk_failed','cancelled','failed'].includes(status)) {
     statusPillClass = 'bg-red-100 text-red-700';
     statusLabel = 'CANCELLED / FAILED';
+}
+  // Reset container classes
+container.className = "mt-6 rounded-2xl shadow-swift p-6";
+
+// Apply background based on status
+if (status === 'success') {
+    container.classList.add("bg-receipt-success");
+} else if (status === 'pending') {
+    container.classList.add("bg-receipt-pending");
+} else if (status === 'failed' || status === 'cancelled') {
+    container.classList.add("bg-receipt-failed");
+} else {
+    container.classList.add("bg-white");
 }
 
     container.innerHTML = `
