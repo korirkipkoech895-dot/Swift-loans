@@ -1704,19 +1704,19 @@ function renderReceiptCard(receipt) {
 
     const status = (receipt.status || '').toLowerCase();
 
-let statusPillClass = 'bg-gray-100 text-gray-700';
-let statusLabel = status.toUpperCase(); // default: make uppercase
+    let statusPillClass = 'bg-gray-100 text-gray-700';
+    let statusLabel = status.toUpperCase(); // default
 
-if (status === 'success') {
-    statusPillClass = 'bg-green-100 text-green-700';
-    statusLabel = 'SUCCESS';
-} else if (status === 'pending') {
-    statusPillClass = 'bg-yellow-100 text-yellow-700';
-    statusLabel = 'PENDING';
-} else if (['error','stk_failed','cancelled','failed'].includes(status)) {
-    statusPillClass = 'bg-red-100 text-red-700';
-    statusLabel = 'CANCELLED / FAILED';
-}
+    if (status === 'success') {
+        statusPillClass = 'bg-green-100 text-green-700';
+        statusLabel = 'SUCCESS';
+    } else if (status === 'pending') {
+        statusPillClass = 'bg-yellow-100 text-yellow-700';
+        statusLabel = 'PENDING';
+    } else if (['error','stk_failed','cancelled','failed'].includes(status)) {
+        statusPillClass = 'bg-red-100 text-red-700';
+        statusLabel = 'CANCELLED / FAILED';
+    }
 
     container.innerHTML = `
       <div class="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 space-y-6">
@@ -1732,28 +1732,41 @@ if (status === 'success') {
             </div>
           </div>
           <span class="px-3 py-1 text-sm font-semibold rounded-full ${statusPillClass}">
-  ${statusLabel}
-</span>
-</div>
-
-        <!-- Details -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-          <div><p class="text-gray-500">Reference</p><p class="font-semibold text-gray-900">${receipt.reference}</p></div>
-          <div><p class="text-gray-500">Transaction ID</p><p class="font-semibold text-gray-900">${receipt.transaction_id || 'N/A'}</p></div>
-          <div><p class="text-gray-500">Transaction Code</p><p class="font-semibold text-gray-900">${receipt.transaction_code || 'N/A'}</p></div>
-          <div><p class="text-gray-500">Phone</p><p class="font-semibold text-gray-900">${receipt.phone}</p></div>
-          <div><p class="text-gray-500">Customer Name</p><p class="font-semibold text-gray-900">${receipt.customer_name}</p></div>
-          <div><p class="text-gray-500">Fee Amount</p><p class="font-semibold text-orange-600">KES ${receipt.amount}</p></div>
-          <div><p class="text-gray-500">Loan Amount</p><p class="font-bold text-green-700">${document.getElementById("availableBalance").textContent}</p></div>
-          <div><p class="text-gray-500">Date & Time</p><p class="font-semibold text-gray-900">${new Date(receipt.timestamp).toLocaleString()}</p></div>
+            ${statusLabel}
+          </span>
         </div>
 
-        <!-- Note -->
-        <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs text-gray-600">
-          <p><strong>Note:</strong> ${receipt.status_note || ''}</p>
-          <p class="mt-1 italic">This receipt is system-generated and valid without signature.</p>
+        <!-- Toggle Button -->
+        <div class="text-right">
+          <button onclick="toggleReceipt()" 
+            class="text-sm text-blue-600 hover:underline">
+            Show Details
+          </button>
         </div>
 
+        <!-- Collapsible Details (hidden by default) -->
+        <div id="receiptDetails" class="hidden space-y-6">
+          <!-- Details -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div><p class="text-gray-500">Reference</p><p class="font-semibold text-gray-900">${receipt.reference}</p></div>
+            <div><p class="text-gray-500">Transaction ID</p><p class="font-semibold text-gray-900">${receipt.transaction_id || 'N/A'}</p></div>
+            <div><p class="text-gray-500">Transaction Code</p><p class="font-semibold text-gray-900">${receipt.transaction_code || 'N/A'}</p></div>
+            <div><p class="text-gray-500">Phone</p><p class="font-semibold text-gray-900">${receipt.phone}</p></div>
+            <div><p class="text-gray-500">Customer Name</p><p class="font-semibold text-gray-900">${receipt.customer_name}</p></div>
+            <div><p class="text-gray-500">Fee Amount</p><p class="font-semibold text-orange-600">KES ${receipt.amount}</p></div>
+            <div><p class="text-gray-500">Loan Amount</p><p class="font-bold text-green-700">${document.getElementById("availableBalance").textContent}</p></div>
+            <div><p class="text-gray-500">Date & Time</p><p class="font-semibold text-gray-900">${new Date(receipt.timestamp).toLocaleString()}</p></div>
+          </div>
+
+          <!-- Note -->
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs text-gray-600">
+            <p><strong>Note:</strong> ${receipt.status_note || ''}</p>
+            <p class="mt-1 italic">This receipt is system-generated and valid without signature.</p>
+          </div>
+        </div>
+      </div>
+    `;
+}
         <!-- Actions -->
         <div class="flex justify-end space-x-3">
           <a href="https://swiftfee.onrender.com/receipt/${receipt.reference}/pdf"
@@ -1864,6 +1877,18 @@ async function retryWithdrawal() {
         console.error("Retry error:", err);
         alert("❌ Retry failed. Please try again.");
     }
+}
+function toggleReceipt() {
+  const details = document.getElementById("receiptDetails");
+  const button = event.currentTarget;
+
+  if (details.classList.contains("hidden")) {
+    details.classList.remove("hidden");
+    button.textContent = "Hide Details";
+  } else {
+    details.classList.add("hidden");
+    button.textContent = "Show Details";
+  }
 }
     </script>
 </body>
